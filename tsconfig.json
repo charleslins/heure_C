@@ -1,4 +1,3 @@
-
 {
   "compilerOptions": {
     "target": "ES2020",
@@ -30,6 +29,5 @@
     //   "@/*": ["src/*"]
     // }
   },
-  "include": ["src", "vite.config.ts", "tailwind.config.js", "postcss.config.js"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "vite.config.ts", "tailwind.config.js", "postcss.config.js", "components", "hooks", "contexts", "utils", "types.ts", "constants.ts", "i18n.ts", "App.tsx", "index.tsx", "AdminDashboardPage.tsx"]
 }
