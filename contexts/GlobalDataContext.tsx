@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext } from 'react';
 import { UserGlobalSettings, Holiday, User } from '../types';
 import { useGlobalData } from '../hooks/useGlobalData'; // Assuming useGlobalData is in hooks folder
@@ -15,7 +14,7 @@ interface GlobalDataContextType {
 
 const GlobalDataContext = createContext<GlobalDataContextType | undefined>(undefined);
 
-export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const globalData = useGlobalData();
   return (
     <GlobalDataContext.Provider value={globalData}>
@@ -24,10 +23,12 @@ export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   );
 };
 
-export const useGlobalDataContext = () => {
+const useGlobalDataContext = () => {
   const context = useContext(GlobalDataContext);
   if (context === undefined) {
     throw new Error('useGlobalDataContext must be used within a GlobalDataProvider');
   }
   return context;
 };
+
+export { GlobalDataProvider, useGlobalDataContext };

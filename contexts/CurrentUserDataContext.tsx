@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext } from 'react';
 import {
   WeeklyContractHours,
@@ -33,7 +32,7 @@ interface CurrentUserDataProviderProps {
   currentDate: Date; // Passed from App state
 }
 
-export const CurrentUserDataProvider: React.FC<CurrentUserDataProviderProps> = ({ children, currentDate }) => {
+const CurrentUserDataProvider: React.FC<CurrentUserDataProviderProps> = ({ children, currentDate }) => {
   const { currentUser } = useAuthContext();
   const { globalHolidays } = useGlobalDataContext(); // Get globalHolidays here
   
@@ -47,10 +46,12 @@ export const CurrentUserDataProvider: React.FC<CurrentUserDataProviderProps> = (
   );
 };
 
-export const useCurrentUserDataContext = () => {
+const useCurrentUserDataContext = () => {
   const context = useContext(CurrentUserDataContext);
   if (context === undefined) {
     throw new Error('useCurrentUserDataContext must be used within a CurrentUserDataProvider');
   }
   return context;
 };
+
+export { CurrentUserDataProvider, useCurrentUserDataContext };

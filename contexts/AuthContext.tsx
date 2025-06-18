@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext } from 'react';
 import { User } from '../types';
 import { useAuth } from '../hooks/useAuth'; // Assuming useAuth is in hooks folder
@@ -11,15 +10,18 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Exportar como default para compatibilidade com HMR
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const auth = useAuth();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
-export const useAuthContext = () => {
+const useAuthContext = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuthContext must be used within an AuthProvider');
   }
   return context;
 };
+
+export { AuthProvider, useAuthContext };
