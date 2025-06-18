@@ -1,0 +1,6 @@
+{
+  "name": "Work Hours Tracker2",
+  "description": "A web application to track daily and monthly work hours, including different types of work entries like vacation, sick leave, etc., and calculate summaries.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

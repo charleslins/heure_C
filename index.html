@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Você pode adicionar um ícone de favicon aqui, se desejar -->
+  <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Hours Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script> <script>
+    // Optional: You can add custom Tailwind configurations here if needed for the CDN version
+    // tailwind.config = {
+    //   theme: {
+    //     extend: {
+    //       colors: {
+    //         // example custom color
+    //       }
+    //     }
+    //   }
+    // }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      /* background: none; */ /* Consider custom styling or leave default */
+    }
+    .user-initials-placeholder {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-weight: 500;
+      color: white;
+    }
+    /* For Tailwind JIT, if py-1.5 is used and not standard */
+    .py-1\\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; } 
+    .text-xxs { font-size: 0.625rem; line-height: 0.875rem; } /* 10px */
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-i18next": "https://esm.sh/react-i18next@^15.5.3",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.50.0",
+    "i18next": "https://esm.sh/i18next@^25.2.1",
+    "i18next-browser-languagedetector": "https://esm.sh/i18next-browser-languagedetector@^8.2.0",
+    "vite": "https://esm.sh/vite@^6.3.5",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^4.5.2"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-slate-50 antialiased">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
