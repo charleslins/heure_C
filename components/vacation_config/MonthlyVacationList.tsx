@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { VacationStatus, MonthlyVacationListProps } from '../../types';
@@ -50,25 +49,25 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
                 <ul className="flex flex-wrap gap-2 justify-start">
                     {sortedVacations.map(vacation => (
                         <li key={vacation.date}
-                            className={`relative px-1.5 py-0.5 rounded-md w-[140px] h-[28px]
-                                       ${VACATION_STATUS_STYLES[vacation.status].bg}
-                                       border ${VACATION_STATUS_STYLES[vacation.status].border || 'border-transparent'}
-                                       shadow-sm flex items-center`}
+                            className={`inline-flex items-center px-3 py-1 rounded-full shadow-sm font-semibold text-xs mr-2
+                                ${vacation.status === VacationStatus.APPROVED ? 'bg-green-100 text-green-700 border border-green-200' : ''}
+                                ${vacation.status === VacationStatus.PENDING_APPROVAL ? 'bg-yellow-100 text-yellow-700 border border-yellow-200' : ''}
+                                ${vacation.status === VacationStatus.REJECTED ? 'bg-red-100 text-red-700 border border-red-200' : ''}
+                                ${vacation.status === VacationStatus.SELECTED ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : ''}
+                            `}
                             title={t(`vacationStatuses.${vacation.status}`)}
                         >
-                            {vacation.status === VacationStatus.SELECTED && <CheckCircleIcon className={`w-3.5 h-3.5 flex-shrink-0 mr-1.5 ${VACATION_STATUS_STYLES[VacationStatus.SELECTED].text}`} />}
-                            {vacation.status === VacationStatus.PENDING_APPROVAL && <ClockIcon className={`w-3.5 h-3.5 flex-shrink-0 mr-1.5 ${VACATION_STATUS_STYLES[VacationStatus.PENDING_APPROVAL].text}`} />}
-                            {vacation.status === VacationStatus.APPROVED && <CheckCircleIcon className={`w-3.5 h-3.5 flex-shrink-0 mr-1.5 ${VACATION_STATUS_STYLES[VacationStatus.APPROVED].text}`} />}
-                            {vacation.status === VacationStatus.REJECTED && <XCircleIcon className={`w-3.5 h-3.5 flex-shrink-0 mr-1.5 ${VACATION_STATUS_STYLES[VacationStatus.REJECTED].text}`} />}
-                            
-                            <span className={`font-medium text-slate-800 text-xs leading-tight block truncate flex-grow ${VACATION_STATUS_STYLES[vacation.status].text}`}>
+                            {vacation.status === VacationStatus.SELECTED && <CheckCircleIcon className="w-4 h-4 mr-1" />}
+                            {vacation.status === VacationStatus.PENDING_APPROVAL && <ClockIcon className="w-4 h-4 mr-1" />}
+                            {vacation.status === VacationStatus.APPROVED && <CheckCircleIcon className="w-4 h-4 mr-1" />}
+                            {vacation.status === VacationStatus.REJECTED && <XCircleIcon className="w-4 h-4 mr-1" />}
+                            <span className="block truncate">
                                 {new Date(vacation.date + 'T00:00:00').toLocaleDateString(i18n.language, { weekday: 'short', day: 'numeric', month: 'short' })}
                             </span>
-                                
                             {(vacation.status === VacationStatus.SELECTED || vacation.status === VacationStatus.REJECTED || vacation.status === VacationStatus.PENDING_APPROVAL) && (
                                 <button
                                     onClick={() => onDeleteVacation(vacation.date)}
-                                    className="p-0.5 hover:bg-red-200 rounded-full transition-colors flex items-center justify-center ml-1.5"
+                                    className="ml-2 p-0.5 hover:bg-red-200 rounded-full transition-colors flex items-center justify-center"
                                     aria-label={t('vacationPage.deleteAction')}
                                 >
                                     <TrashIcon className="w-3 h-3 text-red-600" />

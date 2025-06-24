@@ -1,4 +1,3 @@
-
 import React, {useState, useEffect, useMemo, useCallback} from 'react';
 import { useTranslation } from 'react-i18next';
 import { VacationStatus, VacationDay, VacationConfigPageProps, UserGlobalSettings } from '../types';
@@ -72,13 +71,25 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
       });
   }, [globalHolidays, year, month]);
   
+  // Calcule o tauxPercent dinamicamente
+  const STANDARD_FULL_TIME_HOURS_WEEKLY = 40; // ou o valor padrão do seu sistema
+  const contractedWeeklyHours = Object.values(weeklyContract).reduce((acc, day) => acc + (day.morning || 0) + (day.afternoon || 0), 0);
+  const tauxPercent = STANDARD_FULL_TIME_HOURS_WEEKLY > 0 ? Math.round((contractedWeeklyHours / STANDARD_FULL_TIME_HOURS_WEEKLY) * 100) : 0;
+
+  // Crie um userGlobalSettings dinâmico
+  const userGlobalSettingsDinamic = {
+    ...globalUserSettings,
+    tauxPercent,
+    annualVacationDays: globalUserSettings.annualVacationDays || 20 // valor padrão se não houver
+  };
+
   const {
     remainingAnnualVacationDays,
     effectiveAnnualAllowance,
     monthSummary,
   } = useVacationCalculations({
     allYearVacations,
-    userGlobalSettings: globalUserSettings,
+    userGlobalSettings: userGlobalSettingsDinamic,
     weeklyContract,
     globalHolidays,
     currentMonthUserVacations,
@@ -162,32 +173,36 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
        <SectionCard
           title={t('vacationPage.title')}
           titleIcon={PageIcon}
           titleIconProps={{ className: "w-7 h-7 text-indigo-600" }}
           titleTextClassName="text-2xl font-semibold text-slate-800"
-          headerAreaClassName="p-0 pb-6 border-none"
-          contentAreaClassName="p-0"
+          headerAreaClassName="p-6 pb-4 border-none"
+          contentAreaClassName="p-6"
+          cardClassName="bg-white rounded-xl shadow-md"
        >
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 space-y-6">
                 <SectionCard 
-                  title={displayDate.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' })}
-                  titleTextClassName="text-xl font-semibold text-indigo-700 whitespace-nowrap"
-                  headerActions={
-                    <>
+                  title={
+                    <div className="flex items-center justify-center gap-4 w-full">
                       <button onClick={() => changeDisplayedMonth(-1)} className="p-2 hover:bg-slate-100 rounded-md text-slate-600" aria-label={t('monthYearSelector.selectMonth')}>
                           <ArrowSmallLeftIcon className="w-6 h-6" />
                       </button>
+                      <span className="text-xl font-semibold text-indigo-700 whitespace-nowrap">
+                        {displayDate.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' })}
+                      </span>
                       <button onClick={() => changeDisplayedMonth(1)} className="p-2 hover:bg-slate-100 rounded-md text-slate-600" aria-label={t('monthYearSelector.selectMonth')}>
                           <ArrowSmallRightIcon className="w-6 h-6" />
                       </button>
-                    </>
+                    </div>
                   }
-                  headerAreaClassName="p-4 sm:p-6 mb-0"
-                  contentAreaClassName="p-4 sm:p-6 pt-0"
+                  titleTextClassName=""
+                  headerAreaClassName="p-0 mb-0 border-none"
+                  contentAreaClassName="p-0"
+                  cardClassName="bg-slate-50 rounded-lg shadow-none border border-slate-100"
                 >
                   <CalendarGrid
                     year={year}
@@ -212,14 +227,22 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
           </div>
         </SectionCard>
 
-        <MonthlyVacationList
-            currentMonthUserVacations={currentMonthUserVacations}
-            onDeleteVacation={handleDeleteVacationFromList}
-            onSubmitForApproval={handleSubmitForApproval}
-            onPrintRequest={handlePrintRequestInternal}
-            displayDate={displayDate}
-            user={currentUser}
-        />
+        <SectionCard
+          title={t('vacationPage.holidaysTitle', { month: displayDate.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' }) })}
+          titleTextClassName="text-lg font-semibold text-slate-700"
+          headerAreaClassName="p-4 border-b border-slate-200"
+          contentAreaClassName="p-4"
+          cardClassName="bg-white rounded-xl shadow-md"
+        >
+          <MonthlyVacationList
+              currentMonthUserVacations={currentMonthUserVacations}
+              onDeleteVacation={handleDeleteVacationFromList}
+              onSubmitForApproval={handleSubmitForApproval}
+              onPrintRequest={handlePrintRequestInternal}
+              displayDate={displayDate}
+              user={currentUser}
+          />
+        </SectionCard>
     </div>
   );
 };

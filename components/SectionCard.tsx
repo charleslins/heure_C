@@ -2,7 +2,7 @@ import React from 'react';
 import { IconProps } from './icons';
 
 interface SectionCardProps {
-  title?: string;
+  title?: React.ReactNode;
   titleIcon?: React.ComponentType<IconProps>;
   titleIconProps?: IconProps;
   headerActions?: React.ReactNode;
@@ -19,9 +19,9 @@ const SectionCard: React.FC<SectionCardProps> = ({
   titleIconProps,
   headerActions,
   children,
-  cardClassName = "bg-white rounded-xl shadow-lg",
-  headerAreaClassName = "p-4 sm:p-6 border-b border-slate-200",
-  contentAreaClassName = "p-4 sm:p-6",
+  cardClassName = "bg-white rounded-xl shadow-md",
+  headerAreaClassName = "p-4 sm:p-5 border-b border-slate-200",
+  contentAreaClassName = "p-4 sm:p-5",
   titleTextClassName = "text-lg md:text-xl font-semibold text-slate-800",
 }) => {
   const hasHeader = title || headerActions;

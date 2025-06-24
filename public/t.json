@@ -1,0 +1,71 @@
+{
+    "pageTitle": "Gestion de Vacances",
+    "calendar": {
+      "month": "juillet",
+      "year": 2025,
+      "daysOfWeek": ["LUN", "MAR", "MER", "JEU", "VEN", "SAM", "DIM"],
+      "days": [
+        { "date": 1, "status": "workday", "hours": "8.00h" },
+        { "date": 2, "status": "workday", "hours": "8.00h" },
+        { "date": 3, "status": "workday", "hours": "8.00h" },
+        { "date": 4, "status": "workday", "hours": "8.00h" },
+        { "date": 5, "status": "weekend", "hours": null },
+        { "date": 6, "status": "weekend", "hours": null },
+        { "date": 7, "status": "workday", "hours": "8.00h" },
+        { "date": 8, "status": "workday", "hours": "8.00h" },
+        { "date": 9, "status": "workday", "hours": "8.00h" },
+        { "date": 10, "status": "workday", "hours": "8.00h" },
+        { "date": 11, "status": "workday", "hours": "8.00h" },
+        { "date": 12, "status": "weekend", "hours": null },
+        { "date": 13, "status": "weekend", "hours": null },
+        { "date": 14, "status": "workday", "hours": "8.00h" },
+        { "date": 15, "status": "workday", "hours": "8.00h" },
+        { "date": 16, "status": "workday", "hours": "8.00h" },
+        { "date": 17, "status": "workday", "hours": "8.00h" },
+        { "date": 18, "status": "workday", "hours": "8.00h" },
+        { "date": 19, "status": "weekend", "hours": null },
+        { "date": 20, "status": "weekend", "hours": null },
+        { "date": 21, "status": "workday", "hours": "8.00h" },
+        { "date": 22, "status": "workday", "hours": "8.00h" },
+        { "date": 23, "status": "workday", "hours": "8.00h" },
+        { "date": 24, "status": "workday", "hours": "8.00h" },
+        { "date": 25, "status": "workday", "hours": "8.00h" },
+        { "date": 26, "status": "weekend", "hours": null },
+        { "date": 27, "status": "weekend", "hours": null },
+        { "date": 28, "status": "workday", "hours": "8.00h" },
+        { "date": 29, "status": "workday", "hours": "8.00h" },
+        { "date": 30, "status": "workday", "hours": "8.00h" },
+        { "date": 31, "status": "workday", "hours": "8.00h" },
+        { "date": null, "status": "empty", "hours": null },
+        { "date": null, "status": "empty", "hours": null },
+        { "date": null, "status": "empty", "hours": null },
+        { "date": null, "status": "empty", "hours": null }
+      ]
+    },
+    "monthlySummary": {
+      "title": "Résumé du mois",
+      "stats": [
+        { "label": "Jours ouvrables :", "value": "23 jours", "theme": "light-blue" },
+        { "label": "Jours travaillés effectifs:", "value": "22 jours", "theme": "peach" },
+        { "label": "Jours de vacances (droit):", "value": "12 jours", "theme": "purple" },
+        { "label": "Jours de vacances (calculés):", "value": "6 jours", "theme": "light-purple" },
+        { "label": "Jours fériés:", "value": "1 jour", "theme": "yellow" },
+        { "label": "Jours travaillés effectifs:", "value": "16 jours", "theme": "pink" }
+      ]
+    },
+    "publicHolidays": {
+      "title": "Jours Fériés en juillet 2025",
+      "holidays": [
+        { "name": "Natal", "date": "25 déc" }
+      ]
+    },
+    "myVacations": {
+      "title": "Mes Vacances (mois current)",
+      "options": [
+        { "id": "option1", "label": "Option 1" },
+        { "id": "option2", "label": "Option 2" },
+        { "id": "option3", "label": "Option 3" }
+      ]
+    }
+  }
+  

@@ -1,10 +1,10 @@
-
-
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { AlertTriangleIcon, BrandIllustrationIcon, AtSymbolIcon, LockClosedIcon, UserIcon } from './icons';
+import { AlertTriangleIcon, AtSymbolIcon, LockClosedIcon, UserIcon } from './icons';
 import InputWithIcon from './InputWithIcon'; // Import the new component
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 interface LoginPageProps {
   supabaseClient: SupabaseClient;
@@ -84,7 +84,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient }) => {
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       {/* Left Branding Column */}
       <div className="hidden md:flex flex-col items-center justify-center bg-indigo-600 p-12 text-white">
-        <BrandIllustrationIcon className="w-48 h-48 mb-8 text-indigo-200" />
+        <FontAwesomeIcon icon={faClock} className="w-48 h-48 mb-8 text-indigo-200" />
         <h1 className="text-4xl font-bold mb-4 text-center">{t('appName')}</h1>
         <p className="text-lg text-indigo-100 text-center max-w-sm">
           {t('loginPage.welcomeSubtitle', "Manage your work hours efficiently and stay organized.")}
@@ -96,7 +96,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient }) => {
         <div className="w-full max-w-md">
             {/* Mobile Branding (Simplified) */}
             <div className="md:hidden text-center mb-8">
-                <BrandIllustrationIcon className="w-24 h-24 mx-auto mb-4 text-indigo-600" />
+                <FontAwesomeIcon icon={faClock} className="w-24 h-24 mx-auto mb-4 text-indigo-600" />
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900">
                 {isRegisterMode ? t('loginPage.registerTitle') : t('loginPage.title')}
                 </h1>

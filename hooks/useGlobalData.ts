@@ -1,4 +1,4 @@
-
+console.log("useGlobalData executado");
 import { useState, useEffect, useCallback } from 'react';
 import { UserGlobalSettings, Holiday, User } from '../types';
 import { INITIAL_USER_GLOBAL_SETTINGS, MOCK_GLOBAL_HOLIDAYS } from '../constants';

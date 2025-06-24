@@ -1,4 +1,4 @@
-
+console.log("useCurrentUserData executado");
 import { useState, useEffect, useCallback } from 'react';
 import {
   User,

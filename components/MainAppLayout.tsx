@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { User, Page, DashboardPageProps } from '../types'; // Removed unused types
@@ -10,12 +9,12 @@ import HolidayManagementPage from './HolidayManagementPage';
 import UserProfilePage from './UserProfilePage';
 import AccessDeniedMessage from './AccessDeniedMessage';
 import { useAuthContext } from '../contexts/AuthContext';
-import { useGlobalDataContext }
-from '../contexts/GlobalDataContext';
-import { useCurrentUserDataContext }
-from '../contexts/CurrentUserDataContext';
+import { useGlobalDataContext } from '../contexts/GlobalDataContext';
+import { useCurrentUserDataContext } from '../contexts/CurrentUserDataContext';
 import LoadingScreen from './LoadingScreen';
-
+import VacationPagePreview from './VacationPagePreview';
+import VacationJsonLayout from './VacationJsonLayout';
+import ModernVacationCalendar from './ModernVacationCalendar';
 
 interface MainAppLayoutProps {
   user: User; // User is still passed directly for AppHeader and page access checks
@@ -41,8 +40,9 @@ const MainAppLayout: React.FC<MainAppLayoutProps> = ({
   const { 
     weeklyContract, dailyLogs, summaryData, vacations, 
     setWeeklyContract, handleLogEntryChange, setVacations, 
-    updateSpecificUserVacations, loadUserYearVacations, isLoadingCurrentUserData
-  } = useCurrentUserDataContext();
+    updateSpecificUserVacations, loadUserYearVacations, isLoadingCurrentUserData } = useCurrentUserDataContext();
+  const [showPreview, setShowPreview] = React.useState(false);
+  const [showJsonLayout, setShowJsonLayout] = React.useState(false);
 
   // Show loading screen if either global or current user data is still loading
   if (isLoadingGlobalData || isLoadingCurrentUserData) {
@@ -56,8 +56,11 @@ const MainAppLayout: React.FC<MainAppLayoutProps> = ({
         // Pass currentUser directly for role checks if needed, or it can get from AuthContext
         return <DashboardPage currentUser={user} />;
       case 'vacations':
-        // VacationConfigPage will use contexts
-        return <VacationConfigPage currentDate={currentDate} onDateChange={onDateChange} />;
+        console.log("--- DEBUGGING CALENDAR DATA ---");
+        console.log("Display Date:", currentDate.toISOString());
+        console.log("Vacations from context:", vacations);
+        console.log("Global Holidays from context:", globalHolidays);
+        return <ModernVacationCalendar />;
       case 'admin_dashboard':
         if (user.role === 'admin') {
             // AdminDashboardPage will use contexts. Pass currentUser for its direct use.

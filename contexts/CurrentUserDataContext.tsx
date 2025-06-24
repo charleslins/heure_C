@@ -1,3 +1,4 @@
+console.log("CurrentUserDataContext montado")
 import React, { createContext, useContext } from 'react';
 import {
   WeeklyContractHours,

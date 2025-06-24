@@ -1,4 +1,5 @@
-import React, { createContext, useContext } from 'react';
+console.log("GlobalDataContext montado");
+import React, { createContext, useContext, useCallback } from 'react';
 import { UserGlobalSettings, Holiday, User } from '../types';
 import { useGlobalData } from '../hooks/useGlobalData'; // Assuming useGlobalData is in hooks folder
 

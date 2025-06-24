@@ -1,3 +1,4 @@
+console.log("AuthContext montado");
 import React, { createContext, useContext } from 'react';
 import { User } from '../types';
 import { useAuth } from '../hooks/useAuth'; // Assuming useAuth is in hooks folder

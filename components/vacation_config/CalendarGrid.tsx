@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -90,9 +89,9 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
       <div className="grid grid-cols-7 gap-px text-center text-xs sm:text-sm font-medium text-slate-600 bg-slate-200 rounded-t-md">
         {dayHeaders.map(header => <div key={header} className="py-1.5 px-1">{header}</div>)}
       </div>
-      <div className="grid grid-cols-7 gap-px bg-slate-200 border border-slate-200 rounded-b-md">
+      <div className="grid grid-cols-7 gap-2 bg-white rounded-2xl p-2">
         {Array.from({ length: daysOffset }).map((_, i) => (
-          <div key={`empty-start-${i}`} className="bg-slate-50 h-[68px] sm:h-[76px]"></div>
+          <div key={`empty-start-${i}`} className="bg-slate-50 h-16 w-16 sm:h-20 sm:w-20 p-2 rounded-lg"></div>
         ))}
         {daysInCalendarMonth.map(dayDate => {
           const dateStr = formatDateToYYYYMMDD(dayDate);
@@ -105,6 +104,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
           const logEntryForDay = dailyLogs.find(log => formatDateToYYYYMMDD(log.date) === dateStr);
           const isRecuperationDay = logEntryForDay && (logEntryForDay.morning.type === EntryType.RECUPERATION || logEntryForDay.afternoon.type === EntryType.RECUPERATION);
           const isSickDay = logEntryForDay && (logEntryForDay.morning.type === EntryType.MALADIE || logEntryForDay.afternoon.type === EntryType.MALADIE);
+          const isWeekend = dayDate.getDay() === 0 || dayDate.getDay() === 6;
 
           let cellBgClass = 'bg-white';
           let isActionable = false;
@@ -154,8 +154,8 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
           }
 
           const cellContent = (
-            <div className="flex flex-col items-center justify-center h-full p-0.5 sm:p-1">
-              <span className={dayNumberStyle}>{dayDate.getDate()}</span>
+            <div className="flex flex-col items-center justify-center h-full p-2 sm:p-2.5">
+              <span className="text-lg sm:text-xl font-bold text-slate-800">{dayDate.getDate()}</span>
               <span className={dayAbbrStyle}>{dayDate.toLocaleDateString(i18n.language, { weekday: 'short' }).substring(0,3)}</span>
               {indicatorElement}
             </div>
@@ -164,11 +164,10 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
           return (
             <div
               key={dateStr}
-              className={`relative flex flex-col items-stretch justify-start text-center h-[68px] sm:h-[76px]
-                          transition-colors duration-150 ease-in-out rounded-sm
-                          ${cellBgClass}
-                          ${isActionable ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:z-10' : 'cursor-not-allowed'}
-                        `}
+              className={`flex flex-col items-center justify-center h-16 w-16 sm:h-20 sm:w-20 p-2 rounded-lg
+                ${isGlobalHoliday ? 'bg-yellow-50' : userVacation ? 'bg-indigo-100 border border-indigo-400' : isWeekend ? 'bg-slate-100' : 'bg-slate-50'}
+                ${isActionable ? 'cursor-pointer hover:ring-2 hover:ring-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:z-10' : 'cursor-not-allowed'}
+              `}
               onClick={isActionable ? () => handleDayClickInternal(dateStr) : undefined}
               onKeyDown={isActionable ? (e) => (e.key === 'Enter' || e.key === ' ') && handleDayClickInternal(dateStr) : undefined}
               role={isActionable ? "button" : undefined}
@@ -181,7 +180,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
           );
         })}
         {Array.from({ length: (7 - (daysInCalendarMonth.length + daysOffset) % 7) % 7 }).map((_, i) => (
-          <div key={`empty-end-${i}`} className="bg-slate-50 h-[68px] sm:h-[76px]"></div>
+          <div key={`empty-end-${i}`} className="bg-slate-50 h-16 w-16 sm:h-20 sm:w-20 p-2 rounded-lg"></div>
         ))}
       </div>
     </>
