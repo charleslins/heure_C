@@ -56,11 +56,7 @@ const MainAppLayout: React.FC<MainAppLayoutProps> = ({
         // Pass currentUser directly for role checks if needed, or it can get from AuthContext
         return <DashboardPage currentUser={user} />;
       case 'vacations':
-        console.log("--- DEBUGGING CALENDAR DATA ---");
-        console.log("Display Date:", currentDate.toISOString());
-        console.log("Vacations from context:", vacations);
-        console.log("Global Holidays from context:", globalHolidays);
-        return <ModernVacationCalendar />;
+        return <VacationConfigPage currentDate={currentDate} onDateChange={onDateChange} />;
       case 'admin_dashboard':
         if (user.role === 'admin') {
             // AdminDashboardPage will use contexts. Pass currentUser for its direct use.

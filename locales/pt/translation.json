@@ -1,4 +1,3 @@
-
 {
   "appName": "Gestor de Horas",
   "appTitle": "Gestor de Horas DEV",
@@ -75,6 +74,14 @@
   },
   "vacationPage": {
     "title": "Gestão de Férias",
+    "monthlySummaryTitle": "Resumo do mês",
+    "joursOuvrables": "Dias úteis",
+    "joursFeriesComptabilises": "Feriados contabilizados",
+    "joursDeCalendrierEnVacances": "Dias de férias no calendário",
+    "impactVacancesHeures": "Horas de férias",
+    "joursDeVacancesCalcules": "Dias de férias calculados",
+    "joursTravaillesEffectifs": "Dias trabalhados efetivos",
+    "holidaysTitle": "Feriados",
     "calendarTitle": "Calendário - Selecione seus dias de férias",
     "monthSummaryTitle": "Resumo do Mês",
     "holidaysInMonthTitle": "Feriados em {{month}} de {{year}}",

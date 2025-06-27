@@ -26,10 +26,10 @@ const PlaneIcon = (props: any) => (
 const statusColors: Record<string, string> = {
   workday: 'bg-white text-indigo-700 border border-indigo-200',
   weekend: 'bg-slate-100 text-slate-300',
-  selected: 'bg-indigo-100 text-indigo-700 border border-indigo-400',
-  pending: 'bg-yellow-100 text-yellow-700 border border-yellow-400',
-  approved: 'bg-green-100 text-green-700 border border-green-400',
-  rejected: 'bg-red-100 text-red-700 border border-red-400',
+  [VacationStatus.SELECTED]: 'bg-indigo-100 text-indigo-700 border border-indigo-400',
+  [VacationStatus.PENDING_APPROVAL]: 'bg-yellow-100 text-yellow-700 border border-yellow-400',
+  [VacationStatus.APPROVED]: 'bg-green-100 text-green-700 border border-green-400',
+  [VacationStatus.REJECTED]: 'bg-red-100 text-red-700 border border-red-400',
   empty: 'bg-transparent',
 };
 const summaryThemes = {
@@ -118,14 +118,14 @@ export default function VacationJsonLayout() {
     let newVacations = [...vacations];
     if (existingVacationIndex > -1) {
       const existingVacation = vacations[existingVacationIndex];
-      if (existingVacation.status === 'SELECTED' || existingVacation.status === 'PENDING_APPROVAL' || existingVacation.status === 'REJECTED') {
+      if (existingVacation.status === VacationStatus.SELECTED || existingVacation.status === VacationStatus.PENDING_APPROVAL || existingVacation.status === VacationStatus.REJECTED) {
         newVacations.splice(existingVacationIndex, 1);
-      } else if (existingVacation.status === 'APPROVED') {
+      } else if (existingVacation.status === VacationStatus.APPROVED) {
         addNotification('Não é possível modificar um dia já aprovado.', 'info');
         return;
       }
     } else {
-      newVacations.push({ date: dateStr, status: 'SELECTED' });
+      newVacations.push({ date: dateStr, status: VacationStatus.SELECTED });
     }
     setVacations(newVacations);
   }, [vacations, setVacations, addNotification]);
@@ -133,13 +133,13 @@ export default function VacationJsonLayout() {
   const handleDeleteVacationFromList = useCallback((dateStr: string) => {
     const existingVacation = vacations.find(v => v.date === dateStr);
     if (existingVacation && (
-      existingVacation.status === 'SELECTED' ||
-      existingVacation.status === 'REJECTED' ||
-      existingVacation.status === 'PENDING_APPROVAL'
+      existingVacation.status === VacationStatus.SELECTED ||
+      existingVacation.status === VacationStatus.REJECTED ||
+      existingVacation.status === VacationStatus.PENDING_APPROVAL
     )) {
       setVacations(vacations.filter(v => v.date !== dateStr));
       addNotification('Férias removidas com sucesso.', 'success');
-    } else if (existingVacation && existingVacation.status === 'APPROVED') {
+    } else if (existingVacation && existingVacation.status === VacationStatus.APPROVED) {
       addNotification('Não é possível remover um dia já aprovado.', 'warning');
     }
   }, [vacations, setVacations, addNotification]);
@@ -147,8 +147,8 @@ export default function VacationJsonLayout() {
   const handleSubmitForApproval = useCallback(() => {
     const updatedVacations = vacations.map(v => {
       const vDate = new Date(v.date + 'T00:00:00');
-      if (v.status === 'SELECTED' && vDate.getFullYear() === year && vDate.getMonth() === month) {
-        return { ...v, status: 'PENDING_APPROVAL' };
+      if (v.status === VacationStatus.SELECTED && vDate.getFullYear() === year && vDate.getMonth() === month) {
+        return { ...v, status: VacationStatus.PENDING_APPROVAL };
       }
       return v;
     });
@@ -159,7 +159,7 @@ export default function VacationJsonLayout() {
   const handlePrintRequestInternal = useCallback(() => {
     if (!currentUser) return;
     const printableVacations = currentMonthUserVacations
-      .filter(v => v.status === 'PENDING_APPROVAL' || v.status === 'APPROVED')
+      .filter(v => v.status === VacationStatus.PENDING_APPROVAL || v.status === VacationStatus.APPROVED)
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     if (printableVacations.length === 0) {
       addNotification('Nenhuma férias para imprimir.', 'info');
@@ -178,23 +178,30 @@ export default function VacationJsonLayout() {
     setDisplayDate(newDisplayMonth);
   };
 
+  // Internacionalização dos dias da semana
+  const daysOfWeek = useMemo(() => {
+    const baseDate = new Date(2023, 0, 2); // Segunda-feira
+    return Array.from({ length: 7 }).map((_, i) =>
+      baseDate.toLocaleDateString(i18n.language, { weekday: 'short' }).toUpperCase()
+    );
+  }, [i18n.language]);
+
   if (isLoadingGlobalData || isLoadingCurrentUserData || !currentUser) {
     return <LoadingScreen message={t('common.loadingData')} />;
   }
 
   // Geração dos dias do calendário (com células vazias para alinhamento)
   const firstDayOfWeek = new Date(year, month, 1).getDay();
-  const daysOfWeek = ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'];
   let calendarDays: any[] = [];
   let offset = (firstDayOfWeek + 6) % 7; // Ajuste para começar em segunda-feira
   for (let i = 0; i < offset; i++) {
     calendarDays.push({});
   }
-  for (let d = 1; d <= daysInCalendarMonth; d++) {
+  for (let d = 1; d <= daysInCalendarMonth.length; d++) {
     const dateStr = formatDateToYYYYMMDD(new Date(year, month, d));
     const vacation = currentMonthUserVacations.find(v => v.date === dateStr);
     const holiday = currentMonthGlobalHolidays.find(h => h.date === dateStr);
-    let status = 'workday';
+    let status: string | VacationStatus = 'workday';
     let label = '';
     if (holiday) {
       status = 'weekend';
@@ -332,13 +339,13 @@ export default function VacationJsonLayout() {
               currentMonthUserVacations.map((opt: any, idx: number) => (
                 <span
                   key={opt.date}
-                  className={`px-4 py-1 rounded-full text-xs font-semibold shadow-sm border border-indigo-200 ${opt.status === 'SELECTED' ? 'bg-indigo-200 text-indigo-800' : opt.status === 'PENDING_APPROVAL' ? 'bg-yellow-100 text-yellow-700' : opt.status === 'APPROVED' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}
+                  className={`px-4 py-1 rounded-full text-xs font-semibold shadow-sm border border-indigo-200 ${opt.status === VacationStatus.SELECTED ? 'bg-indigo-200 text-indigo-800' : opt.status === VacationStatus.PENDING_APPROVAL ? 'bg-yellow-100 text-yellow-700' : opt.status === VacationStatus.APPROVED ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}
                 >
                   {new Date(opt.date + 'T00:00:00').toLocaleDateString(i18n.language, { day: '2-digit', month: 'short' })}
                   {opt.status && (
                     <span className="ml-2">{t(`vacationStatuses.${opt.status}`)}</span>
                   )}
-                  {(opt.status === 'SELECTED' || opt.status === 'REJECTED' || opt.status === 'PENDING_APPROVAL') && (
+                  {(opt.status === VacationStatus.SELECTED || opt.status === VacationStatus.REJECTED || opt.status === VacationStatus.PENDING_APPROVAL) && (
                     <button
                       onClick={() => handleDeleteVacationFromList(opt.date)}
                       className="ml-2 p-0.5 hover:bg-red-200 rounded-full transition-colors text-xs"
