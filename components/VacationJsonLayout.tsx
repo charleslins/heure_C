@@ -207,6 +207,7 @@ export default function VacationJsonLayout() {
     const holiday = currentMonthGlobalHolidays.find(h => h.date === dateStr);
     const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
     const contractForDay = weeklyContract[dayName];
+    const totalHours = ((contractForDay?.morning || 0) + (contractForDay?.afternoon || 0)).toFixed(2);
     let status: string | VacationStatus = 'workday';
     let label = '';
     let isWorkday = contractForDay && (contractForDay.morning > 0 || contractForDay.afternoon > 0);
@@ -221,7 +222,7 @@ export default function VacationJsonLayout() {
       date: d,
       dateStr,
       status,
-      hours: '8.00h', // Pode ser dinâmico se necessário
+      hours: `${totalHours}h`,
       label,
       isWorkday
     });

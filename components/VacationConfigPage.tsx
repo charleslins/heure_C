@@ -197,23 +197,40 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
     const holiday = currentMonthGlobalHolidays.find(h => h.date === dateStr);
     const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
     const contractForDay = weeklyContract[dayName];
+    const totalHours = ((contractForDay?.morning || 0) + (contractForDay?.afternoon || 0)).toFixed(2);
     const isWorkday = contractForDay && (contractForDay.morning > 0 || contractForDay.afternoon > 0);
-    let status: string | VacationStatus = 'workday';
-    let label = '';
+    const logEntry = dailyLogs.find(log => formatDateToYYYYMMDD(log.date) === dateStr);
+    let tag = '';
+    let isBlocked = false;
+    let bgClass = 'bg-white text-indigo-700';
+
     if (holiday) {
-      status = 'weekend';
-      label = t('vacationPage.holidayLabel');
-    } else if (vacation) {
-      status = vacation.status;
-      label = t(`vacationStatuses.${vacation.status}`);
+      tag = t('vacationPage.holidayLabel');
+      isBlocked = true;
+      bgClass = 'bg-yellow-100 text-yellow-700';
+    } else if (logEntry && (logEntry.morning.type === 'Récupération' || logEntry.afternoon.type === 'Récupération')) {
+      tag = t('vacationPage.recuperationLabel');
+      isBlocked = true;
+      bgClass = 'bg-green-100 text-green-700';
+    } else if (logEntry && (logEntry.morning.type === 'Maladie' || logEntry.afternoon.type === 'Maladie')) {
+      tag = t('vacationPage.sickLeaveLabel');
+      isBlocked = true;
+      bgClass = 'bg-red-100 text-red-700';
+    } else if (!isWorkday) {
+      isBlocked = true;
+      bgClass = 'bg-slate-100 text-slate-300';
     }
+
     calendarDays.push({
       date: d,
       dateStr,
-      status,
-      hours: '8.00h',
-      label,
-      isWorkday
+      status: vacation ? vacation.status : 'workday',
+      hours: `${totalHours}h`,
+      label: tag,
+      isWorkday,
+      isBlocked,
+      tag,
+      bgClass,
     });
   }
   while (calendarDays.length % 7 !== 0) {
@@ -254,32 +271,38 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
               {/* Dias do mês */}
               <div className="grid grid-cols-7 gap-2">
                 {calendarDays.map((day, i) => {
-                  const col = i % 7;
-                  const isWeekend = col === 5 || col === 6;
                   if (!day.date) {
                     return <div key={i} className="h-16 w-18" />;
                   }
-                  if (isWeekend || !day.isWorkday) {
+                  if (day.isBlocked) {
                     return (
                       <div
                         key={i}
-                        className="flex flex-col items-center justify-center rounded-lg bg-slate-100 text-slate-400 h-16 w-18"
+                        className={`flex flex-col items-center justify-center rounded-lg ${day.bgClass} h-16 w-18`}
                       >
                         <span className="text-lg font-bold">{day.date}</span>
                         <span className="text-xs">{day.hours}</span>
-                        {day.label && <span className="text-xxs">{day.label}</span>}
+                        {day.tag && (
+                          <span className={`text-xxs font-bold px-2 py-0.5 rounded`}>
+                            {day.tag}
+                          </span>
+                        )}
                       </div>
                     );
                   }
                   return (
                     <button
                       key={i}
-                      className={`flex flex-col items-center justify-center rounded-lg border ${statusColors[day.status] || 'border-indigo-100 bg-white text-indigo-700'} h-16 w-18 focus:outline-none`}
+                      className={`flex flex-col items-center justify-center rounded-lg border ${day.bgClass} h-16 w-18 focus:outline-none`}
                       onClick={() => handleDayClick(day.dateStr)}
                     >
                       <span className="text-lg font-bold">{day.date}</span>
                       <span className="text-xs text-indigo-400">{day.hours}</span>
-                      {day.label && <span className="text-xxs text-indigo-600">{day.label}</span>}
+                      {day.tag && (
+                        <span className={`text-xxs font-bold px-2 py-0.5 rounded`}>
+                          {day.tag}
+                        </span>
+                      )}
                     </button>
                   );
                 })}
