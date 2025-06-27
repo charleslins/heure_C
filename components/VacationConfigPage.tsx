@@ -203,24 +203,37 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
     let tag = '';
     let isBlocked = false;
     let bgClass = 'bg-white text-indigo-700';
+    let hoursTextClass = 'text-indigo-400'; // padrão
 
+    // Prioridade: feriado > recup > atest > não trabalhado > selecionado > pendente
     if (holiday) {
       tag = t('vacationPage.holidayLabel');
       isBlocked = true;
       bgClass = 'bg-yellow-100 text-yellow-700';
+      hoursTextClass = 'text-yellow-300';
     } else if (logEntry && (logEntry.morning.type === 'Récupération' || logEntry.afternoon.type === 'Récupération')) {
       tag = t('vacationPage.recuperationLabel');
       isBlocked = true;
       bgClass = 'bg-green-100 text-green-700';
+      hoursTextClass = 'text-green-300';
     } else if (logEntry && (logEntry.morning.type === 'Maladie' || logEntry.afternoon.type === 'Maladie')) {
       tag = t('vacationPage.sickLeaveLabel');
       isBlocked = true;
       bgClass = 'bg-red-100 text-red-700';
+      hoursTextClass = 'text-red-300';
     } else if (!isWorkday) {
       isBlocked = true;
       bgClass = 'bg-slate-100 text-slate-300';
+      hoursTextClass = 'text-slate-300';
+    } else if (vacation && vacation.status === VacationStatus.SELECTED) {
+      tag = t('vacationStatuses.Selecionado');
+      bgClass = 'bg-indigo-100 text-indigo-700 border-2 border-indigo-400';
+      hoursTextClass = 'text-indigo-300';
+    } else if (vacation && vacation.status === VacationStatus.PENDING_APPROVAL) {
+      tag = t('vacationStatuses.Pendente');
+      bgClass = 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400';
+      hoursTextClass = 'text-yellow-300';
     }
-
     calendarDays.push({
       date: d,
       dateStr,
@@ -231,6 +244,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
       isBlocked,
       tag,
       bgClass,
+      hoursTextClass,
     });
   }
   while (calendarDays.length % 7 !== 0) {
@@ -281,11 +295,9 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
                         className={`flex flex-col items-center justify-center rounded-lg ${day.bgClass} h-16 w-18`}
                       >
                         <span className="text-lg font-bold">{day.date}</span>
-                        <span className="text-xs">{day.hours}</span>
+                        <span className="text-xs font-semibold">{day.hours}</span>
                         {day.tag && (
-                          <span className={`text-xxs font-bold px-2 py-0.5 rounded`}>
-                            {day.tag}
-                          </span>
+                          <span className="text-xxs font-bold px-2 py-0.5 rounded">{day.tag}</span>
                         )}
                       </div>
                     );
@@ -297,11 +309,9 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
                       onClick={() => handleDayClick(day.dateStr)}
                     >
                       <span className="text-lg font-bold">{day.date}</span>
-                      <span className="text-xs text-indigo-400">{day.hours}</span>
+                      <span className="text-xs font-semibold">{day.hours}</span>
                       {day.tag && (
-                        <span className={`text-xxs font-bold px-2 py-0.5 rounded`}>
-                          {day.tag}
-                        </span>
+                        <span className="text-xxs font-bold px-2 py-0.5 rounded">{day.tag}</span>
                       )}
                     </button>
                   );
@@ -357,7 +367,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
               <ul className="space-y-1">
                 {currentMonthGlobalHolidays.map((h: any, i: number) => (
                   <li key={i} className="flex items-center gap-2 text-sm">
-                    <span className="inline-block w-2 h-2 bg-yellow-400 rounded-full"></span>
+                    <span className="inline-block w-2 h-2 bg-yellow-200 rounded-full"></span>
                     <span>{h.name}</span>
                     <span className="text-slate-400">{new Date(h.date + 'T00:00:00').toLocaleDateString(lang, { day: '2-digit', month: 'short' })}</span>
                   </li>
