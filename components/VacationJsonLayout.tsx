@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../contexts/SimpleI18nContext';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useGlobalDataContext } from '../contexts/GlobalDataContext';
 import { useCurrentUserDataContext } from '../contexts/CurrentUserDataContext';
@@ -11,6 +11,7 @@ import { ArrowSmallLeftIcon, ArrowSmallRightIcon, CalendarDaysIcon } from './ico
 import LoadingScreen from './LoadingScreen';
 import { VacationStatus } from '../types';
 import VacationConfigPage from './VacationConfigPage';
+import { translations } from "../i18nSimple";
 
 // Ícones extras para os títulos
 const SummaryIcon = (props: any) => (
@@ -45,7 +46,7 @@ const CARD_SIZE = "h-16 w-18"; // Altere aqui para mudar o tamanho dos cards
 const CARD_FONT = "text-base"; // Altere aqui para mudar o tamanho da fonte
 
 export default function VacationJsonLayout() {
-  const { t, i18n } = useTranslation();
+  const { t, lang, setLang } = useTranslation();
   const { addNotification } = useNotificationContext();
   const { currentUser } = useAuthContext();
   const { globalUserSettings, globalHolidays, isLoadingGlobalData } = useGlobalDataContext();
@@ -168,23 +169,25 @@ export default function VacationJsonLayout() {
     printVacationRequest(
       currentUser,
       printableVacations,
-      displayDate.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' }),
-      { t, language: i18n.language }
+      displayDate.toLocaleDateString(lang, { month: 'long', year: 'numeric' }),
+      { t, language: lang }
     );
-  }, [currentUser, currentMonthUserVacations, displayDate, i18n, t, addNotification]);
+  }, [currentUser, currentMonthUserVacations, displayDate, lang, t, addNotification]);
 
   const changeDisplayedMonth = (increment: number) => {
     const newDisplayMonth = new Date(displayDate.getFullYear(), displayDate.getMonth() + increment, 1);
     setDisplayDate(newDisplayMonth);
   };
 
-  // Internacionalização dos dias da semana
+  // Internacionalização dos dias da semana (segunda a domingo)
   const daysOfWeek = useMemo(() => {
     const baseDate = new Date(2023, 0, 2); // Segunda-feira
-    return Array.from({ length: 7 }).map((_, i) =>
-      baseDate.toLocaleDateString(i18n.language, { weekday: 'short' }).toUpperCase()
-    );
-  }, [i18n.language]);
+    return Array.from({ length: 7 }).map((_, i) => {
+      const day = new Date(baseDate);
+      day.setDate(baseDate.getDate() + i);
+      return day.toLocaleDateString(lang, { weekday: 'short' }).toUpperCase();
+    });
+  }, [lang]);
 
   if (isLoadingGlobalData || isLoadingCurrentUserData || !currentUser) {
     return <LoadingScreen message={t('common.loadingData')} />;
@@ -198,11 +201,15 @@ export default function VacationJsonLayout() {
     calendarDays.push({});
   }
   for (let d = 1; d <= daysInCalendarMonth.length; d++) {
-    const dateStr = formatDateToYYYYMMDD(new Date(year, month, d));
+    const dateObj = new Date(year, month, d);
+    const dateStr = formatDateToYYYYMMDD(dateObj);
     const vacation = currentMonthUserVacations.find(v => v.date === dateStr);
     const holiday = currentMonthGlobalHolidays.find(h => h.date === dateStr);
+    const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+    const contractForDay = weeklyContract[dayName];
     let status: string | VacationStatus = 'workday';
     let label = '';
+    let isWorkday = contractForDay && (contractForDay.morning > 0 || contractForDay.afternoon > 0);
     if (holiday) {
       status = 'weekend';
       label = t('vacationPage.holidayLabel');
@@ -216,6 +223,7 @@ export default function VacationJsonLayout() {
       status,
       hours: '8.00h', // Pode ser dinâmico se necessário
       label,
+      isWorkday
     });
   }
   while (calendarDays.length % 7 !== 0) {
@@ -237,7 +245,7 @@ export default function VacationJsonLayout() {
             <div className="flex items-center justify-between mb-2">
               <button onClick={() => changeDisplayedMonth(-1)} className="text-2xl text-slate-400 px-2"><ArrowSmallLeftIcon className="w-6 h-6" /></button>
               <span className="text-2xl font-bold text-indigo-700 py-4 block">
-                {displayDate.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' })}
+                {displayDate.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
               </span>
               <button onClick={() => changeDisplayedMonth(1)} className="text-2xl text-slate-400 px-2"><ArrowSmallRightIcon className="w-6 h-6" /></button>
             </div>
@@ -259,13 +267,13 @@ export default function VacationJsonLayout() {
                   const col = i % 7;
                   const isWeekend = col === 5 || col === 6;
                   if (!day.date) {
-                    return <div key={i} className="h-16 w-16" />;
+                    return <div key={i} className={CARD_SIZE} />;
                   }
-                  if (isWeekend) {
+                  if (isWeekend || !day.isWorkday) {
                     return (
                       <div
                         key={i}
-                        className="flex flex-col items-center justify-center rounded-lg bg-slate-100 text-slate-300 h-16 w-16"
+                        className={`flex flex-col items-center justify-center rounded-lg bg-slate-100 text-slate-300 ${CARD_SIZE}`}
                       >
                         <span className="text-lg font-bold">{day.date}</span>
                         <span className="text-xs">{day.hours}</span>
@@ -276,7 +284,7 @@ export default function VacationJsonLayout() {
                   return (
                     <button
                       key={i}
-                      className={`flex flex-col items-center justify-center rounded-lg border ${statusColors[day.status] || 'border-indigo-200 bg-white text-indigo-700'} h-16 w-16 focus:outline-none`}
+                      className={`flex flex-col items-center justify-center rounded-lg border ${statusColors[day.status] || 'border-indigo-200 bg-white text-indigo-700'} ${CARD_SIZE} focus:outline-none`}
                       onClick={() => handleDayClick(day.dateStr)}
                     >
                       <span className="text-lg font-bold">{day.date}</span>
@@ -296,26 +304,49 @@ export default function VacationJsonLayout() {
                 <span>{t('vacationPage.monthlySummaryTitle')}</span>
               </div>
               <div className="space-y-2">
-                {monthSummary && Object.entries(monthSummary).map(([key, value], i) => (
-                  <div key={i} className="flex items-center justify-between gap-2">
-                    <span className="text-slate-700 text-sm min-w-[170px]">{t(`vacationPage.${key}`)}</span>
-                    <span className="rounded-full px-3 py-0.5 text-xs font-bold bg-slate-100 text-slate-700">{value}</span>
-                  </div>
-                ))}
+                {/* Resumo customizado com cores diferentes */}
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-slate-700 text-sm min-w-[170px]">{t('vacationPage.workableDays')}</span>
+                  <span className="rounded-full px-3 py-0.5 text-xs font-bold bg-blue-100 text-blue-700">{monthSummary?.joursOuvrables ?? 0}</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-slate-700 text-sm min-w-[170px]">{t('vacationPage.holidays')}</span>
+                  <span className="rounded-full px-3 py-0.5 text-xs font-bold bg-yellow-100 text-yellow-700">{monthSummary?.joursFeriesComptabilises ?? 0}</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-slate-700 text-sm min-w-[170px]">{t('vacationPage.effectiveWorkDays')}</span>
+                  <span className="rounded-full px-3 py-0.5 text-xs font-bold bg-green-100 text-green-700">{monthSummary?.joursTravaillesEffectifs ?? 0}</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-slate-700 text-sm min-w-[170px]">{t('vacationPage.annualVacationEntitlementLabel')}</span>
+                  <span className="rounded-full px-3 py-0.5 text-xs font-bold bg-purple-100 text-purple-700">{effectiveAnnualAllowance ?? 0}</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-slate-700 text-sm min-w-[170px]">{t('vacationPage.annualVacationBalanceLabel')}</span>
+                  <span className="rounded-full px-3 py-0.5 text-xs font-bold bg-slate-200 text-slate-700">{remainingAnnualVacationDays ?? 0}</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-slate-700 text-sm min-w-[170px]">{t('vacationPage.calendarDaysInVacation')}</span>
+                  <span className="rounded-full px-3 py-0.5 text-xs font-bold bg-pink-100 text-pink-700">{monthSummary?.joursDeCalendrierEnVacances ?? 0}</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-slate-700 text-sm min-w-[170px]">{t('vacationPage.vacationDaysCalculated')}</span>
+                  <span className="rounded-full px-3 py-0.5 text-xs font-bold bg-orange-100 text-orange-700">{monthSummary?.joursDeVacancesCalcules ?? 0}</span>
+                </div>
               </div>
             </div>
             {/* Feriados */}
             <div className="bg-white rounded-2xl shadow p-4">
               <div className="flex items-center gap-2 mb-2 text-indigo-700 font-semibold text-lg">
                 <HolidayIcon className="w-6 h-6" />
-                <span>{t('vacationPage.holidaysTitle', { month: displayDate.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' }) })}</span>
+                <span>{t('vacationPage.holidaysTitle')}</span>
               </div>
               <ul className="space-y-1">
                 {currentMonthGlobalHolidays.map((h: any, i: number) => (
                   <li key={i} className="flex items-center gap-2 text-sm">
                     <span className="inline-block w-2 h-2 bg-yellow-400 rounded-full"></span>
                     <span>{h.name}</span>
-                    <span className="text-slate-400">{new Date(h.date + 'T00:00:00').toLocaleDateString(i18n.language, { day: '2-digit', month: 'short' })}</span>
+                    <span className="text-slate-400">{new Date(h.date + 'T00:00:00').toLocaleDateString(lang, { day: '2-digit', month: 'short' })}</span>
                   </li>
                 ))}
               </ul>
@@ -326,7 +357,7 @@ export default function VacationJsonLayout() {
         <div className="bg-white rounded-2xl shadow p-4 mt-2">
           <div className="flex items-center gap-2 mb-2 text-indigo-700 font-semibold text-lg">
             <PlaneIcon className="w-6 h-6" />
-            <span>{t('vacationPage.myVacationsTitle', { month: displayDate.toLocaleDateString(i18n.language, { month: 'long' }) })}</span>
+            <span>{t('vacationPage.myVacationsTitle')}</span>
             <button
               onClick={handleSubmitForApproval}
               className="ml-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors text-xs font-medium shadow"
@@ -341,7 +372,7 @@ export default function VacationJsonLayout() {
                   key={opt.date}
                   className={`px-4 py-1 rounded-full text-xs font-semibold shadow-sm border border-indigo-200 ${opt.status === VacationStatus.SELECTED ? 'bg-indigo-200 text-indigo-800' : opt.status === VacationStatus.PENDING_APPROVAL ? 'bg-yellow-100 text-yellow-700' : opt.status === VacationStatus.APPROVED ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}
                 >
-                  {new Date(opt.date + 'T00:00:00').toLocaleDateString(i18n.language, { day: '2-digit', month: 'short' })}
+                  {new Date(opt.date + 'T00:00:00').toLocaleDateString(lang, { day: '2-digit', month: 'short' })}
                   {opt.status && (
                     <span className="ml-2">{t(`vacationStatuses.${opt.status}`)}</span>
                   )}

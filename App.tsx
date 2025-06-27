@@ -8,7 +8,7 @@ import { GlobalDataProvider, useGlobalDataContext } from './contexts/GlobalDataC
 import { CurrentUserDataProvider, useCurrentUserDataContext } from './contexts/CurrentUserDataContext';
 import { NotificationProvider } from './contexts/NotificationContext'; // Import NotificationProvider
 import NotificationDisplay from './components/NotificationDisplay'; // Import NotificationDisplay
-
+import { SimpleI18nProvider } from "./contexts/SimpleI18nContext";
 
 import LoginPage from './components/LoginPage';
 import MainAppLayout from './components/MainAppLayout';
@@ -104,14 +104,16 @@ const MainAppLayoutWrapper: React.FC<{
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <GlobalDataProvider>
-        <NotificationProvider> {/* Add NotificationProvider here */}
-          <AppContent />
-          <NotificationDisplay /> {/* Render NotificationDisplay here */}
-        </NotificationProvider>
-      </GlobalDataProvider>
-    </AuthProvider>
+    <SimpleI18nProvider>
+      <AuthProvider>
+        <GlobalDataProvider>
+          <NotificationProvider> {/* Add NotificationProvider here */}
+            <AppContent />
+            <NotificationDisplay /> {/* Render NotificationDisplay here */}
+          </NotificationProvider>
+        </GlobalDataProvider>
+      </AuthProvider>
+    </SimpleI18nProvider>
   );
 };
 

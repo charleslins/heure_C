@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../contexts/SimpleI18nContext';
 
 const languages = [
   { code: 'en', name: 'English' },
@@ -10,16 +9,16 @@ const languages = [
 ];
 
 const LanguageSwitcher: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { lang, setLang } = useTranslation();
 
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+    setLang(lng);
   };
 
   return (
     <div className="relative inline-block text-left">
       <select
-        value={i18n.language.startsWith('pt') ? 'pt' : i18n.language.startsWith('fr') ? 'fr' : i18n.language.startsWith('de') ? 'de' : 'en'}
+        value={lang}
         onChange={(e) => changeLanguage(e.target.value)}
         className="px-2 py-1 text-xs sm:text-sm bg-orange-400 text-white rounded-md hover:bg-orange-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition-colors appearance-none cursor-pointer"
         aria-label="Select language"

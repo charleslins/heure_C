@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Holiday } from '../types';
@@ -68,7 +67,7 @@ const HolidayManagementPage: React.FC<HolidayManagementPageProps> = () => {
         setNewHolidayName('');
         setNewHolidayDate('');
     } else {
-        addNotification(result.message || 'Error saving holidays', 'error');
+        addNotification(result.message || t('holidayManagementPage.errorSavingHolidays'), 'error');
     }
   };
 
@@ -79,7 +78,7 @@ const HolidayManagementPage: React.FC<HolidayManagementPageProps> = () => {
     if (result.success) {
         addNotification(t('holidayManagementPage.alertConfigSaved'), 'success');
     } else {
-        addNotification(result.message || 'Error removing holiday', 'error');
+        addNotification(result.message || t('holidayManagementPage.errorRemovingHoliday'), 'error');
     }
   };
   
