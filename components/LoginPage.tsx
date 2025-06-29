@@ -8,9 +8,11 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 interface LoginPageProps {
   supabaseClient: SupabaseClient;
+  isModal: boolean;
+  isAdmin: boolean;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin }) => {
   const { t } = useTranslation();
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [email, setEmail] = useState('');
@@ -79,6 +81,124 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient }) => {
     }
     setIsLoading(false);
   };
+
+  if (isModal) {
+    // Layout compacto para modal
+    return (
+      <div className="w-full max-w-sm mx-auto">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            {isAdmin ? 'Login do Administrador' : t('loginPage.title')}
+          </h1>
+          {isAdmin && (
+            <p className="text-orange-600 font-semibold mt-2">Acesso restrito para administradores</p>
+          )}
+        </div>
+        <div className="bg-white shadow-xl rounded-xl p-6 md:p-8">
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-300 text-red-700 rounded-md text-sm flex items-center">
+              <AlertTriangleIcon className="w-5 h-5 mr-2 flex-shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+          {successMessage && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-300 text-green-700 rounded-md text-sm">
+              {successMessage}
+            </div>
+          )}
+          <form onSubmit={handleAuthAction} className="space-y-6">
+            {isRegisterMode && (
+              <InputWithIcon
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={t('loginPage.nameLabel')}
+                icon={<UserIcon className="h-5 w-5" />}
+                label={t('loginPage.nameLabel')}
+              />
+            )}
+            <InputWithIcon
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t('loginPage.emailLabel')}
+              icon={<AtSymbolIcon className="h-5 w-5" />}
+              label={t('loginPage.emailLabel')}
+            />
+            <InputWithIcon
+              id="password"
+              name="password"
+              type="password"
+              autoComplete={isRegisterMode ? "new-password" : "current-password"}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t('loginPage.passwordLabel')}
+              icon={<LockClosedIcon className="h-5 w-5" />}
+              label={t('loginPage.passwordLabel')}
+            />
+            {isRegisterMode && (
+              <InputWithIcon
+                id="confirm-password"
+                name="confirm-password"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder={t('loginPage.confirmPasswordLabel')}
+                icon={<LockClosedIcon className="h-5 w-5" />}
+                label={t('loginPage.confirmPasswordLabel')}
+              />
+            )}
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${isAdmin ? 'bg-orange-600 hover:bg-orange-700' : 'bg-indigo-600 hover:bg-indigo-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50`}
+              >
+                {isLoading
+                  ? (<svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>)
+                  : isRegisterMode ? t('loginPage.registerButton') : isAdmin ? 'Entrar como Administrador' : t('loginPage.loginButton')}
+              </button>
+            </div>
+          </form>
+          {!isAdmin && (
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => {
+                  setIsRegisterMode(!isRegisterMode);
+                  setError(null);
+                  setSuccessMessage(null);
+                  setEmail('');
+                  setPassword('');
+                  setConfirmPassword('');
+                  setName('');
+                }}
+                className="text-sm text-indigo-600 hover:text-indigo-500"
+              >
+                {isRegisterMode ? t('loginPage.switchToLogin') : t('loginPage.switchToRegister')}
+              </button>
+            </div>
+          )}
+        </div>
+        <p className="mt-6 text-center text-xs text-slate-500">
+          {t('loginPage.copyright', { year: new Date().getFullYear() })}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
