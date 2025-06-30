@@ -1,4 +1,3 @@
-
 import { DailyLogEntry, DayOfWeekName, EntryType, WeeklyContractHours } from '../types';
 
 export const getDaysInMonth = (year: number, month: number): Date[] => {
@@ -31,7 +30,7 @@ export const calculateDurationInHours = (start: string, end: string): number => 
     const startDate = new Date(0, 0, 0, startHours, startMinutes);
     const endDate = new Date(0, 0, 0, endHours, endMinutes);
     
-    let diff = endDate.getTime() - startDate.getTime();
+    const diff = endDate.getTime() - startDate.getTime();
     if (diff < 0) { 
       return 0;
     }

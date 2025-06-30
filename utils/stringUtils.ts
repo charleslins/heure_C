@@ -1,5 +1,3 @@
-import { User } from '../types';
-
 /**
  * Generates initials from a full name.
  * E.g., "Usuário Padrão" -> "UP"
