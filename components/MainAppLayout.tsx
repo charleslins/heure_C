@@ -70,9 +70,11 @@ const MainAppLayout: React.FC<MainAppLayoutProps> = ({
         onNavigate={onNavigate}
         onDateChange={onDateChange}
       />
-      <main className="flex-1 bg-slate-50 p-2 md:p-6">
-        {renderPageContent()}
-      </main>
+      <div className="max-w-7xl mx-auto w-full px-2 md:px-6 flex-1">
+        <main className="bg-slate-50 min-h-[calc(100vh-5rem)]">
+          {renderPageContent()}
+        </main>
+      </div>
     </div>
   );
 };
