@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { User, VacationSelection, VacationStatus, UserGlobalSettings, Holiday, VacationDay } from './types';
 import { INITIAL_USER_GLOBAL_SETTINGS, VACATION_STATUS_STYLES } from './constants';
 import { formatDateToYYYYMMDD } from './utils/timeUtils';
-import TimeInput from './components/TimeInput';
-import SectionCard from './components/SectionCard';
+import TimeInput from './components/common/TimeInput';
+import SectionCard from './components/common/SectionCard';
 import {
     AdjustmentsHorizontalIcon as PageTitleIcon,
     CalendarDaysIcon,
@@ -83,7 +82,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
   }, [allUsers]);
 
   useEffect(() => {
-    let loadedSettings = { ...globalUserSettings };
+    const loadedSettings = { ...globalUserSettings };
     if (loadedSettings.workTimeDefaults && ('morningStart' in loadedSettings.workTimeDefaults || 'morningEnd' in loadedSettings.workTimeDefaults)) {
         loadedSettings.workTimeDefaults = { overallStartTime: undefined, overallEndTime: undefined };
     } else if (!loadedSettings.workTimeDefaults) {
@@ -141,7 +140,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
       const summariesPromises = localAllUsers
         .filter(user => !(user.id === currentUser.id && user.role === 'admin'))
         .map(async (user) => {
-          let userVacDays: { date: string, status: VacationStatus }[] = [];
+          const userVacDays: { date: string, status: VacationStatus }[] = [];
           for (let m = 0; m < 12; m++) {
             const monthVacationsData = await loadTypedUserMonthDataFromSupabase<VacationSelection>(user.id, 'vacations', currentYear, m, []);
             const monthVacations = Array.isArray(monthVacationsData) ? monthVacationsData : [];
