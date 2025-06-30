@@ -179,9 +179,10 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
       await updateSpecificUserVacations(request.userId, request.year, request.month, updatedVacations);
       addNotification(t('adminDashboardPage.requestProcessedAlert', { userName: request.userName, date: formatDateToYYYYMMDD(new Date(request.date + 'T00:00:00')), status: t(`vacationStatuses.${newStatus}`), commentText: request.comment || t('adminDashboardPage.noComment') }), 'success');
       fetchPendingRequests(); 
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { message?: string };
       console.error("Error processing request:", error);
-      addNotification(error.message || "Error processing request.", 'error');
+      addNotification(err.message || "Error processing request.", 'error');
     }
   };
 

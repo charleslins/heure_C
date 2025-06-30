@@ -42,7 +42,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
   } = useCurrentUserDataContext();
 
   const [displayDate, setDisplayDate] = useState<Date>(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1));
-  const [allYearVacations, setAllYearVacations] = useState<any[]>([]);
+  const [allYearVacations, setAllYearVacations] = useState<unknown[]>([]);
 
   const year = displayDate.getFullYear();
   const month = displayDate.getMonth();
@@ -186,7 +186,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
 
   // Geração dos dias do calendário (com células vazias para alinhamento)
   const firstDayOfWeek = new Date(year, month, 1).getDay();
-  const calendarDays: any[] = [];
+  const calendarDays: unknown[] = [];
   const offset = (firstDayOfWeek + 6) % 7; // Ajuste para começar em segunda-feira
   for (let i = 0; i < offset; i++) {
     calendarDays.push({});

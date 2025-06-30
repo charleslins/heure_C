@@ -55,7 +55,7 @@ export default function VacationJsonLayout() {
   } = useCurrentUserDataContext();
 
   const [displayDate, setDisplayDate] = useState<Date>(new Date());
-  const [allYearVacations, setAllYearVacations] = useState<any[]>([]);
+  const [allYearVacations, setAllYearVacations] = useState<unknown[]>([]);
 
   const year = displayDate.getFullYear();
   const month = displayDate.getMonth();
@@ -195,7 +195,7 @@ export default function VacationJsonLayout() {
 
   // Geração dos dias do calendário (com células vazias para alinhamento)
   const firstDayOfWeek = new Date(year, month, 1).getDay();
-  const calendarDays: any[] = [];
+  const calendarDays: unknown[] = [];
   const offset = (firstDayOfWeek + 6) % 7; // Ajuste para começar em segunda-feira
   for (let i = 0; i < offset; i++) {
     calendarDays.push({});

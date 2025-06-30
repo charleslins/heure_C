@@ -7,8 +7,8 @@ interface GlobalDataContextType {
   globalUserSettings: UserGlobalSettings;
   globalHolidays: Holiday[];
   allUsers: User[];
-  saveGlobalUserSettings: (settings: UserGlobalSettings) => Promise<{ success: boolean, error?: any, message?: string }>;
-  saveGlobalHolidays: (holidays: Holiday[]) => Promise<{ success: boolean, error?: any, message?: string }>;
+  saveGlobalUserSettings: (settings: UserGlobalSettings) => Promise<{ success: boolean, error?: unknown, message?: string }>;
+  saveGlobalHolidays: (holidays: Holiday[]) => Promise<{ success: boolean, error?: unknown, message?: string }>;
   fetchAllUsers: () => Promise<void>;
   isLoadingGlobalData: boolean;
 }

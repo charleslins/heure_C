@@ -52,7 +52,7 @@ export const useGlobalData = () => {
     fetchAllGlobalData();
   }, [fetchAllGlobalData]);
 
-  const handleSaveGlobalUserSettings = useCallback(async (settings: UserGlobalSettings): Promise<{ success: boolean, error?: any, message?: string }> => {
+  const handleSaveGlobalUserSettings = useCallback(async (settings: UserGlobalSettings): Promise<{ success: boolean, error?: unknown, message?: string }> => {
     const result = await saveGlobalUserSettingsToSupabase(settings);
     if (result.success) {
       setGlobalUserSettings(settings); // Update local state after successful save
@@ -60,7 +60,7 @@ export const useGlobalData = () => {
     return result;
   }, []);
 
-  const handleSaveGlobalHolidays = useCallback(async (holidays: Holiday[]): Promise<{ success: boolean, error?: any, message?: string }> => {
+  const handleSaveGlobalHolidays = useCallback(async (holidays: Holiday[]): Promise<{ success: boolean, error?: unknown, message?: string }> => {
     const result = await saveGlobalHolidaysToSupabase(holidays);
     if (result.success) {
       setGlobalHolidays(holidays); // Update local state

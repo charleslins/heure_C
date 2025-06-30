@@ -1,9 +1,5 @@
 import { useMemo } from 'react';
 import {
-  VacationDay,
-  UserGlobalSettings,
-  WeeklyContractHours,
-  Holiday,
   VacationStatus,
   STANDARD_FULL_DAY_HOURS_FOR_VACATION_EQUIVALENCE,
   UseVacationCalculationsProps,

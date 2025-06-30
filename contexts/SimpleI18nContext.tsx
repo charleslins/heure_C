@@ -16,12 +16,12 @@ export const SimpleI18nProvider = ({ children }: { children: ReactNode }) => {
 
   function t(key: string): string {
     const parts = key.split(".");
-    let value: any = translations[lang];
+    let value: unknown = translations[lang];
     for (const part of parts) {
       value = value?.[part];
       if (value === undefined) return `[${key}]`;
     }
-    return value;
+    return value as string;
   }
 
   return (

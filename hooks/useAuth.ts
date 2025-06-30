@@ -7,7 +7,7 @@ export const useAuth = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
-  const processAndSetUser = useCallback(async (sessionUser: any | null) => {
+  const processAndSetUser = useCallback(async (sessionUser: unknown | null) => {
     if (!sessionUser) {
       setCurrentUser(null);
       return;
