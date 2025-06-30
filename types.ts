@@ -106,8 +106,8 @@ export interface GlobalDataContextType {
   globalUserSettings: UserGlobalSettings;
   globalHolidays: Holiday[];
   allUsers: User[];
-  saveGlobalUserSettings: (settings: UserGlobalSettings) => Promise<{ success: boolean, error?: any, message?: string }>;
-  saveGlobalHolidays: (holidays: Holiday[]) => Promise<{ success: boolean, error?: any, message?: string }>;
+  saveGlobalUserSettings: (settings: UserGlobalSettings) => Promise<{ success: boolean, error?: unknown, message?: string }>;
+  saveGlobalHolidays: (holidays: Holiday[]) => Promise<{ success: boolean, error?: unknown, message?: string }>;
   fetchAllUsers: () => Promise<void>; // To refresh user list if needed
   isLoadingGlobalData: boolean;
 }
@@ -192,7 +192,7 @@ export interface MonthlyVacationListProps {
 
 export interface I18nInstanceType {
   language: string;
-  t: (key: string, options?: any) => string;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }
 
 // Notification System Types
