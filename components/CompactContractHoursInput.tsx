@@ -77,4 +77,21 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({ c
               />
               <input
                 type="number"
-                aria-label={`${t('dailyLog.afternoonHeader')} ${getDayAbbreviation(day)}`
+                aria-label={`${t('dailyLog.afternoonHeader')} ${getDayAbbreviation(day)}`}
+                min="0"
+                max="12"
+                step="0.25"
+                value={contractHours[day]?.afternoon || 0}
+                onChange={(e) => handleHourChange(day, 'afternoon', e.target.value)}
+                className={inputClasses}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </SectionCard>
+  );
+};
+
+export default CompactContractHoursInput;
