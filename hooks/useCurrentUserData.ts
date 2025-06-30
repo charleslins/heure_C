@@ -164,9 +164,9 @@ export const useCurrentUserData = (
     setDailyLogs(prevLogs => {
       return prevLogs.map(logEntry => {
         const yyyymmdd = formatDateToYYYYMMDD(logEntry.date);
-        const isGlobalHoliday = globalHolidays.find(h => h.date === yyyymmdd);
+        const isGlobalHoliday = globalHolidays.find(h => h.date === yyyymdd);
         const activeVacationForLog = vacations.find(v =>
-            v.date === yyyymmdd &&
+            v.date === yyyymdd &&
             (v.status === VacationStatus.APPROVED || v.status === VacationStatus.PENDING_APPROVAL || v.status === VacationStatus.SELECTED)
         );
 
