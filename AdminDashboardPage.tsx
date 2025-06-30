@@ -22,6 +22,7 @@ import { useAuthContext } from './contexts/AuthContext';
 import { useGlobalDataContext } from './contexts/GlobalDataContext';
 import { useCurrentUserDataContext } from './contexts/CurrentUserDataContext'; 
 import { useNotificationContext } from './contexts/NotificationContext';
+import PendingRequestsList from './components/AdminDashboard/PendingRequestsList';
 
 
 interface AdminDashboardPageProps {
@@ -471,70 +472,12 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
         {Object.keys(pendingRequestsByUser).length === 0 ? (
           <p className="text-slate-500 print:text-sm">{t('adminDashboardPage.noPendingRequests')}</p>
         ) : (
-          <div className="space-y-6">
-            {Object.entries(pendingRequestsByUser).map(([userId, userData]) => (
-              <div key={userId} className="p-4 border border-slate-200 rounded-lg bg-slate-50/30 shadow-sm">
-                <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-semibold text-slate-800">{userData.userName}</h4>
-                    {userData.requests.length > 0 && (
-                         <button
-                            onClick={() => handleApproveAllForUser(userId, userData.userName)}
-                            className="px-3 py-1 bg-blue-500 text-white text-xs rounded-md hover:bg-blue-600 transition-colors flex items-center space-x-1.5 print:hidden"
-                        >
-                            <CheckCircleIcon className="w-3.5 h-3.5" />
-                            <span>{t('adminDashboardPage.approveAllForUserButton', {name: userData.userName})}</span>
-                        </button>
-                    )}
-                </div>
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-slate-200 print:divide-slate-300">
-                    <thead className="bg-slate-100 print:bg-slate-100">
-                        <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase print:px-1 print:py-1 print:text-xxs">{t('adminDashboardPage.vacationDateColumn')}</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase print:px-1 print:py-1 print:text-xxs">{t('adminDashboardPage.adminCommentColumn')}</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase print:hidden">{t('adminDashboardPage.actionsColumn')}</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-slate-200 print:divide-slate-300">
-                        {userData.requests.map(req => (
-                        <tr key={`${req.userId}-${req.date}`}>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-700 align-top print:px-1 print:py-1 print:text-xs">
-                                {new Date(req.date + 'T00:00:00').toLocaleDateString(i18n.language, {day:'2-digit', month:'2-digit', year:'numeric'})}
-                                <span className="block text-xs text-slate-500 print:text-xxs">Ref: {new Date(req.year, req.month).toLocaleDateString(i18n.language, {month:'short', year:'numeric'})}</span>
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm align-top w-1/3 print:px-1 print:py-1 print:text-xs print:w-auto">
-                                <textarea
-                                    value={req.comment}
-                                    onChange={(e) => handleCommentChange(req.date, req.userId, e.target.value)}
-                                    placeholder={t('adminDashboardPage.addCommentPlaceholder')}
-                                    rows={2}
-                                    className={lightTextareaClasses}
-                                />
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm space-y-1 md:space-y-0 md:space-x-2 align-top flex flex-col md:flex-row print:hidden">
-                            <button
-                                onClick={() => handleApprovalAction(req, VacationStatus.APPROVED)}
-                                className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors flex items-center justify-center space-x-1"
-                                title={t('adminDashboardPage.approveButton')}
-                            >
-                                <CheckCircleIcon className="w-4 h-4" /><span className="hidden sm:inline">{t('adminDashboardPage.approveButton')}</span>
-                            </button>
-                            <button
-                                onClick={() => handleApprovalAction(req, VacationStatus.REJECTED)}
-                                className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors flex items-center justify-center space-x-1"
-                                title={t('adminDashboardPage.rejectButton')}
-                            >
-                                <XCircleIcon className="w-4 h-4" /><span className="hidden sm:inline">{t('adminDashboardPage.rejectButton')}</span>
-                            </button>
-                            </td>
-                        </tr>
-                        ))}
-                    </tbody>
-                    </table>
-                </div>
-              </div>
-            ))}
-          </div>
+          <PendingRequestsList
+            pendingRequests={pendingRequests}
+            onApprove={handleApprovalAction}
+            onApproveAll={handleApproveAllForUser}
+            isLoading={false}
+          />
         )}
       </SectionCard>
     </div>
