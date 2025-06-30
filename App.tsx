@@ -2,15 +2,12 @@ console.log("App.tsx montado");
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Page } from './types';
-import { supabase } from './utils/supabaseClient';
 import { AuthProvider, useAuthContext } from './contexts/AuthContext';
 import { GlobalDataProvider, useGlobalDataContext } from './contexts/GlobalDataContext';
 import { CurrentUserDataProvider, useCurrentUserDataContext } from './contexts/CurrentUserDataContext';
-import { NotificationProvider } from './contexts/NotificationContext'; // Import NotificationProvider
-import NotificationDisplay from './components/NotificationDisplay'; // Import NotificationDisplay
+import { NotificationProvider } from './contexts/NotificationContext';
+import NotificationDisplay from './components/NotificationDisplay';
 import { SimpleI18nProvider } from "./contexts/SimpleI18nContext";
-
-import LoginPage from './components/LoginPage';
 import MainAppLayout from './components/MainAppLayout';
 import LoadingScreen from './components/LoadingScreen';
 import LanguageLandingPage from './components/LanguageLandingPage';
@@ -19,9 +16,6 @@ const AppContent: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { currentUser, isLoadingAuth, logout } = useAuthContext();
   const { isLoadingGlobalData } = useGlobalDataContext();
-  // We need a hook to get isLoadingCurrentUserData if it's relevant for top-level loading display
-  // For now, assume it's handled within pages or MainAppLayout if needed for specific parts.
-  // const { isLoadingCurrentUserData } = useCurrentUserDataContext(); // Might cause issues if context isn't ready
 
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -35,27 +29,25 @@ const AppContent: React.FC = () => {
     document.documentElement.lang = i18n.language.split('-')[0];
   }, [i18n.language]);
 
-  // Effect to reset page and date on logout
-   useEffect(() => {
-    if (!currentUser && !isLoadingAuth) { // User logged out
+  useEffect(() => {
+    if (!currentUser && !isLoadingAuth) {
       setCurrentPage('dashboard');
       setCurrentDate(new Date());
-    } else if (currentUser && !isLoadingAuth) { // User logged in
-        setCurrentPage('dashboard'); // Or last saved page
-        // setCurrentDate could be persisted or reset to current month
+    } else if (currentUser && !isLoadingAuth) {
+      setCurrentPage('dashboard');
     }
   }, [currentUser, isLoadingAuth]);
 
+  if (typeof window !== 'undefined') {
+    window.__APP_LOADING_DEBUG__ = {
+      isLoadingAuth,
+      isLoadingGlobalData,
+      currentUser,
+      timestamp: new Date().toISOString()
+    };
+    console.log("[DEBUG] AppContent loading states:", window.__APP_LOADING_DEBUG__);
+  }
 
-  const handleNavigate = (page: Page) => {
-    setCurrentPage(page);
-  };
-
-  const handleDateChange = (newDate: Date) => {
-    setCurrentDate(new Date(newDate.getFullYear(), newDate.getMonth(), 1));
-  };
-  
-  // Combine loading states
   if (isLoadingAuth || (currentUser && isLoadingGlobalData)) {
     return <LoadingScreen message={isLoadingAuth ? t('common.loadingApp') : t('common.loadingUserData')} />;
   }
@@ -63,60 +55,58 @@ const AppContent: React.FC = () => {
   if (!currentUser) {
     return <LanguageLandingPage showLogin={showLandingLogin} setShowLogin={setShowLandingLogin} />;
   }
-  
-  // If currentUser exists, then GlobalDataProvider and CurrentUserDataProvider are active.
-  // A more granular loading for CurrentUserData can be handled inside MainAppLayout or specific pages.
-  // For example, if useCurrentUserDataContext() is called and isLoadingCurrentUserData is true,
-  // that specific component can show a loader.
 
   return (
-    // CurrentUserDataProvider needs currentDate, so it's nested here
     <CurrentUserDataProvider currentDate={currentDate}>
-        <MainAppLayoutWrapper
-            currentPage={currentPage}
-            currentDate={currentDate}
-            onLogout={logout}
-            onNavigate={handleNavigate}
-            onDateChange={handleDateChange}
-        />
+      <MainAppLayoutWrapper
+        currentPage={currentPage}
+        currentDate={currentDate}
+        onLogout={logout}
+        onNavigate={setCurrentPage}
+        onDateChange={setCurrentDate}
+      />
     </CurrentUserDataProvider>
   );
 };
 
-// Wrapper to ensure MainAppLayout uses the CurrentUserDataContext correctly
 const MainAppLayoutWrapper: React.FC<{
-    currentPage: Page;
-    currentDate: Date;
-    onLogout: () => Promise<void>;
-    onNavigate: (page: Page) => void;
-    onDateChange: (newDate: Date) => void;
+  currentPage: Page;
+  currentDate: Date;
+  onLogout: () => Promise<void>;
+  onNavigate: (page: Page) => void;
+  onDateChange: (newDate: Date) => void;
 }> = (props) => {
-    const { currentUser } = useAuthContext(); // currentUser will be non-null here
-    const { isLoadingCurrentUserData } = useCurrentUserDataContext();
-    const { t } = useTranslation();
+  const { currentUser } = useAuthContext();
+  const { isLoadingCurrentUserData } = useCurrentUserDataContext();
+  const { t } = useTranslation();
 
-    if (isLoadingCurrentUserData && currentUser) {
-        return <LoadingScreen message={t('common.loadingUserData', 'Loading user data...')} />;
-    }
-    
-    // currentUser is guaranteed to be non-null if we reach here due to AppContent's logic
-    return <MainAppLayout user={currentUser!} {...props} />;
-}
+  if (typeof window !== 'undefined') {
+    window.__APP_LOADING_DEBUG_WRAPPER__ = {
+      isLoadingCurrentUserData,
+      currentUser,
+      timestamp: new Date().toISOString()
+    };
+    console.log("[DEBUG] MainAppLayoutWrapper loading states:", window.__APP_LOADING_DEBUG_WRAPPER__);
+  }
 
+  if (isLoadingCurrentUserData && currentUser) {
+    return <LoadingScreen message={t('common.loadingUserData', 'Loading user data...')} />;
+  }
 
-const App: React.FC = () => {
-  return (
-    <SimpleI18nProvider>
-      <AuthProvider>
-        <GlobalDataProvider>
-          <NotificationProvider> {/* Add NotificationProvider here */}
-            <AppContent />
-            <NotificationDisplay /> {/* Render NotificationDisplay here */}
-          </NotificationProvider>
-        </GlobalDataProvider>
-      </AuthProvider>
-    </SimpleI18nProvider>
-  );
+  return <MainAppLayout user={currentUser!} {...props} />;
 };
+
+const App: React.FC = () => (
+  <SimpleI18nProvider>
+    <AuthProvider>
+      <GlobalDataProvider>
+        <NotificationProvider>
+          <AppContent />
+          <NotificationDisplay />
+        </NotificationProvider>
+      </GlobalDataProvider>
+    </AuthProvider>
+  </SimpleI18nProvider>
+);
 
 export default App;
