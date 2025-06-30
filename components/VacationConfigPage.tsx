@@ -10,6 +10,7 @@ import { printVacationRequest } from '../utils/printVacationRequest';
 import { ArrowSmallLeftIcon, ArrowSmallRightIcon, CalendarDaysIcon } from './icons';
 import LoadingScreen from './LoadingScreen';
 import { VacationStatus, VacationConfigPageProps } from '../types';
+import LanguageLandingPage from "./LanguageLandingPage";
 
 const SummaryIcon = (props: any) => (
   <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M16 3v4M8 3v4m-5 4h18" /></svg>
@@ -249,6 +250,10 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
   }
   while (calendarDays.length % 7 !== 0) {
     calendarDays.push({});
+  }
+
+  if (!languageChosen) {
+    return <LanguageLandingPage />;
   }
 
   return (

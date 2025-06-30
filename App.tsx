@@ -13,6 +13,7 @@ import { SimpleI18nProvider } from "./contexts/SimpleI18nContext";
 import LoginPage from './components/LoginPage';
 import MainAppLayout from './components/MainAppLayout';
 import LoadingScreen from './components/LoadingScreen';
+import LanguageLandingPage from './components/LanguageLandingPage';
 
 const AppContent: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -24,6 +25,7 @@ const AppContent: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [showLandingLogin, setShowLandingLogin] = useState(false);
   
   useEffect(() => {
     document.title = t('appTitle');
@@ -59,7 +61,7 @@ const AppContent: React.FC = () => {
   }
 
   if (!currentUser) {
-    return <LoginPage supabaseClient={supabase} />;
+    return <LanguageLandingPage showLogin={showLandingLogin} setShowLogin={setShowLandingLogin} />;
   }
   
   // If currentUser exists, then GlobalDataProvider and CurrentUserDataProvider are active.
