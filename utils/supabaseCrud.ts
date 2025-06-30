@@ -1,4 +1,3 @@
-
 import { supabase } from './supabaseClient';
 import { User, UserGlobalSettings, Holiday, WeeklyContractHours, DailyLogEntry, VacationSelection, VacationStatus, VacationDay } from '../types';
 import { INITIAL_WEEKLY_CONTRACT, INITIAL_USER_GLOBAL_SETTINGS, MOCK_GLOBAL_HOLIDAYS } from '../constants';

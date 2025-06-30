@@ -1,5 +1,4 @@
-
-import { User, VacationDay, VacationStatus, I18nInstanceType } from '../types';
+import { User, VacationDay, I18nInstanceType } from '../types';
 
 export const printVacationRequest = (
   user: User,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { AlertTriangleIcon, AtSymbolIcon, LockClosedIcon, UserIcon } from './icons';
-import InputWithIcon from './InputWithIcon'; // Import the new component
+import InputWithIcon from './common/InputWithIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 

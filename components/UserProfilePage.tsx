@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserCircleIcon } from './icons'; 
-import SectionCard from './SectionCard'; // Import SectionCard
+import SectionCard from './common/SectionCard';
 
 const UserProfilePage: React.FC = () => {
   const { t } = useTranslation();

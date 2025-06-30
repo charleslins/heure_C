@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Holiday } from '../types';
 import { PlusCircleIcon, TrashIcon, CalendarDaysIcon as PageIcon } from './icons'; 
-import SectionCard from './SectionCard';
+import SectionCard from './common/SectionCard';
 import { useGlobalDataContext } from '../contexts/GlobalDataContext'; 
 import { useNotificationContext } from '../contexts/NotificationContext';
 

@@ -116,7 +116,7 @@ export default function VacationJsonLayout() {
 
   const handleDayClick = useCallback((dateStr: string) => {
     const existingVacationIndex = vacations.findIndex(v => v.date === dateStr);
-    let newVacations = [...vacations];
+    const newVacations = [...vacations];
     if (existingVacationIndex > -1) {
       const existingVacation = vacations[existingVacationIndex];
       if (existingVacation.status === VacationStatus.SELECTED || existingVacation.status === VacationStatus.PENDING_APPROVAL || existingVacation.status === VacationStatus.REJECTED) {
@@ -195,8 +195,8 @@ export default function VacationJsonLayout() {
 
   // Geração dos dias do calendário (com células vazias para alinhamento)
   const firstDayOfWeek = new Date(year, month, 1).getDay();
-  let calendarDays: any[] = [];
-  let offset = (firstDayOfWeek + 6) % 7; // Ajuste para começar em segunda-feira
+  const calendarDays: any[] = [];
+  const offset = (firstDayOfWeek + 6) % 7; // Ajuste para começar em segunda-feira
   for (let i = 0; i < offset; i++) {
     calendarDays.push({});
   }
@@ -210,7 +210,7 @@ export default function VacationJsonLayout() {
     const totalHours = ((contractForDay?.morning || 0) + (contractForDay?.afternoon || 0)).toFixed(2);
     let status: string | VacationStatus = 'workday';
     let label = '';
-    let isWorkday = contractForDay && (contractForDay.morning > 0 || contractForDay.afternoon > 0);
+    const isWorkday = contractForDay && (contractForDay.morning > 0 || contractForDay.afternoon > 0);
     if (holiday) {
       status = 'weekend';
       label = t('vacationPage.holidayLabel');

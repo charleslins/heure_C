@@ -1,4 +1,3 @@
-
 import { EntryType, WeeklyContractHours, DayOfWeekName, User, VacationStatus, Holiday, UserGlobalSettings } from './types';
 
 // APP_NAME and APP_TITLE are now managed by i18next (e.g., t('appName'))

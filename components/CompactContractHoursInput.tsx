@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { WeeklyContractHours, DayOfWeekName } from '../types';
-import { DAYS_OF_WEEK } from '../constants';
 import { ClockIcon } from './icons'; // Changed from ScaleIcon
-import SectionCard from './SectionCard'; // Import SectionCard
+import SectionCard from './common/SectionCard'; // Import SectionCard
 
 interface CompactContractHoursInputProps {
   contractHours: WeeklyContractHours;
@@ -79,21 +77,4 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({ c
               />
               <input
                 type="number"
-                aria-label={`${t('dailyLog.afternoonHeader')} ${getDayAbbreviation(day)}`}
-                min="0"
-                max="12"
-                step="0.25"
-                value={contractHours[day]?.afternoon || 0} 
-                onChange={(e) => handleHourChange(day, 'afternoon', e.target.value)}
-                className={inputClasses}
-                placeholder="0"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </SectionCard>
-  );
-};
-
-export default CompactContractHoursInput;
+                aria-label={`${t('dailyLog.afternoonHeader')} ${getDayAbbreviation(day)}`

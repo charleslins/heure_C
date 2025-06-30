@@ -1,11 +1,9 @@
-
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserGlobalSettings, SummaryData } from '../types';
 import { formatHours } from '../utils/timeUtils';
 import { IconProps } from './icons'; // Import IconProps
-import SectionCard from './SectionCard'; // Import SectionCard
+import SectionCard from './common/SectionCard'; // Import SectionCard
 import { 
     ClipboardDocumentListIcon, 
     InformationCircleIcon,

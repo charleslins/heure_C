@@ -1,7 +1,5 @@
-
 import React from 'react';
-import { User, DashboardPageProps } from '../types'; 
-import { useAuthContext } from '../contexts/AuthContext';
+import { DashboardPageProps } from '../types'; 
 import { useGlobalDataContext } from '../contexts/GlobalDataContext';
 import { useCurrentUserDataContext } from '../contexts/CurrentUserDataContext';
 
@@ -15,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ currentUser }) => {
   const { t } = useTranslation();
-  // const { currentUser } = useAuthContext(); // Already passed as prop, but could be sourced here too
   const { globalUserSettings, isLoadingGlobalData } = useGlobalDataContext();
   const { 
     weeklyContract, dailyLogs, summaryData, 

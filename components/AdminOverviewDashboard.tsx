@@ -1,14 +1,13 @@
-
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { User, VacationSelection, VacationStatus } from '../types';
+import { User } from '../types';
 import { ChartBarIcon, UserGroupIcon, BellAlertIcon, XCircleIcon } from './icons'; 
 // import { formatDateToYYYYMMDD, getDaysInMonth } from '../utils/timeUtils'; // Unused
 // import { getUserInitials, getUserColor } from '../utils/stringUtils'; // Unused
 // import { USER_COLORS } from '../constants'; // Unused
 // import { loadTypedUserMonthDataFromSupabase } from '../utils/supabaseCrud'; // Unused
 import { supabase } from '../utils/supabaseClient';
-import SectionCard from './SectionCard'; 
+import SectionCard from './common/SectionCard'; 
 
 
 interface AdminOverviewDashboardProps {
@@ -58,7 +57,7 @@ const AdminOverviewDashboard: React.FC<AdminOverviewDashboardProps> = ({ current
       const { error: pendingError, count } = await supabase
         .from('user_vacations')
         .select('user_id', { count: 'exact', head: true }) 
-        .eq('status', VacationStatus.PENDING_APPROVAL);
+        .eq('status', 'pending_approval');
       
       if (pendingError) console.error("Error fetching pending requests count:", pendingError.message || pendingError);
       else setPendingRequestsCount(count || 0);

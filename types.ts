@@ -1,4 +1,3 @@
-
 export enum EntryType {
   REGULAR = 'Regular',
   VACANCE = 'Vacance',

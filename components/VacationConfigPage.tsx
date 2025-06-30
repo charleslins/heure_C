@@ -106,7 +106,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
 
   const handleDayClick = useCallback((dateStr: string) => {
     const existingVacationIndex = vacations.findIndex(v => v.date === dateStr);
-    let newVacations = [...vacations];
+    const newVacations = [...vacations];
     if (existingVacationIndex > -1) {
       const existingVacation = vacations[existingVacationIndex];
       if (existingVacation.status === VacationStatus.SELECTED || existingVacation.status === VacationStatus.PENDING_APPROVAL || existingVacation.status === VacationStatus.REJECTED) {
@@ -186,8 +186,8 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
 
   // Geração dos dias do calendário (com células vazias para alinhamento)
   const firstDayOfWeek = new Date(year, month, 1).getDay();
-  let calendarDays: any[] = [];
-  let offset = (firstDayOfWeek + 6) % 7; // Ajuste para começar em segunda-feira
+  const calendarDays: any[] = [];
+  const offset = (firstDayOfWeek + 6) % 7; // Ajuste para começar em segunda-feira
   for (let i = 0; i < offset; i++) {
     calendarDays.push({});
   }
@@ -250,10 +250,6 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
   }
   while (calendarDays.length % 7 !== 0) {
     calendarDays.push({});
-  }
-
-  if (!languageChosen) {
-    return <LanguageLandingPage />;
   }
 
   return (

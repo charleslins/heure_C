@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DailyLogEntry, EntryType, UserGlobalSettings, WeeklyContractHours, TimeSegment } from '../types';
-import TimeInput from './TimeInput';
+import TimeInput from './common/TimeInput';
 import TypeSelector from './TypeSelector';
 import { calculateDurationInHours, formatHours, getDayOfWeekName } from '../utils/timeUtils';
 import { SEGMENT_COLORS, SEGMENT_HOVER_COLORS } from '../constants';

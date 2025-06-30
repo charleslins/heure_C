@@ -20,7 +20,7 @@ export const useGlobalData = () => {
   const fetchAllGlobalData = useCallback(async () => {
     setIsLoadingGlobalData(true);
     try {
-      let loadedSettings = await loadGlobalUserSettingsFromSupabase(INITIAL_USER_GLOBAL_SETTINGS);
+      const loadedSettings = await loadGlobalUserSettingsFromSupabase(INITIAL_USER_GLOBAL_SETTINGS);
       if (loadedSettings.workTimeDefaults && ('morningStart' in loadedSettings.workTimeDefaults || 'morningEnd' in loadedSettings.workTimeDefaults)) {
         loadedSettings.workTimeDefaults = { overallStartTime: undefined, overallEndTime: undefined };
       } else if (!loadedSettings.workTimeDefaults) {
