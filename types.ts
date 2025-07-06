@@ -93,7 +93,7 @@ export interface DashboardPageProps {
   // Other props will now largely come from context
 }
 
-export type Page = 'dashboard' | 'vacations' | 'admin_dashboard' | 'holiday_management' | 'user_profile';
+export type Page = 'dashboard' | 'vacations' | 'admin_dashboard' | 'user_profile' | 'admin_tabbed';
 
 // AppDataContextValue replaces the old AppData, providing more granular access via contexts
 export interface AuthContextType {

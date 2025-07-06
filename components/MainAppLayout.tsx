@@ -5,8 +5,8 @@ import AppHeader from './AppHeader';
 import DashboardPage from './DashboardPage';
 import VacationConfigPage from './VacationConfigPage';
 import AdminDashboardPage from '../AdminDashboardPage';
-import HolidayManagementPage from './HolidayManagementPage';
 import UserProfilePage from './UserProfilePage';
+import AdminTabbedPage from './AdminTabbedPage';
 import AccessDeniedMessage from './AccessDeniedMessage';
 import { useGlobalDataContext } from '../contexts/GlobalDataContext';
 import { useCurrentUserDataContext } from '../contexts/CurrentUserDataContext';
@@ -44,13 +44,9 @@ const MainAppLayout: React.FC<MainAppLayoutProps> = ({
       case 'vacations':
         return <VacationConfigPage currentDate={currentDate} onDateChange={onDateChange} />;
       case 'admin_dashboard':
+      case 'admin_tabbed':
         if (user.role === 'admin') {
-          return <AdminDashboardPage currentUser={user} />;
-        }
-        return <AccessDeniedMessage />;
-      case 'holiday_management':
-        if (user.role === 'admin') {
-          return <HolidayManagementPage />;
+          return <AdminTabbedPage />;
         }
         return <AccessDeniedMessage />;
       case 'user_profile':

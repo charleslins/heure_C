@@ -792,6 +792,7 @@ const translationPT = {
     "vacations": "Férias",
     "adminPanel": "Painel Admin",
     "manageHolidays": "Gerir Feriados",
+    "manageEmployees": "Gestão de Funcionários",
     "profileSettings": "Configurações do Perfil",
     "changePassword": "Mudar Senha",
     "logout": "Sair"

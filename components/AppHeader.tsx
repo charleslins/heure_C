@@ -46,8 +46,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
   const dropdownArrowColor = "text-orange-100";
 
   const navLinkClasses = (page: Page) =>
-    `px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center space-x-2 ${
-      currentPage === page
+    `px-2 py-2 rounded-md text-sm font-medium transition-colors flex items-center space-x-1 ${
+      currentPage === page || (page === 'admin_tabbed' && currentPage === 'admin_dashboard')
         ? `${activeBgColor} ${activeTextColor} shadow-md`
         : `${headerTextColor} ${hoverBgColor} hover:text-white`
     }`;
@@ -85,17 +85,18 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
 
   return (
     <header className={`${headerBgColor} shadow-lg sticky top-0 z-50 print:hidden`}>
-      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 md:h-16">
+      <div className="max-w-full mx-auto px-2 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between h-16">
           {/* Left Section: Logo and Nav */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-               <h1 className={`text-2xl font-bold ${headerTextColor} flex items-center`}>
-                 <AppLogoIcon className="w-8 h-8 mr-2" /> {/* Changed Icon */}
-                 {t('appName')}
+               <h1 className={`text-xl lg:text-2xl font-bold ${headerTextColor} flex items-center`}>
+                 <AppLogoIcon className="w-6 h-6 lg:w-8 lg:h-8 mr-2" />
+                 <span className="hidden sm:inline">{t('appName')}</span>
+                 <span className="sm:hidden">Horas</span>
                 </h1>
             </div>
-            <nav className="hidden md:flex md:ml-10 md:space-x-2">
+            <nav className="hidden md:flex md:ml-4 lg:ml-8 md:space-x-1">
               <button onClick={() => onNavigate('dashboard')} className={navLinkClasses('dashboard')}>
                 {t('nav.dashboard')}
               </button>
@@ -106,22 +107,16 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
                 </button>
               )}
               {user.role === 'admin' && (
-                <>
-                  <button onClick={() => onNavigate('admin_dashboard')} className={navLinkClasses('admin_dashboard')}>
-                    <NavAdminIcon className={iconSize} /> 
-                    <span>{t('nav.adminPanel')}</span>
-                  </button>
-                  <button onClick={() => onNavigate('holiday_management')} className={navLinkClasses('holiday_management')}>
-                    <PencilSquareIcon className={iconSize} />
-                    <span>{t('nav.manageHolidays')}</span>
-                  </button>
-                </>
+                <button onClick={() => onNavigate('admin_tabbed')} className={navLinkClasses('admin_tabbed')}>
+                  <NavAdminIcon className={iconSize} /> 
+                  <span>{t('nav.adminPanel')}</span>
+                </button>
               )}
             </nav>
           </div>
 
           {/* Center/Right Section (Desktop): Date Nav, Language */}
-          <div className="hidden lg:flex items-center space-x-3">
+          <div className="hidden lg:flex items-center space-x-2">
             <button
               onClick={() => changeMonth(-1)}
               className={`p-2 ${headerTextColor} ${hoverBgColor} rounded-md transition-colors`}
@@ -157,8 +152,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
                   {userInitial}
                 </div>
                 <div className="hidden sm:block text-left">
-                    <span className={`text-sm font-medium ${headerTextColor}`}>{user.name}</span>
-                    {user.email && <span className={`block text-xs ${headerTextColor} opacity-80 truncate max-w-[150px]`}>{user.email}</span>}
+                    <span className={`text-sm font-medium ${headerTextColor} truncate max-w-[120px]`}>{user.name}</span>
+                    {user.email && <span className={`block text-xs ${headerTextColor} opacity-80 truncate max-w-[120px]`}>{user.email}</span>}
                 </div>
                  <ChevronDownIcon className={`ml-1 h-5 w-5 ${dropdownArrowColor} transition-transform duration-200 ${isProfileDropdownOpen ? 'transform rotate-180' : ''}`} aria-hidden="true" />
             </button>
@@ -209,14 +204,9 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
                 </button>
               )}
               {user.role === 'admin' && (
-                <>
-                  <button onClick={() => onNavigate('admin_dashboard')} className={navLinkClasses('admin_dashboard')}>
-                   <NavAdminIcon className={iconSize} /> {t('nav.adminPanel')} 
-                  </button>
-                  <button onClick={() => onNavigate('holiday_management')} className={navLinkClasses('holiday_management')}>
-                    <PencilSquareIcon className={iconSize} /> {t('nav.manageHolidays')}
-                  </button>
-                </>
+                <button onClick={() => onNavigate('admin_tabbed')} className={navLinkClasses('admin_tabbed')}>
+                 <NavAdminIcon className={iconSize} /> {t('nav.adminPanel')} 
+                </button>
               )}
             </nav>
              <div className="flex justify-center items-center space-x-2 pt-2">

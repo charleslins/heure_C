@@ -7,6 +7,8 @@
     "vacations": "Vacations",
     "adminPanel": "Admin Panel",
     "manageHolidays": "Manage Holidays",
+    "manageEmployees": "Employee Management",
+    "manageEmployeesShort": "Employees",
     "logout": "Logout",
     "profileSettings": "Profile Settings",
     "changePassword": "Change Password"
