@@ -231,7 +231,8 @@
       "conflictModalTitle": "Conflitos de Férias em {{month}} de {{year}}",
       "conflictDayEntry": "{{date}}: {{count}} usuários - {{users}}",
       "exceedsThresholdWarning": "Excede o limite de {{threshold}} usuários!"
-    }
+    },
+    "batchApprovalError": "Algumas solicitações não puderam ser aprovadas em lote. Verifique os erros individuais."
   },
   "userProfilePage": {
     "title": "Configurações do Perfil",

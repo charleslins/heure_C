@@ -6,17 +6,17 @@ import { formatDateToYYYYMMDD } from './utils/timeUtils';
 import TimeInput from './components/common/TimeInput';
 import SectionCard from './components/common/SectionCard';
 import {
-    AdjustmentsHorizontalIcon as PageTitleIcon,
-    CalendarDaysIcon,
-    TrashIcon,
-    CheckCircleIcon,
-    XCircleIcon,
-    ArrowDownOnSquareIcon,
-    ClipboardDocumentListIcon,
-    Cog6ToothIcon,
-    ClockIcon as DefaultTimesIcon,
-    UsersIcon
-} from './components/icons';
+    Settings2,
+    CalendarDays,
+    Trash2,
+    CheckCircle,
+    XCircle,
+    Save,
+    ClipboardList,
+    Settings,
+    Clock,
+    Users
+} from 'lucide-react';
 import { updateUserProfileRole, loadAllUsersFromSupabase, loadTypedUserMonthDataFromSupabase } from './utils/supabaseCrud'; // Assuming loadAllUsers is here
 import { useAuthContext } from './contexts/AuthContext';
 import { useGlobalDataContext } from './contexts/GlobalDataContext';
@@ -178,7 +178,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
         v.date === request.date ? { ...v, status: newStatus, adminComment: request.comment || undefined } : v
       );
       await updateSpecificUserVacations(request.userId, request.year, request.month, updatedVacations);
-      addNotification(t('adminDashboardPage.requestProcessedAlert', { userName: request.userName, date: formatDateToYYYYMMDD(new Date(request.date + 'T00:00:00')), status: t(`vacationStatuses.${newStatus}`), commentText: request.comment || t('adminDashboardPage.noComment') }), 'success');
+      addNotification(t('adminDashboard.requestProcessedAlert', { userName: request.userName, date: formatDateToYYYYMMDD(new Date(request.date + 'T00:00:00')), status: t(`vacationStatuses.${newStatus}`), commentText: request.comment || t('adminDashboard.noComment') }), 'success');
       fetchPendingRequests(); 
     } catch (error: unknown) {
       const err = error as { message?: string };
@@ -194,16 +194,16 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
     let allSucceeded = true;
     for (const req of userPendingRequests) {
         try {
-            await handleApprovalAction({ ...req, comment: req.comment || t('adminDashboardPage.batchApprovedComment') }, VacationStatus.APPROVED);
+            await handleApprovalAction({ ...req, comment: req.comment || t('adminDashboard.batchApprovedComment') }, VacationStatus.APPROVED);
         } catch (error) {
             allSucceeded = false;
             // Individual error notification is handled by handleApprovalAction
         }
     }
     if (allSucceeded) {
-        addNotification(t('adminDashboardPage.allRequestsApprovedForUser', { count: userPendingRequests.length, userName: userName }), 'success');
+        addNotification(t('adminDashboard.allRequestsApprovedForUser', { count: userPendingRequests.length, userName: userName }), 'success');
     } else {
-        addNotification("Some requests could not be batch approved. Check individual errors.", 'warning');
+        addNotification(t('adminDashboard.batchApprovalError'), 'warning');
     }
   };
 
@@ -241,9 +241,9 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
     }
     const result = await saveGlobalUserSettings(settingsToSave); 
     if (result.success) {
-        addNotification(t('adminDashboardPage.globalSettingsSavedAlert'), 'success');
+        addNotification(t('adminDashboard.globalSettingsSavedAlert'), 'success');
     } else {
-        addNotification(t('adminDashboardPage.globalSettingsSaveErrorAlert') + (result.message ? `: ${result.message}` : ''), 'error');
+        addNotification(t('adminDashboard.globalSettingsSaveErrorAlert') + (result.message ? `: ${result.message}` : ''), 'error');
     }
     setIsSavingGlobalSettings(false);
   };
@@ -251,13 +251,13 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
   const handleRoleChange = async (targetUserId: string, newRole: 'user' | 'admin') => {
     const result = await updateUserProfileRole(targetUserId, newRole);
     if (result.success) {
-      addNotification(t('adminDashboardPage.userRoleUpdatedSuccess', {
+      addNotification(t('adminDashboard.userRoleUpdatedSuccess', {
         userName: localAllUsers.find(u => u.id === targetUserId)?.name || targetUserId,
         role: t(`roles.${newRole}`)
       }), 'success');
       fetchAllUsers(); 
     } else {
-      addNotification(t('adminDashboardPage.userRoleUpdatedError') + (result.message ? `: ${result.message}` : ''), 'error');
+      addNotification(t('adminDashboard.userRoleUpdatedError') + (result.message ? `: ${result.message}` : ''), 'error');
     }
   };
 
@@ -272,51 +272,51 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
   }, {} as Record<string, { userName: string, requests: PendingRequest[] }>);
 
   return (
-    <div className="space-y-8 print:space-y-4">
+    <div className="space-y-8 print:space-y-4 pb-8">
       <SectionCard
-        title={t('adminDashboardPage.title')}
-        titleIcon={PageTitleIcon}
+        title={t('adminDashboard.title')}
+        titleIcon={Settings2}
         titleIconProps={{ className: "w-6 h-6 mr-3 text-indigo-600 print:text-2xl print:mr-2" }}
         cardClassName="print:shadow-none print:p-0"
-        headerAreaClassName="p-6 mb-0 print:p-0 print:mb-2 border-none"
-        contentAreaClassName="p-6 pt-0 print:p-0 print:text-sm"
+        headerAreaClassName="px-6 py-4 mb-0 print:p-0 print:mb-2 border-none"
+        contentAreaClassName="px-6 py-4 print:p-0 print:text-sm"
         titleTextClassName="text-2xl font-semibold text-slate-800 print:text-xl"
       >
-        <p className="text-slate-600 print:text-sm">{t('adminDashboardPage.welcomeMessage', { name: currentUser.name })}</p>
+        <p className="text-slate-600 print:text-sm">{t('adminDashboard.welcomeMessage', { name: currentUser.name })}</p>
       </SectionCard>
 
       <SectionCard
-        title={t('adminDashboardPage.globalConfigTitle')}
-        titleIcon={Cog6ToothIcon}
+        title={t('adminDashboard.globalConfigTitle')}
+        titleIcon={Settings}
         titleIconProps={{ className: `${iconSharedClass} mr-2 text-purple-600 print:text-xl print:mr-1` }}
         cardClassName="print:shadow-none print:p-0 print:mt-4"
-        headerAreaClassName="p-6 print:p-0 print:mb-2"
-        contentAreaClassName="p-6 print:p-0 print:space-y-3"
+        headerAreaClassName="px-6 py-4 print:p-0 print:mb-2"
+        contentAreaClassName="px-6 py-4 print:p-0 print:space-y-3"
         titleTextClassName="text-xl font-semibold text-slate-700 print:text-lg"
       >
         <div className="space-y-6 print:space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-4 border border-slate-200 rounded-lg bg-slate-50/50 shadow-sm print:p-2 print:border-slate-300">
-                    <h4 className="font-medium text-slate-700 mb-3">{t('adminDashboardPage.defaultParamsCardTitle')}</h4>
+                    <h4 className="font-medium text-slate-700 mb-3">{t('adminDashboard.defaultParamsCardTitle')}</h4>
                     <div className="space-y-3">
                         <div>
-                            <label htmlFor="global-taux" className="block text-xs font-medium text-slate-600 mb-1 print:text-xxs">{t('adminDashboardPage.workRateLabel')}</label>
+                            <label htmlFor="global-taux" className="block text-xs font-medium text-slate-600 mb-1 print:text-xxs">{t('adminDashboard.workRateLabel')}</label>
                             <input
                                 type="number" id="global-taux"
                                 value={editableGlobalSettings.tauxPercent ?? ''}
                                 onChange={(e) => handleGlobalSettingChange('tauxPercent', e.target.value)}
                                 className={lightInputClasses}
-                                placeholder={t('adminDashboardPage.workRatePlaceholder')} min="0" max="100" step="1"
+                                placeholder={t('adminDashboard.workRatePlaceholder')} min="0" max="100" step="1"
                             />
                         </div>
                         <div>
-                            <label htmlFor="global-vacdays" className="block text-xs font-medium text-slate-600 mb-1 print:text-xxs">{t('adminDashboardPage.annualVacationDaysLabel')}</label>
+                            <label htmlFor="global-vacdays" className="block text-xs font-medium text-slate-600 mb-1 print:text-xxs">{t('adminDashboard.annualVacationDaysLabel')}</label>
                             <input
                                 type="number" id="global-vacdays"
                                 value={editableGlobalSettings.annualVacationDays ?? ''}
                                 onChange={(e) => handleGlobalSettingChange('annualVacationDays', e.target.value)}
                                 className={lightInputClasses}
-                                placeholder={t('adminDashboardPage.annualVacationDaysPlaceholder')} min="0" step="0.5"
+                                placeholder={t('adminDashboard.annualVacationDaysPlaceholder')} min="0" step="0.5"
                             />
                         </div>
                     </div>
@@ -324,16 +324,16 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
 
                 <div className="p-4 border border-slate-200 rounded-lg bg-slate-50/50 shadow-sm print:p-2 print:border-slate-300">
                     <h4 className="font-medium text-slate-700 mb-3 flex items-center">
-                       <DefaultTimesIcon className="w-4 h-4 mr-1.5 text-slate-500" />
-                       {t('adminDashboardPage.globalDefaultTimesCardTitle')}
+                       <Clock className="w-4 h-4 mr-1.5 text-slate-500" />
+                       {t('adminDashboard.globalDefaultTimesCardTitle')}
                     </h4>
                      <div className="space-y-3">
                         <div>
-                            <label htmlFor="global-overallStart" className="block text-xxs font-medium text-slate-500 mb-0.5">{t('adminDashboardPage.overallStartTimeLabel')}</label>
+                            <label htmlFor="global-overallStart" className="block text-xxs font-medium text-slate-500 mb-0.5">{t('adminDashboard.overallStartTimeLabel')}</label>
                             <TimeInput id="global-overallStart" value={editableGlobalSettings.workTimeDefaults?.overallStartTime || ""} onChange={v => handleGlobalSettingChange('overallStartTime', v)} />
                         </div>
                         <div>
-                            <label htmlFor="global-overallEnd" className="block text-xxs font-medium text-slate-500 mb-0.5">{t('adminDashboardPage.overallEndTimeLabel')}</label>
+                            <label htmlFor="global-overallEnd" className="block text-xxs font-medium text-slate-500 mb-0.5">{t('adminDashboard.overallEndTimeLabel')}</label>
                             <TimeInput id="global-overallEnd" value={editableGlobalSettings.workTimeDefaults?.overallEndTime || ""} onChange={v => handleGlobalSettingChange('overallEndTime', v)} />
                         </div>
                     </div>
@@ -345,30 +345,30 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
                     disabled={isSavingGlobalSettings}
                     className="px-4 py-2 bg-green-500 text-white text-sm rounded-md hover:bg-green-600 transition-colors flex items-center space-x-2 print:hidden disabled:opacity-50"
                 >
-                   <ArrowDownOnSquareIcon className="w-5 h-5" /> 
-                   <span>{isSavingGlobalSettings ? t('adminDashboardPage.savingGlobalSettingsButton', 'Saving...') : t('adminDashboardPage.saveGlobalSettingsButton')}</span>
+                   <Save className="w-5 h-5" /> 
+                   <span>{isSavingGlobalSettings ? t('adminDashboard.savingGlobalSettingsButton') : t('adminDashboard.saveGlobalSettingsButton')}</span>
                 </button>
             </div>
         </div>
       </SectionCard>
 
       <SectionCard
-        title={t('adminDashboardPage.userRoleManagementTitle')}
-        titleIcon={UsersIcon}
+        title={t('adminDashboard.userRoleManagementTitle')}
+        titleIcon={Users}
         titleIconProps={{ className: `${iconSharedClass} mr-2 text-teal-600` }}
         titleTextClassName="text-xl font-semibold text-slate-700"
       >
         {localAllUsers.filter(user => user.id !== currentUser.id).length === 0 ? (
-          <p className="text-slate-500">{t('adminDashboardPage.noOtherUsersToManageRoles')}</p>
+          <p className="text-slate-500">{t('adminDashboard.noOtherUsersToManageRoles')}</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-slate-200">
               <thead className="bg-slate-100">
                 <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">{t('adminDashboardPage.userNameColumn')}</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">{t('adminDashboardPage.userEmailColumn')}</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">{t('adminDashboardPage.userCurrentRoleColumn')}</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">{t('adminDashboardPage.userNewRoleColumn')}</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">{t('adminDashboard.userNameColumn')}</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">{t('adminDashboard.userEmailColumn')}</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">{t('adminDashboard.userCurrentRoleColumn')}</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">{t('adminDashboard.userNewRoleColumn')}</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-slate-200">
@@ -386,7 +386,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
                         value={user.role}
                         onChange={(e) => handleRoleChange(user.id, e.target.value as 'user' | 'admin')}
                         className={`${lightSelectClasses} text-xs py-1 w-auto`}
-                        aria-label={t('adminDashboardPage.changeRoleForUserAria', { name: user.name })}
+                        aria-label={t('adminDashboard.changeRoleForUserAria', { name: user.name })}
                       >
                         <option value="user">{t('roles.user')}</option>
                         <option value="admin">{t('roles.admin')}</option>
@@ -401,12 +401,12 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
       </SectionCard>
 
       <SectionCard
-        title={t('adminDashboardPage.userVacationSummaryTitle')}
-        titleIcon={ClipboardDocumentListIcon}
+        title={t('adminDashboard.userVacationSummaryTitle')}
+        titleIcon={ClipboardList}
         titleIconProps={{ className: `${iconSharedClass} mr-2 text-cyan-600 print:text-xl print:mr-1` }}
         cardClassName="print:shadow-none print:p-0 print:mt-4"
-        headerAreaClassName="p-6 print:p-0 print:mb-2"
-        contentAreaClassName="p-6 print:p-0"
+        headerAreaClassName="px-6 py-4 print:p-0 print:mb-2"
+        contentAreaClassName="px-6 py-4 print:p-0"
         titleTextClassName="text-xl font-semibold text-slate-700 print:text-lg"
       >
         {isLoadingSummaries ? (
@@ -415,10 +415,10 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <p className="text-sm text-slate-500 mt-2">{t('common.loadingData', 'Loading data...')}</p>
+                <p className="text-sm text-slate-500 mt-2">{t('common.loadingData')}</p>
             </div>
         ) : userVacationSummaries.length === 0 ?
-            <p className="text-slate-500 print:text-sm">{t('adminDashboardPage.noOtherUsersSummary')}</p>
+            <p className="text-slate-500 print:text-sm">{t('adminDashboard.noOtherUsersSummary')}</p>
          : (
             <div className="space-y-4">
                 {userVacationSummaries.map(summary => (
@@ -452,7 +452,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
                                 })}
                             </div>
                         ) : (
-                            <p className="text-xs text-slate-500 italic">{t('adminDashboardPage.noVacationsForUser')}</p>
+                            <p className="text-xs text-slate-500 italic">{t('adminDashboard.noVacationsForUser')}</p>
                         )}
                     </div>
                 ))}
@@ -461,16 +461,16 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ currentUser }) 
       </SectionCard>
 
       <SectionCard
-        title={t('adminDashboardPage.pendingRequestsTitle')}
-        titleIcon={CalendarDaysIcon}
+        title={t('adminDashboard.pendingRequestsTitle')}
+        titleIcon={CalendarDays}
         titleIconProps={{ className: `${iconSharedClass} mr-2 text-green-600 print:text-xl print:mr-1` }}
         cardClassName="print:shadow-none print:p-0 print:mt-4"
-        headerAreaClassName="p-6 print:p-0 print:mb-2"
-        contentAreaClassName="p-6 print:p-0"
+        headerAreaClassName="px-6 py-4 print:p-0 print:mb-2"
+        contentAreaClassName="px-6 py-4 print:p-0"
         titleTextClassName="text-xl font-semibold text-slate-700 print:text-lg"
       >
         {Object.keys(pendingRequestsByUser).length === 0 ? (
-          <p className="text-slate-500 print:text-sm">{t('adminDashboardPage.noPendingRequests')}</p>
+          <p className="text-slate-500 print:text-sm">{t('adminDashboard.noPendingRequests')}</p>
         ) : (
           <PendingRequestsList
             pendingRequests={pendingRequests}
