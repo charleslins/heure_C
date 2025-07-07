@@ -7,10 +7,9 @@
     "adminPanel": "Painel Admin",
     "manageHolidays": "Gerir Feriados",
     "manageEmployees": "Gestão de Funcionários",
-    "manageEmployeesShort": "Funcionários",
-    "logout": "Sair",
     "profileSettings": "Configurações do Perfil",
-    "changePassword": "Mudar Senha"
+    "changePassword": "Mudar Senha",
+    "logout": "Sair"
   },
   "loginPage": {
     "title": "Login",
@@ -153,14 +152,30 @@
     "alertDateExists": "Já existe um feriado cadastrado para esta data.",
     "alertConfigSaved": "Configuração de feriados salva (automaticamente ao adicionar/remover)."
   },
-  "adminDashboardPage": {
-    "title": "Painel do Administrador",
+  "adminDashboard": {
+    "title": "Painel Admin",
+    "pendingRequests": "Solicitações Pendentes",
+    "manageHolidays": "Gerir Feriados",
+    "vacationSummary": "Resumo de Férias",
+    "globalSettings": "Configurações",
+    "totalEmployees": "Total de Funcionários",
+    "totalVacationDays": "Total de Dias de Férias",
+    "pendingDays": "Dias Pendentes",
+    "remainingDays": "Dias Restantes",
+    "approveAllFor": "Aprovar todas para",
+    "noPendingRequests": "Nenhuma solicitação pendente no momento",
+    "totalDays": "Total de Dias",
+    "usedDays": "Dias Utilizados",
+    "employee": "Funcionário",
+    "department": "Departamento",
+    "approve": "Aprovar",
+    "reject": "Rejeitar",
     "welcomeMessage": "Bem-vindo, {{name}}. Gerencie usuários e solicitações de férias.",
     "userVacationSummaryTitle": "Resumo de Férias dos Usuários",
     "noVacationsForUser": "Nenhuma férias registrada para este usuário para o ano atual.",
     "noOtherUsersSummary": "Nenhum outro usuário para exibir o resumo.",
     "totalManagedUsers": "Usuários Gerenciados",
-    "globalConfigTitle": "Configuração Global dos Usuários",
+    "globalConfigTitle": "Configurações Globais",
     "defaultParamsCardTitle": "Parâmetros Padrão",
     "globalDefaultTimesCardTitle": "Horários Padrão Globais (Opcional)",
     "saveGlobalSettingsButton": "Salvar Config. Global",
@@ -182,7 +197,6 @@
     "approveAllForUserButton": "Aprovar Todas para {{name}}",
     "allRequestsApprovedForUser": "Todas as {{count}} solicitações pendentes para {{userName}} foram aprovadas.",
     "batchApprovedComment": "Aprovado em lote",
-    "noPendingRequests": "Nenhuma solicitação pendente no momento.",
     "userColumn": "Usuário",
     "vacationDateColumn": "Data da Féria",
     "adminCommentColumn": "Comentário (Admin)",
@@ -195,8 +209,14 @@
     "simulatedEmailSubject": "Sua solicitação de férias para {{date}} foi {{status}}.",
     "simulatedEmailBody": "Comentário do Admin: {{comment}}",
     "requestProcessedAlert": "Solicitação para {{userName}} ({{date}}) foi {{status}}. Comentário: {{commentText}}",
-    "userManagementSectionTitle": "Gerenciamento de Usuários",
-    "userManagementPlaceholder": "Configurações específicas do usuário e gerenciamento de solicitações de férias estarão disponíveis em uma atualização futura.",
+    "defaultAnnualVacationDays": "Dias de Férias Anuais Padrão",
+    "defaultAnnualVacationDaysHelp": "Número padrão de dias de férias por ano para novos funcionários",
+    "minAdvanceNotice": "Aviso Mínimo",
+    "minAdvanceNoticeHelp": "Dias mínimos de antecedência para solicitar férias",
+    "maxConsecutiveDays": "Dias Consecutivos Máximos",
+    "maxConsecutiveDaysHelp": "Número máximo de dias consecutivos de férias permitidos",
+    "autoApprovalEnabled": "Aprovação Automática",
+    "autoApprovalEnabledHelp": "Aprovar automaticamente solicitações que atendam aos critérios",
     "peakConcurrencyChart": {
       "title": "Pico de Concorrência de Férias por Mês",
       "yAxisLabel": "Máx. de usuários de férias em um único dia",
@@ -211,16 +231,7 @@
       "conflictModalTitle": "Conflitos de Férias em {{month}} de {{year}}",
       "conflictDayEntry": "{{date}}: {{count}} usuários - {{users}}",
       "exceedsThresholdWarning": "Excede o limite de {{threshold}} usuários!"
-    },
-    "userRoleManagementTitle": "Gerenciamento de Funções de Usuário",
-    "noOtherUsersToManageRoles": "Nenhum outro usuário para gerenciar funções.",
-    "userNameColumn": "Nome",
-    "userEmailColumn": "Email",
-    "userCurrentRoleColumn": "Função Atual",
-    "userNewRoleColumn": "Nova Função",
-    "changeRoleForUserAria": "Mudar função para {{name}}",
-    "userRoleUpdatedSuccess": "A função de {{userName}} foi atualizada para {{role}}.",
-    "userRoleUpdatedError": "Erro ao atualizar a função do usuário. Por favor, tente novamente."
+    }
   },
   "userProfilePage": {
     "title": "Configurações do Perfil",
@@ -261,7 +272,12 @@
       "pageNotFound": "Página não encontrada.",
       "accessDenied": "Acesso Negado",
       "noPermission":"Você não tem permissão para acessar esta página.",
-      "notAvailableShort":"N/D"
+      "notAvailableShort":"N/D",
+      "loading": "Carregando...",
+      "save": "Salvar",
+      "date": "Data",
+      "actions": "Ações",
+      "comment": "Comentário"
   },
   "holidays": {
     "AnoNovo": "Ano Novo",
