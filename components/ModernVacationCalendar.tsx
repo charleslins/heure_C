@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowSmallLeftIcon, ArrowSmallRightIcon } from './icons';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function ModernVacationCalendar() {
   console.log("EXECUTANDO O COMPONENTE À PROVA DE FALHAS");
@@ -9,9 +9,13 @@ export default function ModernVacationCalendar() {
       
       {/* Cabeçalho Fixo */}
       <div className="flex items-center justify-between mb-4">
-        <button className="p-2 rounded-full hover:bg-slate-100"><ArrowSmallLeftIcon className="w-6 h-6 text-slate-500" /></button>
+        <button className="p-2 rounded-full hover:bg-slate-100">
+          <ChevronLeft className="w-6 h-6 text-slate-500" />
+        </button>
         <h2 className="text-2xl font-bold text-indigo-700">MÊS DE TESTE</h2>
-        <button className="p-2 rounded-full hover:bg-slate-100"><ArrowSmallRightIcon className="w-6 h-6 text-slate-500" /></button>
+        <button className="p-2 rounded-full hover:bg-slate-100">
+          <ChevronRight className="w-6 h-6 text-slate-500" />
+        </button>
       </div>
 
       {/* Dias da Semana Fixos */}

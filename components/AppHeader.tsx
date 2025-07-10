@@ -3,19 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { User, Page } from '../types';
 import { USER_COLORS } from '../constants';
 import MonthYearSelector from './MonthYearSelector';
-import LanguageSwitcher from './LanguageSwitcher';
-import {
-    AppLogoIcon, // Changed from ClockIcon
-    CalendarDaysIcon as NavCalendarIcon, 
-    ShieldCheckIcon as NavAdminIcon, 
-    ArrowLeftOnRectangleIcon, 
-    ChevronLeftIcon, 
-    ChevronRightIcon, 
-    PencilSquareIcon,
-    KeyIcon, 
-    Cog8ToothIcon,
-    ChevronDownIcon // Added for dropdown arrow
-} from './icons'; 
+import { 
+  Clock,
+  Calendar,
+  Shield,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  PencilSquare,
+  Key,
+  Cog,
+  ChevronDown
+} from 'lucide-react';
 
 interface AppHeaderProps {
   user: User;
@@ -79,8 +78,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
   }
 
   const profileMenuItems = [
-    { labelKey: 'nav.profileSettings', icon: Cog8ToothIcon, action: () => handleProfileNavigate('user_profile') },
-    { labelKey: 'nav.changePassword', icon: KeyIcon, action: () => handleProfileNavigate('user_profile') }, // Placeholder
+    { labelKey: 'nav.profileSettings', icon: Cog, action: () => handleProfileNavigate('user_profile') },
+    { labelKey: 'nav.changePassword', icon: Key, action: () => handleProfileNavigate('user_profile') }, // Placeholder
   ];
 
   return (
@@ -91,9 +90,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
           <div className="flex items-center">
             <div className="flex-shrink-0">
                <h1 className={`text-xl lg:text-2xl font-bold ${headerTextColor} flex items-center`}>
-                 <AppLogoIcon className="w-6 h-6 lg:w-8 lg:h-8 mr-2" />
-                 <span className="hidden sm:inline">{t('appName')}</span>
-                 <span className="sm:hidden">Horas</span>
+                 <Clock className="w-6 h-6 lg:w-8 lg:h-8 mr-2" />
+                 <span>{t('appNameShort')}</span>
                 </h1>
             </div>
             <nav className="hidden md:flex md:ml-4 lg:ml-8 md:space-x-1">
@@ -102,27 +100,27 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
               </button>
               {user.role !== 'admin' && (
                 <button onClick={() => onNavigate('vacations')} className={navLinkClasses('vacations')}>
-                  <NavCalendarIcon className={iconSize} />
+                  <Calendar className={iconSize} />
                   <span>{t('nav.vacations')}</span>
                 </button>
               )}
               {user.role === 'admin' && (
                 <button onClick={() => onNavigate('admin_tabbed')} className={navLinkClasses('admin_tabbed')}>
-                  <NavAdminIcon className={iconSize} /> 
+                  <Shield className={iconSize} /> 
                   <span>{t('nav.adminPanel')}</span>
                 </button>
               )}
             </nav>
           </div>
 
-          {/* Center/Right Section (Desktop): Date Nav, Language */}
+          {/* Center/Right Section (Desktop): Date Nav */}
           <div className="hidden lg:flex items-center space-x-2">
             <button
               onClick={() => changeMonth(-1)}
               className={`p-2 ${headerTextColor} ${hoverBgColor} rounded-md transition-colors`}
               aria-label={t('monthYearSelector.selectMonth')}
             >
-              <ChevronLeftIcon className="w-6 h-6" />
+              <ChevronLeft className="w-6 h-6" />
             </button>
             <MonthYearSelector
                 currentDate={currentDate}
@@ -134,9 +132,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
               className={`p-2 ${headerTextColor} ${hoverBgColor} rounded-md transition-colors`}
               aria-label={t('monthYearSelector.selectMonth')}
             >
-              <ChevronRightIcon className="w-6 h-6" />
+              <ChevronRight className="w-6 h-6" />
             </button>
-            <LanguageSwitcher />
           </div>
 
           {/* Far Right Section: User Profile */}
@@ -155,7 +152,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
                     <span className={`text-sm font-medium ${headerTextColor} truncate max-w-[120px]`}>{user.name}</span>
                     {user.email && <span className={`block text-xs ${headerTextColor} opacity-80 truncate max-w-[120px]`}>{user.email}</span>}
                 </div>
-                 <ChevronDownIcon className={`ml-1 h-5 w-5 ${dropdownArrowColor} transition-transform duration-200 ${isProfileDropdownOpen ? 'transform rotate-180' : ''}`} aria-hidden="true" />
+                 <ChevronDown className={`ml-1 h-5 w-5 ${dropdownArrowColor} transition-transform duration-200 ${isProfileDropdownOpen ? 'transform rotate-180' : ''}`} aria-hidden="true" />
             </button>
 
             {isProfileDropdownOpen && (
@@ -184,7 +181,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
                   className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 flex items-center space-x-3 border-t border-slate-200"
                   role="menuitem" tabIndex={-1}
                 >
-                  <ArrowLeftOnRectangleIcon className="w-5 h-5"/>
+                  <LogOut className="w-5 h-5"/>
                   <span>{t('nav.logout')}</span>
                 </button>
               </div>
@@ -200,25 +197,22 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
               </button>
               {user.role !== 'admin' && (
                 <button onClick={() => onNavigate('vacations')} className={navLinkClasses('vacations')}>
-                  <NavCalendarIcon className={iconSize} /> {t('nav.vacations')}
+                  <Calendar className={iconSize} /> {t('nav.vacations')}
                 </button>
               )}
               {user.role === 'admin' && (
                 <button onClick={() => onNavigate('admin_tabbed')} className={navLinkClasses('admin_tabbed')}>
-                 <NavAdminIcon className={iconSize} /> {t('nav.adminPanel')} 
+                 <Shield className={iconSize} /> {t('nav.adminPanel')} 
                 </button>
               )}
             </nav>
-             <div className="flex justify-center items-center space-x-2 pt-2">
-                 <LanguageSwitcher />
-            </div>
              <div className="flex justify-center items-center space-x-2 pt-2">
                 <button
                   onClick={() => changeMonth(-1)}
                   className={`p-2 ${headerTextColor} ${hoverBgColor} rounded-md transition-colors`}
                   aria-label={t('monthYearSelector.selectMonth')}
                 >
-                  <ChevronLeftIcon className="w-6 h-6" />
+                  <ChevronLeft className="w-6 h-6" />
                 </button>
                 <MonthYearSelector currentDate={currentDate} onDateChange={onDateChange} labelColorClass={headerTextColor}/>
                 <button
@@ -226,7 +220,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user, currentDate, currentPage, o
                   className={`p-2 ${headerTextColor} ${hoverBgColor} rounded-md transition-colors`}
                   aria-label={t('monthYearSelector.selectMonth')}
                 >
-                  <ChevronRightIcon className="w-6 h-6" />
+                  <ChevronRight className="w-6 h-6" />
                 </button>
             </div>
         </div>

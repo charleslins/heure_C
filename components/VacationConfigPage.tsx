@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useTranslation } from '../contexts/SimpleI18nContext';
+import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useGlobalDataContext } from '../contexts/GlobalDataContext';
 import { useCurrentUserDataContext } from '../contexts/CurrentUserDataContext';
@@ -7,20 +7,12 @@ import { useNotificationContext } from '../contexts/NotificationContext';
 import { useVacationCalculations } from '../hooks/useVacationCalculations';
 import { getDaysInMonth, formatDateToYYYYMMDD } from '../utils/timeUtils';
 import { printVacationRequest } from '../utils/printVacationRequest';
-import { ArrowSmallLeftIcon, ArrowSmallRightIcon, CalendarDaysIcon } from './icons';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import LoadingScreen from './LoadingScreen';
 import { VacationStatus, VacationConfigPageProps } from '../types';
 import LanguageLandingPage from "./LanguageLandingPage";
 
-const SummaryIcon = (props: any) => (
-  <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M16 3v4M8 3v4m-5 4h18" /></svg>
-);
-const HolidayIcon = (props: any) => (
-  <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-);
-const PlaneIcon = (props: any) => (
-  <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.5 12.5l8.5-2.5-8.5-2.5V3l-7 9 7 9v-5.5z" /></svg>
-);
+import { BarChart3, CalendarDays, Plane } from 'lucide-react';
 
 const statusColors: Record<string, string> = {
   workday: 'bg-white text-indigo-700 border border-indigo-200',
@@ -33,7 +25,7 @@ const statusColors: Record<string, string> = {
 };
 
 const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, onDateChange }) => {
-  const { t, lang, setLang } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { addNotification } = useNotificationContext();
   const { currentUser } = useAuthContext();
   const { globalUserSettings, globalHolidays, isLoadingGlobalData } = useGlobalDataContext();
@@ -159,10 +151,10 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
     printVacationRequest(
       currentUser,
       printableVacations,
-      displayDate.toLocaleDateString(lang, { month: 'long', year: 'numeric' }),
-      { t, language: lang }
+      displayDate.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' }),
+              { t, language: i18n.language }
     );
-  }, [currentUser, currentMonthUserVacations, displayDate, lang, t, addNotification]);
+      }, [currentUser, currentMonthUserVacations, displayDate, i18n.language, t, addNotification]);
 
   const changeDisplayedMonth = (increment: number) => {
     const newDisplayMonth = new Date(displayDate.getFullYear(), displayDate.getMonth() + increment, 1);
@@ -176,9 +168,9 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
     return Array.from({ length: 7 }).map((_, i) => {
       const day = new Date(baseDate);
       day.setDate(baseDate.getDate() + ((i + 1) % 7)); // Começa na segunda-feira
-      return day.toLocaleDateString(lang, { weekday: 'short' }).toUpperCase();
+      return day.toLocaleDateString(i18n.language, { weekday: 'short' }).toUpperCase();
     });
-  }, [lang]);
+      }, [i18n.language]);
 
   if (isLoadingGlobalData || isLoadingCurrentUserData || !currentUser) {
     return <LoadingScreen message={t('common.loadingData')} />;
@@ -234,6 +226,14 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
       tag = t('vacationStatuses.Pendente');
       bgClass = 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400';
       hoursTextClass = 'text-yellow-300';
+    } else if (vacation && vacation.status === VacationStatus.APPROVED) {
+      tag = t('vacationStatuses.Aprovado');
+      bgClass = 'bg-green-100 text-green-700 border-2 border-green-400';
+      hoursTextClass = 'text-green-300';
+    } else if (vacation && vacation.status === VacationStatus.REJECTED) {
+      tag = t('vacationStatuses.Rejeitado');
+      bgClass = 'bg-red-100 text-red-700 border-2 border-red-400';
+      hoursTextClass = 'text-red-300';
     }
     calendarDays.push({
       date: d,
@@ -257,7 +257,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Título principal */}
         <div className="flex items-center gap-2 text-indigo-700 text-2xl font-bold mb-2">
-          <CalendarDaysIcon className="w-7 h-7" />
+          <Calendar className="w-7 h-7" />
           <span>{t('vacationPage.title')}</span>
         </div>
         {/* Grid principal */}
@@ -265,11 +265,15 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
           {/* Calendário */}
           <div className="md:col-span-2 bg-white rounded-2xl shadow p-6 flex flex-col">
             <div className="flex items-center justify-between mb-2">
-              <button onClick={() => changeDisplayedMonth(-1)} className="text-2xl text-slate-400 px-12"><ArrowSmallLeftIcon className="w-6 h-6" /></button>
+              <button onClick={() => changeDisplayedMonth(-1)} className="text-2xl text-slate-400 hover:text-slate-600 transition-colors px-4">
+                <ChevronLeft className="w-8 h-8" />
+              </button>
               <span className="text-2xl font-bold text-indigo-700 py-4 block">
-                {displayDate.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+                {displayDate.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' })}
               </span>
-              <button onClick={() => changeDisplayedMonth(1)} className="text-2xl text-slate-400 px-12"><ArrowSmallRightIcon className="w-6 h-6" /></button>
+              <button onClick={() => changeDisplayedMonth(1)} className="text-2xl text-slate-400 hover:text-slate-600 transition-colors px-4">
+                <ChevronRight className="w-8 h-8" />
+              </button>
             </div>
             <div className="bg-slate-50 rounded-xl p-2">
               {/* Linha dos dias da semana */}
@@ -324,7 +328,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
           <div className="space-y-4">
             <div className="bg-white rounded-2xl shadow p-4">
               <div className="flex items-center gap-2 mb-2 text-indigo-700 font-semibold text-lg">
-                <SummaryIcon className="w-6 h-6" />
+                <BarChart3 className="w-6 h-6" />
                 <span>{t('vacationPage.monthlySummaryTitle')}</span>
               </div>
               <div className="space-y-2">
@@ -362,7 +366,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
             {/* Feriados */}
             <div className="bg-white rounded-2xl shadow p-4">
               <div className="flex items-center gap-2 mb-2 text-indigo-700 font-semibold text-lg">
-                <HolidayIcon className="w-6 h-6" />
+                <CalendarDays className="w-6 h-6" />
                 <span>{t('vacationPage.holidaysTitle')}</span>
               </div>
               <ul className="space-y-1">
@@ -370,7 +374,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
                   <li key={i} className="flex items-center gap-2 text-sm">
                     <span className="inline-block w-2 h-2 bg-yellow-200 rounded-full"></span>
                     <span>{h.name}</span>
-                    <span className="text-slate-400">{new Date(h.date + 'T00:00:00').toLocaleDateString(lang, { day: '2-digit', month: 'short' })}</span>
+                    <span className="text-slate-400">{new Date(h.date + 'T00:00:00').toLocaleDateString(i18n.language, { day: '2-digit', month: 'short' })}</span>
                   </li>
                 ))}
               </ul>
@@ -380,7 +384,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
         {/* Minhas Férias */}
         <div className="bg-white rounded-2xl shadow p-4 mt-2">
           <div className="flex items-center gap-2 mb-2 text-indigo-700 font-semibold text-lg">
-            <PlaneIcon className="w-6 h-6" />
+            <Plane className="w-6 h-6" />
             <span>{t('vacationPage.myVacationsTitle')}</span>
             <button
               onClick={handleSubmitForApproval}
@@ -396,7 +400,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({ currentDate, on
                   key={opt.date}
                   className={`px-4 py-1 rounded-full text-xs font-semibold shadow-sm border border-indigo-200 ${opt.status === VacationStatus.SELECTED ? 'bg-indigo-200 text-indigo-800' : opt.status === VacationStatus.PENDING_APPROVAL ? 'bg-yellow-100 text-yellow-700' : opt.status === VacationStatus.APPROVED ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}
                 >
-                  {new Date(opt.date + 'T00:00:00').toLocaleDateString(lang, { day: '2-digit', month: 'short' })}
+                  {new Date(opt.date + 'T00:00:00').toLocaleDateString(i18n.language, { day: '2-digit', month: 'short' })}
                   {opt.status && (
                     <span className="ml-2">{t(`vacationStatuses.${opt.status}`)}</span>
                   )}

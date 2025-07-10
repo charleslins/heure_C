@@ -1,0 +1,37 @@
+# Regras React
+
+description: Padrões e diretrizes para desenvolvimento React
+globs: **/*.{tsx,ts}
+alwaysApply: true
+
+## Estrutura de Componentes
+- Componentes funcionais
+- Props tipadas com interface
+- Hooks no topo do componente
+- Lógica separada da renderização
+- Documentação de props complexas
+
+## Hooks
+- Hooks personalizados para lógica reutilizável
+- Estado e efeitos bem definidos
+- Retornos tipados
+- Tratamento de erros
+
+## Contextos
+- Tipagem forte
+- Providers organizados
+- Valores padrão seguros
+- Hooks de contexto
+
+## Performance
+- Memoização quando necessário
+- Lazy loading
+- Code splitting
+- Otimização de re-renders
+
+## Observações Importantes
+1. Componentização modular
+2. Props tipadas
+3. Documentação clara
+4. Estados gerenciados
+5. Tratamento de erros

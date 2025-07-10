@@ -1,3 +1,10 @@
+import React from 'react';
+
+// Interface para props de ícones
+export interface IconProps extends React.SVGProps<SVGSVGElement> {
+  // Permite todas as props padrão de SVG
+}
+
 export enum EntryType {
   REGULAR = 'Regular',
   VACANCE = 'Vacance',
@@ -14,10 +21,15 @@ export enum VacationStatus {
 }
 
 export interface Holiday {
-  id?: string; // UUID - Made optional as Supabase will generate it for new holidays
-  date: string; // 'YYYY-MM-DD'
+  id: string;
   name: string;
-  isOfficial?: boolean; // Optional: To distinguish official vs custom
+  date: string;
+  isOfficial: boolean;
+  cantonId?: number;
+  municipalityId?: number;
+  type: 'NATIONAL' | 'CANTONAL' | 'MUNICIPAL' | 'CUSTOM';
+  description?: string;
+  repeatsAnnually?: boolean;
 }
 
 export interface VacationDay {
@@ -209,4 +221,11 @@ export interface NotificationContextType {
   notifications: Notification[];
   addNotification: (message: string, type: NotificationType, duration?: number) => void;
   removeNotification: (id: string) => void;
+}
+
+export interface PendingRequest {
+  userId: string;
+  userName: string;
+  date: string;
+  comment?: string;
 }

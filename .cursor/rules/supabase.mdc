@@ -1,0 +1,30 @@
+# Regras Supabase
+
+description: Padrões e diretrizes para integração com Supabase
+globs: **/*.{ts,tsx}
+alwaysApply: true
+
+## Tipagem
+- Usar tipos gerados
+- Database types
+- Row types
+- Response types
+
+## Queries
+- Select com tipagem
+- Insert com retorno
+- Update com validação
+- Delete com confirmação
+
+## Tratamento de Erros
+- Try/catch em todas operações
+- Logging de erros
+- Feedback ao usuário
+- Retry policies
+
+## Observações Importantes
+1. Seguir SUPABASE_MCP.md
+2. Manter tipos atualizados
+3. Validar dados
+4. Tratar erros
+5. Documentar queries complexas

@@ -1,0 +1,52 @@
+# Regras de Integração
+
+description: Padrões e diretrizes para integração com serviços externos
+globs: **/services/**/*.ts
+alwaysApply: true
+
+## Supabase
+### Configuração
+- Client: `/src/supabase/client.ts`
+- Types: `/src/types/supabase.ts`
+- Migrations: `/src/supabase/migrations/`
+
+### Padrões
+- Seguir SUPABASE_MCP.md
+- Usar tipos gerados
+- Implementar retry policies
+- Tratar erros adequadamente
+
+## Internacionalização (i18n)
+### Estrutura
+- Arquivos: `/locales/{lang}/translation.json`
+- Implementação: react-i18next
+- Chaves por feature
+- Namespace para comuns
+
+## Autenticação
+### Implementação
+- Usar Supabase Auth
+- Controle de sessão
+- Refresh tokens
+- Rotas protegidas
+
+## APIs Externas
+### Padrões
+- Usar serviços dedicados
+- Implementar cache quando possível
+- Validar respostas
+- Logging de erros
+
+## Gerenciamento de Estado
+### Contextos
+- AuthContext
+- UserDataContext
+- NotificationContext
+- GlobalDataContext
+
+## Observações Importantes
+1. Seguir documentação oficial
+2. Manter tipos atualizados
+3. Documentar integrações
+4. Implementar logs
+5. Monitorar performance

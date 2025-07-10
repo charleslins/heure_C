@@ -1,0 +1,34 @@
+# Regras Tailwind
+
+description: Padrões e diretrizes para estilização com Tailwind
+globs: **/*.{tsx,ts}
+alwaysApply: true
+
+## Organização de Classes
+1. Layout (flex, grid, position)
+2. Espaçamento (padding, margin)
+3. Dimensões (width, height)
+4. Tipografia (text, font)
+5. Cores (bg, text)
+6. Bordas (border, rounded)
+7. Efeitos (shadow, opacity)
+8. Estados (hover, focus)
+
+## Componentes
+- Usar class-variance-authority
+- Variantes definidas
+- Estilos consistentes
+- Responsividade
+
+## Responsividade
+- Mobile first
+- Breakpoints padrão
+- Layouts flexíveis
+- Testes em diferentes telas
+
+## Observações Importantes
+1. Seguir ordem de classes
+2. Manter consistência
+3. Usar utilitários
+4. Documentar variantes
+5. Testar responsividade

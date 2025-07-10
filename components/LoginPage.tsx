@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { AlertTriangleIcon, AtSymbolIcon, LockClosedIcon, UserIcon } from './icons';
+import { Mail, Lock, User, AlertTriangle } from 'lucide-react';
 import InputWithIcon from './common/InputWithIcon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { Clock } from 'lucide-react';
 
 interface LoginPageProps {
   supabaseClient: SupabaseClient;
@@ -22,7 +21,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
 
   const handleAuthAction = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -48,7 +46,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
         options: {
           data: { 
             name: name.trim(),
-            role: 'user', // Default role
+            role: 'user',
           }
         }
       });
@@ -64,8 +62,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
       } else {
         setError(t('loginPage.errors.unknownError'));
       }
-
-    } else { // Login mode
+    } else {
       const { error: signInError } = await supabaseClient.auth.signInWithPassword({
         email,
         password,
@@ -83,21 +80,20 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
   };
 
   if (isModal) {
-    // Layout compacto para modal
     return (
       <div className="w-full max-w-sm mx-auto">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            {isAdmin ? 'Login do Administrador' : t('loginPage.title')}
+            {isAdmin ? t('loginPage.adminTitle') : t('loginPage.title')}
           </h1>
           {isAdmin && (
-            <p className="text-orange-600 font-semibold mt-2">Acesso restrito para administradores</p>
+            <p className="text-orange-600 font-semibold mt-2">{t('loginPage.adminAccess')}</p>
           )}
         </div>
         <div className="bg-white shadow-xl rounded-xl p-6 md:p-8">
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-300 text-red-700 rounded-md text-sm flex items-center">
-              <AlertTriangleIcon className="w-5 h-5 mr-2 flex-shrink-0" />
+              <AlertTriangle className="h-5 w-5 text-red-500" />
               <span>{error}</span>
             </div>
           )}
@@ -117,7 +113,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder={t('loginPage.nameLabel')}
-                icon={<UserIcon className="h-5 w-5" />}
+                icon={<User className="h-5 w-5" />}
                 label={t('loginPage.nameLabel')}
               />
             )}
@@ -130,7 +126,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t('loginPage.emailLabel')}
-              icon={<AtSymbolIcon className="h-5 w-5" />}
+              icon={<Mail className="h-5 w-5" />}
               label={t('loginPage.emailLabel')}
             />
             <InputWithIcon
@@ -142,7 +138,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t('loginPage.passwordLabel')}
-              icon={<LockClosedIcon className="h-5 w-5" />}
+              icon={<Lock className="h-5 w-5" />}
               label={t('loginPage.passwordLabel')}
             />
             {isRegisterMode && (
@@ -155,7 +151,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder={t('loginPage.confirmPasswordLabel')}
-                icon={<LockClosedIcon className="h-5 w-5" />}
+                icon={<Lock className="h-5 w-5" />}
                 label={t('loginPage.confirmPasswordLabel')}
               />
             )}
@@ -163,14 +159,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${isAdmin ? 'bg-orange-600 hover:bg-orange-700' : 'bg-indigo-600 hover:bg-indigo-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50`}
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50"
               >
                 {isLoading
-                  ? (<svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>)
-                  : isRegisterMode ? t('loginPage.registerButton') : isAdmin ? 'Entrar como Administrador' : t('loginPage.loginButton')}
+                  ? t('loginPage.loading')
+                  : isRegisterMode ? t('loginPage.registerButton') : isAdmin ? t('loginPage.adminLoginButton') : t('loginPage.loginButton')}
               </button>
             </div>
           </form>
@@ -202,26 +195,22 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
-      {/* Left Branding Column */}
       <div className="hidden md:flex flex-col items-center justify-center bg-indigo-600 p-12 text-white">
-        <FontAwesomeIcon icon={faClock} className="w-48 h-48 mb-8 text-indigo-200" />
+        <Clock className="w-48 h-48 mb-8 text-indigo-200" strokeWidth={0.5} />
         <h1 className="text-4xl font-bold mb-4 text-center">{t('appName')}</h1>
         <p className="text-lg text-indigo-100 text-center max-w-sm">
           {t('loginPage.welcomeSubtitle', "Manage your work hours efficiently and stay organized.")}
         </p>
       </div>
 
-      {/* Right Form Column */}
       <div className="flex flex-col items-center justify-center bg-slate-50 p-6 sm:p-12">
         <div className="w-full max-w-md">
-            {/* Mobile Branding (Simplified) */}
             <div className="md:hidden text-center mb-8">
-                <FontAwesomeIcon icon={faClock} className="w-24 h-24 mx-auto mb-4 text-indigo-600" />
+                <Clock className="w-24 h-24 mx-auto mb-4 text-indigo-600" strokeWidth={1} />
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900">
                 {isRegisterMode ? t('loginPage.registerTitle') : t('loginPage.title')}
                 </h1>
             </div>
-            {/* Desktop Title (Above form card) */}
              <div className="hidden md:block text-center mb-8">
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900">
                 {isRegisterMode ? t('loginPage.registerTitle') : t('loginPage.title')}
@@ -231,7 +220,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
           <div className="bg-white shadow-xl rounded-xl p-8 md:p-10">
             {error && (
               <div className="mb-4 p-3 bg-red-50 border border-red-300 text-red-700 rounded-md text-sm flex items-center">
-                <AlertTriangleIcon className="w-5 h-5 mr-2 flex-shrink-0" />
+                <AlertTriangle className="h-5 w-5 text-red-500" />
                 <span>{error}</span>
               </div>
             )}
@@ -252,7 +241,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={t('loginPage.nameLabel')}
-                  icon={<UserIcon className="h-5 w-5" />}
+                  icon={<User className="h-5 w-5" />}
                   label={t('loginPage.nameLabel')}
                 />
               )}
@@ -265,7 +254,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('loginPage.emailLabel')}
-                icon={<AtSymbolIcon className="h-5 w-5" />}
+                icon={<Mail className="h-5 w-5" />}
                 label={t('loginPage.emailLabel')}
               />
               <InputWithIcon
@@ -277,7 +266,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={t('loginPage.passwordLabel')}
-                icon={<LockClosedIcon className="h-5 w-5" />}
+                icon={<Lock className="h-5 w-5" />}
                 label={t('loginPage.passwordLabel')}
               />
               {isRegisterMode && (
@@ -290,7 +279,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder={t('loginPage.confirmPasswordLabel')}
-                  icon={<LockClosedIcon className="h-5 w-5" />}
+                  icon={<Lock className="h-5 w-5" />}
                   label={t('loginPage.confirmPasswordLabel')}
                 />
               )}
@@ -302,10 +291,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ supabaseClient, isModal, isAdmin 
                   className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50"
                 >
                   {isLoading 
-                    ? (<svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                       </svg>) 
+                    ? t('loginPage.loading')
                     : isRegisterMode ? t('loginPage.registerButton') : t('loginPage.loginButton')}
                 </button>
               </div>

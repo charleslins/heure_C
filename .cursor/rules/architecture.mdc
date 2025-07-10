@@ -1,0 +1,94 @@
+# Regras de Arquitetura do Projeto
+
+description: Padrões e diretrizes para a arquitetura do projeto
+globs: **/*.{ts,tsx}
+alwaysApply: true
+
+## Estrutura MVC com Presenters
+### Diretórios Base
+- Models: `/src/models/`
+  - Definição de tipos e interfaces de domínio
+  - Regras de negócio
+  - Validações de dados
+
+- Views (Components): `/components/`
+  - Componentes React
+  - Lógica de apresentação
+  - Estilos e layout
+
+- Presenters: `/src/presenters/`
+  - Lógica de controle
+  - Gerenciamento de estado
+  - Comunicação com serviços
+
+## Organização de Diretórios
+### Serviços e Utilitários
+- Services: `/src/services/`
+  - Integrações externas
+  - APIs e clientes HTTP
+  - Serviços de autenticação
+
+- Utils: `/src/utils/`
+  - Funções auxiliares
+  - Formatadores
+  - Validadores
+
+- Types: `/src/types/`
+  - Tipos TypeScript
+  - Interfaces compartilhadas
+  - Tipos do Supabase
+
+## Padrões de Nomenclatura
+### Arquivos
+- Components: `PascalCase.tsx`
+  - Button.tsx
+  - UserProfile.tsx
+  - DashboardLayout.tsx
+
+- Models: `PascalCase.ts`
+  - User.ts
+  - Vacation.ts
+  - Department.ts
+
+- Presenters: `PascalCase.ts`
+  - UserPresenter.ts
+  - VacationPresenter.ts
+
+- Utils: `camelCase.ts`
+  - dateUtils.ts
+  - stringUtils.ts
+
+## Ordem de Imports
+1. React e bibliotecas externas
+2. Tipos e interfaces
+3. Components
+4. Services e Presenters
+5. Utils e constantes
+
+## Regras de Implementação
+### Models
+- Definir interfaces claras
+- Incluir validações de dados
+- Documentar propriedades complexas
+
+### Presenters
+- Um presenter por modelo
+- Métodos assíncronos para operações de dados
+- Tratamento de erros consistente
+
+### Components
+- Componentização modular
+- Props tipadas
+- Documentação de uso
+
+### Services
+- Abstração de APIs externas
+- Tratamento de erros
+- Retry policies quando necessário
+
+## Observações Importantes
+1. Manter a estrutura de pastas consistente
+2. Cada modelo deve ter seu presenter correspondente
+3. Utilizar tipos fortes em todo o projeto
+4. Documentar decisões arquiteturais importantes
+5. Seguir princípios SOLID

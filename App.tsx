@@ -7,7 +7,6 @@ import { GlobalDataProvider, useGlobalDataContext } from './contexts/GlobalDataC
 import { CurrentUserDataProvider, useCurrentUserDataContext } from './contexts/CurrentUserDataContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import NotificationDisplay from './components/NotificationDisplay';
-import { SimpleI18nProvider } from "./contexts/SimpleI18nContext";
 import MainAppLayout from './components/MainAppLayout';
 import LoadingScreen from './components/LoadingScreen';
 import LanguageLandingPage from './components/LanguageLandingPage';
@@ -21,8 +20,12 @@ const AppContent: React.FC = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [showLandingLogin, setShowLandingLogin] = useState(false);
   
+  // Removido debug logging
+  
   useEffect(() => {
-    document.title = t('appTitle');
+    const translatedTitle = t('appTitle');
+    console.log('🔍 Setting document title:', translatedTitle);
+    document.title = translatedTitle;
   }, [t]);
 
   useEffect(() => {
@@ -38,17 +41,15 @@ const AppContent: React.FC = () => {
     }
   }, [currentUser, isLoadingAuth]);
 
-  if (typeof window !== 'undefined') {
-    window.__APP_LOADING_DEBUG__ = {
-      isLoadingAuth,
-      isLoadingGlobalData,
-      currentUser,
-      timestamp: new Date().toISOString()
-    };
-    console.log("[DEBUG] AppContent loading states:", window.__APP_LOADING_DEBUG__);
-  }
+  // Removido debug window
 
   if (isLoadingAuth || (currentUser && isLoadingGlobalData)) {
+    console.log('🚨 LOADING SCREEN ATIVO:', {
+      isLoadingAuth,
+      isLoadingGlobalData,
+      currentUser: !!currentUser,
+      message: isLoadingAuth ? t('common.loadingApp') : t('common.loadingUserData')
+    });
     return <LoadingScreen message={isLoadingAuth ? t('common.loadingApp') : t('common.loadingUserData')} />;
   }
 
@@ -80,14 +81,7 @@ const MainAppLayoutWrapper: React.FC<{
   const { isLoadingCurrentUserData } = useCurrentUserDataContext();
   const { t } = useTranslation();
 
-  if (typeof window !== 'undefined') {
-    window.__APP_LOADING_DEBUG_WRAPPER__ = {
-      isLoadingCurrentUserData,
-      currentUser,
-      timestamp: new Date().toISOString()
-    };
-    console.log("[DEBUG] MainAppLayoutWrapper loading states:", window.__APP_LOADING_DEBUG_WRAPPER__);
-  }
+  // Removido debug wrapper
 
   if (isLoadingCurrentUserData && currentUser) {
     return <LoadingScreen message={t('common.loadingUserData', 'Loading user data...')} />;
@@ -97,16 +91,14 @@ const MainAppLayoutWrapper: React.FC<{
 };
 
 const App: React.FC = () => (
-  <SimpleI18nProvider>
-    <AuthProvider>
-      <GlobalDataProvider>
-        <NotificationProvider>
-          <AppContent />
-          <NotificationDisplay />
-        </NotificationProvider>
-      </GlobalDataProvider>
-    </AuthProvider>
-  </SimpleI18nProvider>
+  <AuthProvider>
+    <GlobalDataProvider>
+      <NotificationProvider>
+        <AppContent />
+        <NotificationDisplay />
+      </NotificationProvider>
+    </GlobalDataProvider>
+  </AuthProvider>
 );
 
 export default App;

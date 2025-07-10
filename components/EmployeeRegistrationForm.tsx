@@ -232,14 +232,14 @@ const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> = ({
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        {isEditMode ? 'Editar Funcionário' : t('employeeManagement.employeeRegistration.title')}
+        {isEditMode ? t('employeeManagement.employeeRegistration.editTitle') : t('employeeManagement.employeeRegistration.title')}
       </h2>
       
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Nome */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Nome Completo *
+            {t('employeeManagement.employeeRegistration.nameLabel')} *
           </label>
           <input
             type="text"
@@ -249,7 +249,7 @@ const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> = ({
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.name ? 'border-red-500' : 'border-gray-300'
             }`}
-            placeholder="Digite o nome completo"
+            placeholder={t('employeeManagement.employeeRegistration.namePlaceholder')}
           />
           {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
         </div>
@@ -257,23 +257,23 @@ const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> = ({
         {/* Email */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email *
+            {t('employeeManagement.employeeRegistration.emailLabel')} *
           </label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            disabled={isEditMode} // Email não pode ser alterado no modo de edição
+            disabled={isEditMode}
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.email ? 'border-red-500' : 'border-gray-300'
             } ${isEditMode ? 'bg-gray-100 cursor-not-allowed' : ''}`}
-            placeholder="email@exemplo.com"
+            placeholder={t('employeeManagement.employeeRegistration.emailPlaceholder')}
           />
           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           {isEditMode && (
             <p className="text-gray-500 text-xs mt-1">
-              O email não pode ser alterado após o cadastro
+              {t('employeeManagement.employeeRegistration.emailNotEditable')}
             </p>
           )}
         </div>

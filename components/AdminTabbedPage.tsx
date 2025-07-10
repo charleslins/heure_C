@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Users, CalendarDays, Settings, Calendar } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Users, User, Calendar, Settings } from 'lucide-react';
 import { useAuthContext } from '../contexts/AuthContext';
 import { VacationStatus, PendingRequest } from '../types';
 import { supabase } from '../utils/supabaseClient';
@@ -7,10 +8,12 @@ import PendingRequestsList from './AdminDashboard/PendingRequestsList';
 import GlobalSettingsForm from './AdminDashboard/GlobalSettingsForm';
 import UserVacationSummaryTable from './AdminDashboard/UserVacationSummaryTable';
 import HolidayManagementPage from './HolidayManagementPage';
+import AdminUserList from './AdminDashboard/AdminUserList';
 
 const AdminTabbedPage: React.FC = () => {
+  const { t } = useTranslation();
   const { currentUser } = useAuthContext();
-  const [activeTab, setActiveTab] = useState('pending');
+  const [activeTab, setActiveTab] = useState('users');
   const [isLoadingPendingRequests, setIsLoadingPendingRequests] = useState(false);
   const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);
 
@@ -23,20 +26,21 @@ const AdminTabbedPage: React.FC = () => {
         .from('user_vacations')
         .select(`
           user_id,
-          date,
-          comment,
-          profiles:user_id (
-            name
+          vacation_date:date,
+          comment:admin_comment,
+          users!user_id (
+            first_name,
+            last_name
           )
         `)
-        .eq('status', VacationStatus.PENDING_APPROVAL);
+        .eq('status', 'Pendente');
 
       if (error) throw error;
 
       const formattedRequests = data.map(req => ({
         userId: req.user_id,
-        userName: req.profiles.name,
-        date: req.date,
+        userName: `${req.users.first_name} ${req.users.last_name || ''}`.trim(),
+        date: req.vacation_date,
         comment: req.comment
       }));
 
@@ -56,7 +60,10 @@ const AdminTabbedPage: React.FC = () => {
     try {
       const { error } = await supabase
         .from('user_vacations')
-        .update({ status })
+        .update({ 
+          status: status === VacationStatus.APPROVED ? 'Aprovado' : 'Rejeitado',
+          admin_comment: status === VacationStatus.APPROVED ? 'Aprovado' : 'Rejeitado'
+        })
         .eq('user_id', request.userId)
         .eq('date', request.date);
 
@@ -74,9 +81,12 @@ const AdminTabbedPage: React.FC = () => {
     try {
       const { error } = await supabase
         .from('user_vacations')
-        .update({ status: VacationStatus.APPROVED })
+        .update({ 
+          status: 'Aprovado',
+          admin_comment: 'Aprovado em lote'
+        })
         .eq('user_id', userId)
-        .eq('status', VacationStatus.PENDING_APPROVAL);
+        .eq('status', 'Pendente');
 
       if (error) throw error;
 
@@ -88,8 +98,14 @@ const AdminTabbedPage: React.FC = () => {
 
   const tabs = [
     {
+      id: 'users',
+      name: t('adminDashboard.tabs.users'),
+      icon: User,
+      component: AdminUserList
+    },
+    {
       id: 'pending',
-      name: 'Solicitações Pendentes',
+      name: t('adminDashboard.tabs.pending'),
       icon: Users,
       component: () => (
         <PendingRequestsList
@@ -102,19 +118,19 @@ const AdminTabbedPage: React.FC = () => {
     },
     {
       id: 'holidays',
-      name: 'Gerir Feriados',
+      name: t('adminDashboard.tabs.holidays'),
       icon: Calendar,
       component: HolidayManagementPage
     },
     {
-      id: 'summary',
-      name: 'Resumo de Férias',
-      icon: CalendarDays,
+      id: 'vacations',
+      name: t('adminDashboard.tabs.vacations'),
+      icon: Calendar,
       component: UserVacationSummaryTable
     },
     {
       id: 'settings',
-      name: 'Configurações',
+      name: t('adminDashboard.tabs.settings'),
       icon: Settings,
       component: GlobalSettingsForm
     }

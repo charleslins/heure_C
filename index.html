@@ -2,23 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Você pode adicionar um ícone de favicon aqui, se desejar -->
-  <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Work Hours Tracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script> <script>
-    // Optional: You can add custom Tailwind configurations here if needed for the CDN version
-    // tailwind.config = {
-    //   theme: {
-    //     extend: {
-    //       colors: {
-    //         // example custom color
-    //       }
-    //     }
-    //   }
-    // }
-  </script>
+  <link rel="stylesheet" href="/src/index.css">
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -38,7 +25,7 @@
       background: #555;
     }
     input[type="time"]::-webkit-calendar-picker-indicator {
-      /* background: none; */ /* Consider custom styling or leave default */
+      /* background: none; */
     }
     .user-initials-placeholder {
       display: inline-flex;
@@ -48,26 +35,25 @@
       font-weight: 500;
       color: white;
     }
-    /* For Tailwind JIT, if py-1.5 is used and not standard */
-    .py-1\\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; } 
-    .text-xxs { font-size: 0.625rem; line-height: 0.875rem; } /* 10px */
+    .py-1\\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+    .text-xxs { font-size: 0.625rem; line-height: 0.875rem; }
   </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^18.2.0",
-    "react-dom/": "https://esm.sh/react-dom@^18.2.0/",
-    "react-i18next": "https://esm.sh/react-i18next@^14.0.5",
-    "react/": "https://esm.sh/react@^18.2.0/",
-    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.39.3",
-    "i18next": "https://esm.sh/i18next@^23.10.0",
-    "i18next-browser-languagedetector": "https://esm.sh/i18next-browser-languagedetector@^7.2.0",
-    "vite": "https://esm.sh/vite@^5.0.12",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^4.2.1"
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@^18.2.0",
+      "react-dom/": "https://esm.sh/react-dom@^18.2.0/",
+      "react-i18next": "https://esm.sh/react-i18next@^14.0.5",
+      "react/": "https://esm.sh/react@^18.2.0/",
+      "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.39.3",
+      "i18next": "https://esm.sh/i18next@^23.10.0",
+      "i18next-browser-languagedetector": "https://esm.sh/i18next-browser-languagedetector@^7.2.0",
+      "vite": "https://esm.sh/vite@^5.0.12",
+      "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^4.2.1",
+      "lucide-react": "https://esm.sh/lucide-react@^0.294.0"
+    }
   }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
+  </script>
 </head>
 <body class="bg-slate-50 antialiased">
   <div id="root"></div>

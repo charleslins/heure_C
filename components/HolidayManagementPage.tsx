@@ -1,241 +1,262 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Holiday } from '../types';
-import { PlusCircleIcon, TrashIcon, CalendarDaysIcon as PageIcon } from './icons'; 
+import { Calendar, BarChart3 } from 'lucide-react';
 import SectionCard from './common/SectionCard';
-import { useGlobalDataContext } from '../contexts/GlobalDataContext'; 
+import { useGlobalDataContext } from '../contexts/GlobalDataContext';
 import { useNotificationContext } from '../contexts/NotificationContext';
 
-
-interface HolidayManagementPageProps {
-  // Props are removed as data will come from context
-}
-
-type CountryOption = "Global" | "Suisse" | "France" | "Deutschland" | "Brasil";
-
-
-const HolidayManagementPage: React.FC<HolidayManagementPageProps> = () => {
-  const { t, i18n } = useTranslation();
-  const { globalHolidays, saveGlobalHolidays } = useGlobalDataContext(); 
+const HolidayManagementPage: React.FC = () => {
+  const { t } = useTranslation();
+  const { globalHolidays, isLoadingGlobalData, addHoliday } = useGlobalDataContext();
   const { addNotification } = useNotificationContext();
+  const [formData, setFormData] = useState({
+    name: '',
+    date: '',
+    type: 'CUSTOM',
+    description: '',
+    repeatsAnnually: false
+  });
 
-  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-  const [selectedCountry] = useState<CountryOption>("Global");
-  const [holidaysForDisplay, setHolidaysForDisplay] = useState<Holiday[]>([]);
-  
-  const [newHolidayName, setNewHolidayName] = useState<string>('');
-  const [newHolidayDate, setNewHolidayDate] = useState<string>(''); // YYYY-MM-DD
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const lightInputBaseClasses = "w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
-  const lightInputClasses = `${lightInputBaseClasses} bg-white text-slate-700 placeholder-slate-400`;
-  const lightSelectClasses = `${lightInputBaseClasses} bg-white text-slate-700 appearance-none`;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-
-  useEffect(() => {
-    const filtered = globalHolidays.filter(h => {
-        const holidayYear = parseInt(h.date.substring(0, 4), 10);
-        return holidayYear === selectedYear;
-    }).sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    setHolidaysForDisplay(filtered);
-  }, [globalHolidays, selectedYear, selectedCountry]);
-
-  const handleAddHoliday = async () => {
-    if (!newHolidayName || !newHolidayDate) {
+    // Validações
+    if (!formData.name || !formData.date) {
       addNotification(t('holidayManagementPage.alertFillNameDate'), 'error');
       return;
     }
-    const newHolidayYear = parseInt(newHolidayDate.substring(0,4), 10);
-    if (newHolidayYear !== selectedYear){
-        addNotification(t('holidayManagementPage.alertYearMismatch', { year: selectedYear }), 'error');
-        return;
-    }
-    if (globalHolidays.some(h => h.date === newHolidayDate)) {
-        addNotification(t('holidayManagementPage.alertDateExists'), 'error');
-        return;
+
+    const holidayDate = new Date(formData.date + 'T00:00:00');
+    if (holidayDate.getFullYear() !== selectedYear) {
+      addNotification(t('holidayManagementPage.alertYearMismatch', { year: selectedYear }), 'error');
+      return;
     }
 
-    const newHolidayEntry: Holiday = {
-      id: `holiday-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, 
-      name: newHolidayName,
-      date: newHolidayDate,
-      isOfficial: selectedCountry !== "Global", 
-    };
-    const updatedHolidays = [...globalHolidays, newHolidayEntry];
-    const result = await saveGlobalHolidays(updatedHolidays); 
-    if (result.success) {
-        addNotification(t('holidayManagementPage.alertConfigSaved'), 'success');
-        setNewHolidayName('');
-        setNewHolidayDate('');
-    } else {
-        addNotification(result.message || t('holidayManagementPage.errorSavingHolidays'), 'error');
+    const existingHoliday = globalHolidays.find(h => h.date === formData.date);
+    if (existingHoliday) {
+      addNotification(t('holidayManagementPage.alertDateExists'), 'error');
+      return;
+    }
+
+    try {
+      await addHoliday({
+        name: formData.name,
+        date: formData.date,
+        type: formData.type,
+        description: formData.description,
+        repeatsAnnually: formData.repeatsAnnually
+      });
+
+      addNotification(t('holidayManagementPage.alertConfigSaved'), 'success');
+
+      // Limpar formulário
+      setFormData({
+        name: '',
+        date: '',
+        type: 'CUSTOM',
+        description: '',
+        repeatsAnnually: false
+      });
+    } catch (error) {
+      console.error('Erro ao salvar feriado:', error);
+      addNotification(error instanceof Error ? error.message : 'Erro ao salvar feriado', 'error');
     }
   };
 
-  const handleRemoveHoliday = async (holidayId?: string) => { 
-    if (!holidayId) return; 
-    const updatedHolidays = globalHolidays.filter(h => h.id !== holidayId);
-    const result = await saveGlobalHolidays(updatedHolidays); 
-    if (result.success) {
-        addNotification(t('holidayManagementPage.alertConfigSaved'), 'success');
-    } else {
-        addNotification(result.message || t('holidayManagementPage.errorRemovingHoliday'), 'error');
-    }
-  };
-  
-  const generateYearOptions = () => {
-    const currentYr = new Date().getFullYear();
-    const years = [];
-    for (let i = currentYr - 5; i <= currentYr + 5; i++) {
-      years.push(i);
-    }
-    return years;
-  };
+  const holidaysForYear = globalHolidays.filter(h => {
+    const holidayDate = new Date(h.date + 'T00:00:00');
+    return holidayDate.getFullYear() === selectedYear;
+  });
 
-  const officialHolidaysCount = holidaysForDisplay.filter(h => h.isOfficial).length;
-  const customHolidaysCount = holidaysForDisplay.filter(h => !h.isOfficial).length;
-  const totalHolidaysCount = holidaysForDisplay.length;
+  const officialHolidays = holidaysForYear.filter(h => h.type === 'OFFICIAL').length;
+  const customHolidays = holidaysForYear.filter(h => h.type === 'CUSTOM').length;
 
-  const countryOptions: { value: CountryOption, labelKey: string }[] = [
-    { value: "Global", labelKey: "holidayManagementPage.countryGlobal" },
-  ];
+  if (isLoadingGlobalData) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+        <span className="ml-3 text-gray-600">{t('common.loading')}</span>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      <SectionCard
-        title={t('holidayManagementPage.title')}
-        titleIcon={PageIcon}
-        titleIconProps={{ className: "w-7 h-7 text-indigo-600" }}
-        titleTextClassName="text-2xl font-semibold text-slate-800"
-        headerAreaClassName="p-0 pb-6 border-none" 
-        contentAreaClassName="p-0" 
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1 space-y-6">
-            <SectionCard
-              title={t('holidayManagementPage.configCardTitle')}
-              titleTextClassName="text-lg font-medium text-slate-700"
-              headerAreaClassName="p-4 border-b border-slate-200"
-              contentAreaClassName="p-4"
-            >
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="country-select" className="block text-sm font-medium text-slate-600 mb-1">{t('holidayManagementPage.countryLabel')}</label>
-                  <select 
-                      id="country-select" 
-                      value={selectedCountry} 
-                      className={`${lightSelectClasses} cursor-not-allowed opacity-70`}
-                      disabled 
-                  >
-                    {countryOptions.map(opt => <option key={opt.value} value={opt.value}>{t(opt.labelKey, opt.value)}</option>)}
-                  </select>
-                   <p className="mt-1 text-xs text-slate-500">
-                      {t('adminDashboardPage.peakConcurrencyChart.featureNote')} 
-                  </p>
-                </div>
-                <div>
-                  <label htmlFor="year-select" className="block text-sm font-medium text-slate-600 mb-1">{t('holidayManagementPage.yearLabel')}</label>
-                  <select 
-                      id="year-select" 
-                      value={selectedYear} 
-                      onChange={(e) => setSelectedYear(parseInt(e.target.value,10))}
-                      className={lightSelectClasses}
-                  >
-                    {generateYearOptions().map(year => <option key={year} value={year}>{year}</option>)}
-                  </select>
-                </div>
-              </div>
-            </SectionCard>
+    <div className="min-h-screen bg-slate-100 py-6 px-2">
+      <div className="max-w-6xl mx-auto space-y-6">
+        {/* Título principal */}
+        <div className="flex items-center gap-2 text-indigo-700 text-2xl font-bold mb-2">
+          <Calendar className="w-7 h-7" />
+          <span>{t('holidayManagementPage.title')}</span>
+        </div>
 
-            <SectionCard
-              title={t('holidayManagementPage.addHolidayCardTitle')}
-              titleTextClassName="text-lg font-medium text-slate-700"
-              headerAreaClassName="p-4 border-b border-slate-200"
-              contentAreaClassName="p-4"
-            >
-              <div className="space-y-3">
-                <div>
-                  <label htmlFor="holiday-name" className="block text-sm font-medium text-slate-600 mb-1">{t('holidayManagementPage.nameLabel')}</label>
-                  <input 
-                      type="text" 
-                      id="holiday-name" 
-                      value={newHolidayName} 
-                      onChange={(e) => setNewHolidayName(e.target.value)} 
-                      className={lightInputClasses}
-                      placeholder={t('holidayManagementPage.namePlaceholder')}
-                  />
+        {/* Grid principal */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Lista de feriados do ano */}
+          <div className="md:col-span-2 bg-white rounded-2xl shadow p-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-2xl font-bold text-indigo-700">
+                {t('holidayManagementPage.holidaysForYearTitle', { year: selectedYear, country: 'Suíça' })}
+              </span>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                className="px-3 py-2 border border-slate-300 rounded-lg text-sm"
+              >
+                {Array.from({ length: 5 }, (_, i) => selectedYear - 2 + i).map(year => (
+                  <option key={year} value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+            <div className="bg-slate-50 rounded-xl p-4">
+              {holidaysForYear.length > 0 ? (
+                <div className="space-y-2">
+                  {holidaysForYear.map((holiday, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                      <div>
+                        <span className="font-medium text-slate-700">{holiday.name}</span>
+                        <span className="ml-2 text-xs text-slate-500">
+                          {new Date(holiday.date + 'T00:00:00').toLocaleDateString('pt-BR', {
+                            day: '2-digit',
+                            month: 'short'
+                          })}
+                        </span>
+                      </div>
+                      <span className={`px-2 py-0.5 text-xs rounded-full ${
+                        holiday.type === 'OFFICIAL' 
+                          ? 'bg-blue-100 text-blue-700' 
+                          : 'bg-green-100 text-green-700'
+                      }`}>
+                        {holiday.type === 'OFFICIAL' 
+                          ? t('holidayManagementPage.officialLabel') 
+                          : t('holidayManagementPage.customLabel')}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <label htmlFor="holiday-date" className="block text-sm font-medium text-slate-600 mb-1">{t('holidayManagementPage.dateLabel')}</label>
-                  <input 
-                      type="date" 
-                      id="holiday-date" 
-                      value={newHolidayDate} 
-                      onChange={(e) => setNewHolidayDate(e.target.value)} 
-                      className={lightInputClasses}
-                  />
-                </div>
-                <button 
-                  onClick={handleAddHoliday}
-                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 text-sm"
-                >
-                  <PlusCircleIcon className="w-5 h-5" />
-                  <span>{t('holidayManagementPage.addButton')}</span>
-                </button>
-              </div>
-            </SectionCard>
-
-            <SectionCard
-                title={t('holidayManagementPage.summaryCardTitle', { year: selectedYear })}
-                titleTextClassName="text-lg font-medium text-slate-700"
-                headerAreaClassName="p-4 border-b border-slate-200"
-                contentAreaClassName="p-4"
-            >
-                <div className="space-y-1 text-sm text-slate-600">
-                    <div className="flex justify-between"><span>{t('holidayManagementPage.officialHolidays')}</span> <span className="font-semibold bg-slate-200 px-1.5 py-0.5 rounded text-slate-700 text-xs">{officialHolidaysCount}</span></div>
-                    <div className="flex justify-between"><span>{t('holidayManagementPage.customHolidays')}</span> <span className="font-semibold bg-blue-200 px-1.5 py-0.5 rounded text-blue-700 text-xs">{customHolidaysCount}</span></div>
-                    <hr className="my-1.5"/>
-                    <div className="flex justify-between font-semibold text-slate-700"><span>{t('holidayManagementPage.totalLabel')}</span> <span className="bg-green-200 px-1.5 py-0.5 rounded text-green-700 text-xs">{totalHolidaysCount}</span></div>
-                </div>
-            </SectionCard>
+              ) : (
+                <p className="text-slate-500 text-sm text-center py-4">
+                  {t('holidayManagementPage.noHolidaysFound', { year: selectedYear })}
+                </p>
+              )}
+            </div>
           </div>
 
-          <div className="lg:col-span-2">
-            <SectionCard
-                title={t('holidayManagementPage.holidaysForYearTitle', { year: selectedYear, country: t(countryOptions.find(c => c.value === selectedCountry)?.labelKey || 'holidayManagementPage.countryGlobal', selectedCountry) })}
-                titleTextClassName="text-lg font-medium text-slate-700"
-                headerAreaClassName="p-4 border-b border-slate-200"
-                contentAreaClassName="p-4"
-            >
-                {holidaysForDisplay.length === 0 ? (
-                    <p className="text-slate-500 text-center py-10">{t('holidayManagementPage.noHolidaysFound', { year: selectedYear })}</p>
-                ) : (
-                    <ul className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
-                    {holidaysForDisplay.map(holiday => (
-                        <li key={holiday.id} className="flex items-center justify-between p-3 border border-slate-200 rounded-md hover:bg-slate-50">
-                        <div className="flex items-center">
-                            <span className="text-lg font-semibold text-indigo-600 w-8 text-center">{new Date(holiday.date + 'T00:00:00').getDate()}</span>
-                            <div className="ml-3">
-                            <span className={`font-medium text-slate-800 ${holiday.isOfficial ? '' : 'italic'}`}>{t(`holidays.${holiday.name.replace(/\s+/g, '')}`, holiday.name)}</span>
-                            <span className="block text-xs text-slate-500">
-                                {new Date(holiday.date + 'T00:00:00').toLocaleDateString(i18n.language, { month: 'short' })}. {new Date(holiday.date + 'T00:00:00').toLocaleDateString(i18n.language, { weekday: 'long', day: '2-digit', month: 'long' })}
-                            </span>
-                            </div>
-                        </div>
-                        <button 
-                            onClick={() => handleRemoveHoliday(holiday.id)}
-                            className="p-2 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors"
-                            title={t('adminDashboardPage.rejectButton')}
-                        >
-                            <TrashIcon className="w-5 h-5" />
-                        </button>
-                        </li>
-                    ))}
-                    </ul>
-                )}
+          {/* Cards laterais */}
+          <div className="space-y-6">
+            {/* Formulário de adição */}
+            <SectionCard>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Nome do feriado */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    {t('common.name')}
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder={t('holidayManagementPage.namePlaceholder')}
+                    value={formData.name}
+                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"
+                  />
+                </div>
+
+                {/* Data */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    {t('common.date')}
+                  </label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"
+                  />
+                </div>
+
+                {/* Tipo */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    {t('common.type')}
+                  </label>
+                  <select
+                    name="type"
+                    value={formData.type}
+                    onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"
+                  >
+                    <option value="CUSTOM">{t('holidayManagementPage.customLabel')}</option>
+                    <option value="OFFICIAL">{t('holidayManagementPage.officialLabel')}</option>
+                  </select>
+                </div>
+
+                {/* Descrição */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    {t('common.description')}
+                  </label>
+                  <textarea
+                    name="description"
+                    placeholder={t('holidayManagementPage.descriptionPlaceholder')}
+                    value={formData.description}
+                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 h-24"
+                  />
+                </div>
+
+                {/* Repete anualmente */}
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="repeatsAnnually"
+                    checked={formData.repeatsAnnually}
+                    onChange={(e) => setFormData(prev => ({ ...prev, repeatsAnnually: e.target.checked }))}
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                  />
+                  <label className="ml-2 block text-sm text-slate-900">
+                    {t('common.repeatsAnnually')}
+                  </label>
+                </div>
+
+                {/* Botão de adicionar */}
+                <div className="flex justify-end pt-2">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm"
+                  >
+                    {t('holidayManagementPage.addButton')}
+                  </button>
+                </div>
+              </form>
+            </SectionCard>
+
+            {/* Resumo do ano */}
+            <SectionCard>
+              <div className="flex items-center gap-2 mb-4 text-indigo-700 font-semibold text-lg">
+                <BarChart3 className="w-6 h-6" />
+                <span>{t('holidayManagementPage.summaryTitle', { year: selectedYear })}</span>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-600">{t('holidayManagementPage.officialHolidays')}</span>
+                  <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">{officialHolidays}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-600">{t('holidayManagementPage.customHolidays')}</span>
+                  <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">{customHolidays}</span>
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t">
+                  <span className="text-slate-600 font-medium">{t('holidayManagementPage.totalLabel')}</span>
+                  <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-semibold">{officialHolidays + customHolidays}</span>
+                </div>
+              </div>
             </SectionCard>
           </div>
         </div>
-      </SectionCard>
+      </div>
     </div>
   );
 };

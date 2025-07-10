@@ -1,0 +1,36 @@
+# Regras TypeScript
+
+description: Padrões e diretrizes para desenvolvimento com TypeScript
+globs: **/*.{ts,tsx}
+alwaysApply: true
+
+## Estilo e Estrutura
+- Código TypeScript conciso e manutenível
+- Padrões funcionais e declarativos
+- Evitar classes quando possível
+- Seguir princípio DRY
+- Nomes descritivos com verbos auxiliares
+
+## Convenções de Nomenclatura
+- Diretórios em minúsculo com traços
+- Exports nomeados para funções
+- Interfaces sobre types
+- Evitar enums, usar maps
+
+## Sintaxe e Formatação
+- Usar keyword "function" para funções puras
+- Composition API com script setup
+- Componentes funcionais com interfaces TypeScript
+
+## Performance
+- Componentes assíncronos com Suspense
+- Carregamento dinâmico para componentes não críticos
+- Otimização de imagens
+- Estratégia de chunking otimizada
+
+## Observações Importantes
+1. Otimizar Web Vitals
+2. Manter código limpo
+3. Documentar adequadamente
+4. Usar tipos fortes
+5. Seguir boas práticas

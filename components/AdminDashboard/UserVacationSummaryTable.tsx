@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { BarChart3, Calendar } from 'lucide-react';
+import SectionCard from '../common/SectionCard';
 
 const UserVacationSummaryTable: React.FC = () => {
   const { t } = useTranslation();
@@ -32,7 +33,7 @@ const UserVacationSummaryTable: React.FC = () => {
       {/* Cabeçalho da seção */}
       <div className="flex items-center gap-2 text-indigo-700 text-xl font-semibold">
         <Calendar className="w-6 h-6" />
-        <span>Resumo de Férias</span>
+        <span>{t('adminDashboard.vacationSummary.title')}</span>
       </div>
 
       {/* Cards de estatísticas */}
@@ -43,7 +44,7 @@ const UserVacationSummaryTable: React.FC = () => {
               <BarChart3 className="w-5 h-5 text-indigo-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-600">Total de Funcionários</p>
+              <p className="text-sm font-medium text-slate-600">{t('adminDashboard.vacationSummary.totalEmployees')}</p>
               <p className="text-2xl font-bold text-indigo-700">
                 {summaryData.length}
               </p>
@@ -57,7 +58,7 @@ const UserVacationSummaryTable: React.FC = () => {
               <Calendar className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-600">Total de Dias de Férias</p>
+              <p className="text-sm font-medium text-slate-600">{t('adminDashboard.vacationSummary.totalVacationDays')}</p>
               <p className="text-2xl font-bold text-green-700">
                 {summaryData.reduce((acc, curr) => acc + curr.totalDays, 0)}
               </p>
@@ -71,7 +72,7 @@ const UserVacationSummaryTable: React.FC = () => {
               <Calendar className="w-5 h-5 text-yellow-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-600">Dias Pendentes</p>
+              <p className="text-sm font-medium text-slate-600">{t('adminDashboard.vacationSummary.pendingDays')}</p>
               <p className="text-2xl font-bold text-yellow-700">
                 {summaryData.reduce((acc, curr) => acc + curr.pendingDays, 0)}
               </p>
@@ -85,7 +86,7 @@ const UserVacationSummaryTable: React.FC = () => {
               <Calendar className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-600">Dias Restantes</p>
+              <p className="text-sm font-medium text-slate-600">{t('adminDashboard.vacationSummary.remainingDays')}</p>
               <p className="text-2xl font-bold text-blue-700">
                 {summaryData.reduce((acc, curr) => acc + curr.remainingDays, 0)}
               </p>
@@ -100,22 +101,22 @@ const UserVacationSummaryTable: React.FC = () => {
           <thead className="bg-slate-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Funcionário
+                {t('adminDashboard.vacationSummary.employee')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Departamento
+                {t('adminDashboard.vacationSummary.department')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Total de Dias
+                {t('adminDashboard.vacationSummary.totalDays')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Dias Utilizados
+                {t('adminDashboard.vacationSummary.usedDays')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Dias Pendentes
+                {t('adminDashboard.vacationSummary.pendingDays')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Dias Restantes
+                {t('adminDashboard.vacationSummary.remainingDays')}
               </th>
             </tr>
           </thead>

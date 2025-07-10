@@ -1,15 +1,15 @@
 import React from 'react';
+import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ExclamationTriangleIcon } from './icons'; // Or a more suitable icon
 
 const AccessDeniedMessage: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="text-center p-10 flex flex-col items-center justify-center h-full">
-      <ExclamationTriangleIcon className="w-16 h-16 text-red-400 mb-4" />
-      <h2 className="text-2xl font-semibold text-red-600">{t('common.accessDenied')}</h2>
-      <p className="text-slate-600 mt-2">{t('common.noPermission')}</p>
+    <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-4">
+      <AlertTriangle className="w-16 h-16 text-red-400 mb-4" />
+      <h2 className="text-2xl font-bold text-red-600 mb-2">{t('common.accessDenied')}</h2>
+      <p className="text-slate-600">{t('common.noPermission')}</p>
     </div>
   );
 };

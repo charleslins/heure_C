@@ -1,0 +1,74 @@
+# Regras de UX/UI
+
+description: Padrões e diretrizes para experiência do usuário e interface
+globs: **/components/**/*.tsx
+alwaysApply: true
+
+## Estilização com Tailwind
+### Organização de Classes
+- Ordem obrigatória:
+  1. Layout (flex, grid, position)
+  2. Espaçamento (padding, margin)
+  3. Dimensões (width, height)
+  4. Tipografia (text, font)
+  5. Cores (bg, text)
+  6. Bordas (border, rounded)
+  7. Efeitos (shadow, opacity)
+  8. Estados (hover, focus)
+
+## Componentes
+### Estrutura Base
+- Usar componentes funcionais
+- Props tipadas com interface
+- Documentar props complexas
+- Implementar estados de loading
+- Tratar estados de erro
+
+## Responsividade
+### Breakpoints Padrão
+- sm: 640px  (Mobile)
+- md: 768px  (Tablet)
+- lg: 1024px (Desktop)
+- xl: 1280px (Large Desktop)
+
+## Internacionalização
+### Estrutura
+- Usar react-i18next
+- Chaves organizadas por feature
+- Namespace para áreas comuns
+- Manter traduções atualizadas
+
+## Feedback Visual
+### Estados Obrigatórios
+- Loading
+- Error
+- Empty
+- Success
+
+## Acessibilidade
+### Requisitos
+- Usar tags semânticas HTML5
+- Implementar ARIA labels
+- Suporte a navegação por teclado
+- Contraste de cores adequado
+
+## Formulários
+### Padrões
+- Validação em tempo real
+- Mensagens de erro claras
+- Estados de loading em submits
+- Feedback de sucesso/erro
+
+## Performance
+### Otimizações
+- Lazy loading de imagens
+- Code splitting por rota
+- Memoização de componentes pesados
+- Virtualização de listas longas
+
+## Observações Importantes
+1. Seguir guia de estilo Tailwind
+2. Manter consistência visual
+3. Priorizar acessibilidade
+4. Testar em diferentes dispositivos
+5. Documentar componentes complexos

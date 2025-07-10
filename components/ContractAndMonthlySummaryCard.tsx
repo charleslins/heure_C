@@ -2,19 +2,19 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserGlobalSettings, SummaryData } from '../types';
 import { formatHours } from '../utils/timeUtils';
-import { IconProps } from './icons'; // Import IconProps
+import type { LucideProps } from 'lucide-react';
 import SectionCard from './common/SectionCard'; // Import SectionCard
 import { 
-    ClipboardDocumentListIcon, 
-    InformationCircleIcon,
-    ChartBarIcon,       
-    CalendarDaysIcon,   
-    BriefcaseIcon,      
-    CalendarCheckIcon,  
-    DoubleCheckIcon,    
-    ArrowTrendingUpIcon, 
-    ArrowTrendingDownIcon 
-} from './icons'; 
+  ClipboardList,
+  AlertTriangle,
+  BarChart3,
+  Calendar,
+  Briefcase,
+  CheckSquare,
+  Check,
+  TrendingUp,
+  TrendingDown
+} from 'lucide-react'; 
 
 interface ContractAndMonthlySummaryCardProps {
   userGlobalSettings: UserGlobalSettings;
@@ -25,9 +25,9 @@ const STANDARD_FULL_TIME_HOURS_WEEKLY = 40;
 
 interface StyledSummaryItemProps {
   label: string;
-  value: string | number;
+  value: number | string;
   unit?: string;
-  icon: React.ReactElement<IconProps>; 
+  icon: React.ReactElement<LucideProps>; 
   itemBgClass: string;
   accentTextClass: string;
   accentBorderClass: string;
@@ -64,35 +64,35 @@ const ContractAndMonthlySummaryCard: React.FC<ContractAndMonthlySummaryCardProps
   const summaryItemsData = [
     { 
       labelKey: "contractSummaryCard.workRate", value: calculatedTaux, unit: "%", 
-      icon: <ChartBarIcon />, 
+      icon: <BarChart3 />, 
       itemBgClass: "bg-rose-50", accentTextClass: "text-rose-600", accentBorderClass: "border-rose-500" 
     },
     { 
       labelKey: "contractSummaryCard.annualLeave", value: actualAnnualVacationDays, unit: t('common.daysUnitShort'), 
-      icon: <CalendarDaysIcon />, 
+      icon: <Calendar />, 
       itemBgClass: "bg-teal-50", accentTextClass: "text-teal-600", accentBorderClass: "border-teal-500" 
     },
     { 
       labelKey: "contractSummaryCard.balance", 
       value: summaryData.overtimeOrMissedHours, unit: t('common.hoursUnitShort'), 
-      icon: summaryData.overtimeOrMissedHours >= 0 ? <ArrowTrendingUpIcon /> : <ArrowTrendingDownIcon />, 
+      icon: summaryData.overtimeOrMissedHours >= 0 ? <TrendingUp /> : <TrendingDown />, 
       itemBgClass: summaryData.overtimeOrMissedHours >= 0 ? "bg-green-50" : "bg-red-50", 
       accentTextClass: summaryData.overtimeOrMissedHours >= 0 ? "text-green-600" : "text-red-600", 
       accentBorderClass: summaryData.overtimeOrMissedHours >= 0 ? "border-green-500" : "border-red-500" 
     },
     { 
       labelKey: "contractSummaryCard.contractedWeekly", value: summaryData.contractedWeeklyHours, unit: t('common.hoursUnitShort'), 
-      icon: <BriefcaseIcon />, 
+      icon: <Briefcase />, 
       itemBgClass: "bg-amber-50", accentTextClass: "text-amber-600", accentBorderClass: "border-amber-500" 
     },
     { 
       labelKey: "contractSummaryCard.plannedMonthly", value: summaryData.plannedMonthlyHours, unit: t('common.hoursUnitShort'), 
-      icon: <CalendarCheckIcon />, 
+      icon: <CheckSquare />, 
       itemBgClass: "bg-violet-50", accentTextClass: "text-violet-600", accentBorderClass: "border-violet-500" 
     },
     { 
       labelKey: "contractSummaryCard.actualPlusAbsences", value: summaryData.workedPlusSickHours, unit: t('common.hoursUnitShort'), 
-      icon: <DoubleCheckIcon />, 
+      icon: <Check />, 
       itemBgClass: "bg-slate-100", accentTextClass: "text-slate-600", accentBorderClass: "border-slate-500" 
     }
   ];
@@ -100,7 +100,7 @@ const ContractAndMonthlySummaryCard: React.FC<ContractAndMonthlySummaryCardProps
   return (
     <SectionCard
       title={t('contractSummaryCard.title')}
-      titleIcon={ClipboardDocumentListIcon}
+      titleIcon={ClipboardList}
       titleIconProps={{ className: "w-6 h-6 text-indigo-600" }}
       cardClassName="bg-white rounded-xl shadow-lg h-full flex flex-col"
       headerAreaClassName="p-4 md:p-6 border-b-0" // No border for this type of card
@@ -122,7 +122,7 @@ const ContractAndMonthlySummaryCard: React.FC<ContractAndMonthlySummaryCardProps
         ))}
       </div>
        <p className="text-xs text-slate-500 pt-4 mt-auto italic flex items-center">
-        <InformationCircleIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
+        <AlertTriangle className="w-4 h-4 mr-1.5 flex-shrink-0" />
         <span>{t('contractSummaryCard.infoText')}</span>
       </p>
     </SectionCard>

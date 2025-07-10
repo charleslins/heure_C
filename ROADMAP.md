@@ -53,8 +53,8 @@
 ### Funcionalidades Planejadas
 - [ ] Dashboard com gráficos e estatísticas
 - [ ] Exportação de relatórios em PDF
-- [ ] Integração com calendário externo
-- [ ] Sistema de lembretes e notificações
+#- [ ] Integração com calendário externo
+#- [ ] Sistema de lembretes e notificações
 - [ ] Histórico de alterações
 
 ## 🎯 Roadmap Futuro
@@ -70,20 +70,20 @@
 - [ ] Integrações Externas
   - [ ] API pública
   - [ ] Webhooks
-  - [ ] Integração com sistemas de RH
+  #- [ ] Integração com sistemas de RH
   - [ ] Single Sign-On (SSO)
 
 ### Q1 2025
 - [ ] Funcionalidades Avançadas
   - [ ] Planejamento de equipe
   - [ ] Análise preditiva de férias
-  - [ ] Sistema de pontos e compensações
-  - [ ] Gestão de projetos integrada
+  #- [ ] Sistema de pontos e compensações
+  #- [ ] Gestão de projetos integrada
 
 ### Q2 2025
 - [ ] Expansão do Produto
   - [ ] Versão mobile nativa
-  - [ ] Marketplace de extensões
+  #- [ ] Marketplace de extensões
   - [ ] Sistema de templates
   - [ ] White-label
 
@@ -188,3 +188,127 @@
 ---
 
 Este roadmap é um documento vivo e será atualizado regularmente conforme o projeto evolui e novas necessidades são identificadas. 
+
+Agora vou explicar as vantagens de usar o padrão MCP neste projeto:
+
+1. **Separação de Responsabilidades**:
+   - **Model**: Encapsula a lógica de negócios e validações
+   - **Collection**: Gerencia conjuntos de modelos e operações em lote
+   - **Presenter**: Prepara os dados para exibição e gerencia a lógica de apresentação
+
+2. **Benefícios**:
+   - Código mais organizado e manutenível
+   - Reutilização de lógica entre componentes
+   - Testes mais fáceis de escrever
+   - Melhor gerenciamento de estado
+   - Separação clara entre dados e apresentação
+
+3. **Como Implementar em Outros Módulos**:
+   - Seguir o mesmo padrão para Férias, Feriados, etc.
+   - Criar Models para cada entidade principal
+   - Usar Collections para gerenciar grupos de entidades
+   - Implementar Presenters para lógica de apresentação
+   - Criar hooks personalizados para uso nos componentes
+
+4. **Exemplo de Uso no Componente**:
+```typescript
+function EmployeeManagementPage() {
+  const {
+    isLoading,
+    error,
+    data,
+    createEmployee,
+    updateEmployee,
+    removeEmployee,
+    changeRole,
+    searchEmployees
+  } = useEmployeePresenter();
+
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error} />;
+
+  return (
+    <div>
+      <EmployeeStats statistics={data.statistics} />
+      <EmployeeList 
+        employees={data.employees}
+        onRoleChange={changeRole}
+        onRemove={removeEmployee}
+        onUpdate={updateEmployee}
+      />
+    </div>
+  );
+}
+```
+
+5. **Próximos Passos**:
+   - Implementar o padrão MCP para outros módulos
+   - Criar testes unitários para cada camada
+   - Documentar o padrão para o time
+   - Refatorar componentes existentes gradualmente
+
+Você gostaria que eu implementasse o padrão MCP para mais algum módulo específico do sistema? 
+
+A implementação do padrão MCP para o módulo de férias foi concluída com sucesso. Aqui estão os principais benefícios que essa mudança traz:
+
+1. **Organização do Código**:
+   - Separação clara entre dados, lógica de negócios e apresentação
+   - Código mais fácil de manter e entender
+   - Melhor reutilização de funcionalidades
+
+2. **Benefícios Técnicos**:
+   - Melhor gerenciamento de estado
+   - Lógica de negócios encapsulada no Model
+   - Operações em lote na Collection
+   - Formatação e transformação de dados no Presenter
+   - Hook React para fácil integração com componentes
+
+3. **Facilidade de Testes**:
+   - Cada camada pode ser testada independentemente
+   - Mocks mais fáceis de criar
+   - Melhor cobertura de testes
+
+4. **Manutenibilidade**:
+   - Mudanças em uma camada não afetam as outras
+   - Código mais modular e desacoplado
+   - Mais fácil de debugar
+
+5. **Exemplo de Uso em Componente**:
+```typescript
+<code_block_to_apply_changes_from>
+```
+
+Podemos implementar o mesmo padrão para outros módulos do sistema, como Feriados, Usuários, etc. Você gostaria que eu implementasse o padrão MCP para mais algum módulo específico? 
+
+A implementação do padrão MCP para o módulo de feriados foi concluída com sucesso. Aqui está um exemplo de como usar o novo módulo em um componente:
+
+```typescript
+<code_block_to_apply_changes_from>
+```
+
+Os benefícios desta implementação incluem:
+
+1. **Organização Clara**:
+   - Separação de responsabilidades entre Model, Collection e Presenter
+   - Código mais fácil de manter e testar
+   - Reutilização de lógica entre componentes
+
+2. **Funcionalidades Robustas**:
+   - Suporte a diferentes tipos de feriados
+   - Gerenciamento por região (cantão/município)
+   - Estatísticas e distribuição mensal
+   - Validações e tratamento de erros
+
+3. **Integração com o Sistema**:
+   - Uso do sistema de traduções
+   - Notificações consistentes
+   - Estilização padronizada
+   - Cache de dados eficiente
+
+4. **Facilidade de Uso**:
+   - Hook React intuitivo
+   - API clara e bem documentada
+   - Tratamento automático de estados (loading/error)
+   - Atualizações automáticas da UI
+
+Você gostaria que eu implementasse o padrão MCP para mais algum módulo do sistema? 

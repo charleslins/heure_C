@@ -1,0 +1,59 @@
+# Regras de Qualidade de Código
+
+description: Padrões e diretrizes para garantir a qualidade do código
+globs: **/*.{ts,tsx}
+alwaysApply: true
+
+## TypeScript
+### Configurações
+- strict: true
+- noImplicitAny: true
+- strictNullChecks: true
+- noUnusedLocals: true
+
+### Tipagem
+- Props de componentes
+- Retornos de funções
+- Variáveis de estado
+- Parâmetros de funções
+
+## Testes
+### Unitários
+- Components: `__tests__/components`
+- Utils: `__tests__/utils`
+- Cobertura mínima: 80%
+- Testar casos de erro
+
+## Padrões de Código
+### Formatação
+- Usar Prettier
+- Indentação: 2 espaços
+- Ponto e vírgula: obrigatório
+- Aspas simples
+
+### ESLint
+- Regras do React
+- Regras do TypeScript
+- Regras de importação
+- Regras de hooks
+
+## Code Review
+### Requisitos
+- Testes passando
+- Sem warnings
+- Documentação atualizada
+- Performance verificada
+
+## Documentação
+### Obrigatória
+- README atualizado
+- JSDoc em funções complexas
+- Comentários em lógicas complexas
+- Exemplos de uso
+
+## Observações Importantes
+1. Manter código limpo
+2. Seguir princípios DRY
+3. Revisar pull requests
+4. Atualizar documentação
+5. Manter testes atualizados

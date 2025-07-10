@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { VacationStatus, MonthlyVacationListProps } from '../../types';
-import { VACATION_STATUS_STYLES } from '../../constants';
-import SectionCard from '../SectionCard';
-import { PaperAirplaneIcon, TrashIcon, CheckCircleIcon, ClockIcon, XCircleIcon, PrinterIcon } from '../icons';
+import { VacationStatus } from '../../types';
+import { formatDateRange } from '../../utils/timeUtils';
+import { Send, Trash2, CheckCircle, Clock, XCircle, Printer } from 'lucide-react';
+import SectionCard from '../common/SectionCard';
 
 const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
   currentMonthUserVacations,
@@ -28,7 +28,7 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
                   onClick={onPrintRequest}
                   className="w-full sm:w-auto px-3 py-1.5 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300 transition-colors flex items-center justify-center space-x-2 text-xs font-medium"
               >
-                  <PrinterIcon className="w-4 h-4" />
+                  <Printer className="w-4 h-4" />
                   <span>{t('vacationPage.printRequestButton')}</span>
               </button>
           )}
@@ -37,7 +37,7 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
                   onClick={onSubmitForApproval}
                   className="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2 text-sm font-medium"
               >
-                  <PaperAirplaneIcon className="w-5 h-5 transform -rotate-45" />
+                  <Send className="w-5 h-5 transform -rotate-45" />
                   <span>{t('vacationPage.submitRequestButton')}</span>
               </button>
           )}
@@ -57,10 +57,10 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
                             `}
                             title={t(`vacationStatuses.${vacation.status}`)}
                         >
-                            {vacation.status === VacationStatus.SELECTED && <CheckCircleIcon className="w-4 h-4 mr-1" />}
-                            {vacation.status === VacationStatus.PENDING_APPROVAL && <ClockIcon className="w-4 h-4 mr-1" />}
-                            {vacation.status === VacationStatus.APPROVED && <CheckCircleIcon className="w-4 h-4 mr-1" />}
-                            {vacation.status === VacationStatus.REJECTED && <XCircleIcon className="w-4 h-4 mr-1" />}
+                            {vacation.status === VacationStatus.SELECTED && <CheckCircle className="w-4 h-4 mr-1" />}
+                            {vacation.status === VacationStatus.PENDING_APPROVAL && <Clock className="w-4 h-4 mr-1" />}
+                            {vacation.status === VacationStatus.APPROVED && <CheckCircle className="w-4 h-4 mr-1" />}
+                            {vacation.status === VacationStatus.REJECTED && <XCircle className="w-4 h-4 mr-1" />}
                             <span className="block truncate">
                                 {new Date(vacation.date + 'T00:00:00').toLocaleDateString(i18n.language, { weekday: 'short', day: 'numeric', month: 'short' })}
                             </span>
@@ -70,7 +70,7 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
                                     className="ml-2 p-0.5 hover:bg-red-200 rounded-full transition-colors flex items-center justify-center"
                                     aria-label={t('vacationPage.deleteAction')}
                                 >
-                                    <TrashIcon className="w-3 h-3 text-red-600" />
+                                    <Trash2 className="w-3 h-3 text-red-600" />
                                 </button>
                             )}
                         </li>

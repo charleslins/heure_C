@@ -1,0 +1,52 @@
+# Regras de Segurança
+
+description: Padrões e diretrizes para segurança da aplicação
+globs: **/*.{ts,tsx}
+alwaysApply: true
+
+## Autenticação
+### Implementação
+- Usar Supabase Auth
+- Tokens JWT
+- Refresh tokens
+- Logout automático
+- Proteção de rotas
+
+## Dados Sensíveis
+### Tratamento
+- Usar variáveis de ambiente
+- Nunca expor chaves
+- Sanitizar inputs
+- Mascarar dados sensíveis
+- Criptografar quando necessário
+
+## Autorização
+### Controle de Acesso
+- Roles: user, admin
+- Permissões granulares
+- Validação no frontend
+- Validação no backend
+- Logs de acesso
+
+## Proteção de Dados
+### Medidas
+- Validação de inputs
+- Escape de HTML
+- Proteção contra XSS
+- Proteção contra CSRF
+- Rate limiting
+
+## Boas Práticas
+### Requisitos
+- HTTPS obrigatório
+- Headers de segurança
+- Cookies seguros
+- Logs de segurança
+- Atualizações regulares
+
+## Observações Importantes
+1. Seguir OWASP Top 10
+2. Auditar dependências
+3. Manter logs seguros
+4. Revisar permissões
+5. Atualizar bibliotecas

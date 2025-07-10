@@ -136,6 +136,29 @@ Uma aplicação web projetada para ajudar usuários a rastrear suas horas de tra
    npm run dev
    ```
 
+## Configuração do MCP
+
+1. Copie o arquivo de exemplo do MCP:
+   ```bash
+   cp .mcp.example.json .mcp.json
+   ```
+
+2. Configure seu token do Supabase:
+   - Acesse https://supabase.com/dashboard/account/tokens
+   - Gere um novo token
+   - Substitua "seu_token_aqui" no arquivo `.mcp.json`
+
+3. Verifique se está funcionando:
+   ```bash
+   npm run generate-types
+   ```
+
+O MCP (Model Control Protocol) fornece:
+- Tipagem automática do banco de dados
+- Validação de queries em tempo real
+- Autocompleção de código
+- Documentação inline
+
 ## Gerenciamento de Estado
 
 A aplicação utiliza React Context API para gerenciar estados compartilhados:

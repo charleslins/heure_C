@@ -1,192 +1,300 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { User } from '../types';
-import { ChartBarIcon, UserGroupIcon, BellAlertIcon, XCircleIcon } from './icons'; 
-// import { formatDateToYYYYMMDD, getDaysInMonth } from '../utils/timeUtils'; // Unused
-// import { getUserInitials, getUserColor } from '../utils/stringUtils'; // Unused
-// import { USER_COLORS } from '../constants'; // Unused
-// import { loadTypedUserMonthDataFromSupabase } from '../utils/supabaseCrud'; // Unused
+import { BarChart3, Users, Bell, Calendar, Briefcase, XCircle } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
-import SectionCard from './common/SectionCard'; 
-
+import SectionCard from './common/SectionCard';
+import { formatDateToYYYYMMDD, getDaysInMonth } from '../utils/timeUtils';
+import { getUserInitials, getUserColor } from '../utils/stringUtils';
 
 interface AdminOverviewDashboardProps {
   currentUser: User;
 }
 
-interface UserDetail {
-  id: string;
+interface UserVacationData {
+  userId: string;
+  userName: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+}
+
+interface VacationOverlapData {
+  date: string;
+  users: {
+    id: string;
+    name: string;
+    color: string;
+  }[];
+}
+
+interface DepartmentStats {
   name: string;
-  initials: string;
+  totalEmployees: number;
+  onVacation: number;
 }
-
-interface ConflictDayDetail {
-  date: string; 
-  formattedDate: string;
-  usersDetails: UserDetail[];
-  count: number;
-}
-
-interface MonthlyChartData {
-  month: number; 
-  monthName: string;
-  barHeightValue: number; 
-  absolutePeakDate: string | null; 
-  absolutePeakUsersDetails: UserDetail[]; 
-  absolutePeakCount: number; 
-  conflictDays: ConflictDayDetail[]; 
-  exceedsThreshold: boolean; 
-}
-
-// const MAX_CONCURRENT_USERS_THRESHOLD = 2; // Unused due to placeholder chart
 
 const AdminOverviewDashboard: React.FC<AdminOverviewDashboardProps> = ({ currentUser }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
-  const [totalManagedUsers, setTotalManagedUsers] = useState(0); 
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [vacationData, setVacationData] = useState<UserVacationData[]>([]);
+  const [overlapData, setOverlapData] = useState<VacationOverlapData[]>([]);
+  const [departmentStats, setDepartmentStats] = useState<DepartmentStats[]>([]);
+  const [upcomingVacations, setUpcomingVacations] = useState<UserVacationData[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const [chartYear] = useState<number>(new Date().getFullYear()); // Removed setChartYear
-  const [monthlyChartData, setMonthlyChartData] = useState<MonthlyChartData[]>([]);
-  const [allPeaksAreZero, setAllPeaksAreZero] = useState<boolean>(true); 
-  const [isLoadingChart, setIsLoadingChart] = useState(true);
-  const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
-  const [selectedMonthConflictData, setSelectedMonthConflictData] = useState<MonthlyChartData | null>(null);
-  
   useEffect(() => {
-    const fetchAdminData = async () => {
-      const { error: pendingError, count } = await supabase
-        .from('user_vacations')
-        .select('user_id', { count: 'exact', head: true }) 
-        .eq('status', 'pending_approval');
-      
-      if (pendingError) console.error("Error fetching pending requests count:", pendingError.message || pendingError);
-      else setPendingRequestsCount(count || 0);
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        
+        // Buscar contagem de solicitações pendentes
+        const { count: pendingCount } = await supabase
+          .from('user_vacations')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'pending_approval');
+        
+        setPendingRequestsCount(pendingCount || 0);
 
-      // User counting and detailed chart data fetching would require a 'profiles' table or similar.
-      // For now, these are simplified.
-      setTotalManagedUsers(0); 
-      setIsLoadingChart(false); 
-      setAllPeaksAreZero(true); 
-      setMonthlyChartData(Array(12).fill(null).map((_, i) => ({
-          month: i,
-          monthName: new Date(chartYear, i).toLocaleDateString(i18n.language, { month: 'short' }),
-          barHeightValue: 0,
-          absolutePeakDate: null,
-          absolutePeakUsersDetails: [],
-          absolutePeakCount: 0,
-          conflictDays: [],
-          exceedsThreshold: false,
-      })));
+        // Buscar total de usuários
+        const { count: usersCount } = await supabase
+          .from('profiles')
+          .select('*', { count: 'exact', head: true });
+        
+        setTotalUsers(usersCount || 0);
 
+        // Buscar dados de férias
+        const { data: vacations } = await supabase
+          .from('user_vacations')
+          .select(`
+            id,
+            start_date,
+            end_date,
+            status,
+            profiles (
+              id,
+              full_name
+            )
+          `)
+          .gte('start_date', new Date().toISOString().split('T')[0])
+          .order('start_date');
+
+        if (vacations) {
+          const formattedVacations = vacations.map(v => ({
+            userId: v.profiles.id,
+            userName: v.profiles.full_name,
+            startDate: v.start_date,
+            endDate: v.end_date,
+            status: v.status
+          }));
+
+          setVacationData(formattedVacations);
+          
+          // Processar dados de sobreposição
+          const overlaps: VacationOverlapData[] = [];
+          const today = new Date();
+          const endDate = new Date();
+          endDate.setMonth(endDate.getMonth() + 3);
+
+          for (let d = today; d <= endDate; d.setDate(d.getDate() + 1)) {
+            const currentDate = formatDateToYYYYMMDD(d);
+            const usersOnVacation = formattedVacations.filter(v => 
+              v.startDate <= currentDate && v.endDate >= currentDate
+            );
+
+            if (usersOnVacation.length > 0) {
+              overlaps.push({
+                date: currentDate,
+                users: usersOnVacation.map(u => ({
+                  id: u.userId,
+                  name: u.userName,
+                  color: getUserColor(u.userName)
+                }))
+              });
+            }
+          }
+
+          setOverlapData(overlaps);
+
+          // Configurar próximas férias
+          setUpcomingVacations(
+            formattedVacations
+              .filter(v => v.status === 'approved')
+              .slice(0, 5)
+          );
+        }
+
+        // Buscar estatísticas por departamento (exemplo)
+        const mockDepartmentStats = [
+          { name: 'TI', totalEmployees: 10, onVacation: 2 },
+          { name: 'RH', totalEmployees: 5, onVacation: 1 },
+          { name: 'Financeiro', totalEmployees: 8, onVacation: 0 }
+        ];
+        setDepartmentStats(mockDepartmentStats);
+
+      } catch (error) {
+        console.error('Erro ao carregar dados do dashboard:', error);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchAdminData();
-  }, [i18n.language, chartYear]);
 
-  const handleBarClick = (monthData: MonthlyChartData) => {
-    if (monthData.conflictDays.length > 0 || monthData.absolutePeakCount > 1) {
-        setSelectedMonthConflictData(monthData);
-        setIsConflictModalOpen(true);
+    fetchDashboardData();
+  }, []);
+
+  const renderVacationTimeline = () => {
+    if (overlapData.length === 0) {
+      return (
+        <div className="text-center py-8 text-slate-500">
+          {t('adminDashboardPage.noVacationData')}
+        </div>
+      );
     }
+
+    return (
+      <div className="space-y-2">
+        {overlapData.map(day => (
+          <div key={day.date} className="flex items-center space-x-4">
+            <span className="w-24 text-sm text-slate-600">
+              {new Date(day.date).toLocaleDateString()}
+            </span>
+            <div className="flex-1 flex items-center space-x-2">
+              {day.users.map(user => (
+                <div
+                  key={user.id}
+                  className="px-3 py-1 rounded-full text-xs text-white"
+                  style={{ backgroundColor: user.color }}
+                  title={user.name}
+                >
+                  {getUserInitials(user.name)}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
-  
-  // const maxPeakForChartScaling = Math.max(...monthlyChartData.map(d => d.barHeightValue), 1); // Unused
+
+  if (loading) {
+    return (
+      <div className="h-96 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6 md:space-y-8">
-      <SectionCard 
+    <div className="space-y-6">
+      {/* Cabeçalho de Boas-vindas */}
+      <SectionCard
         title={t('dashboardPage.adminOverviewTitle')}
         titleTextClassName="text-xl md:text-2xl font-semibold text-slate-800"
-        headerAreaClassName="p-6 border-b-0" 
-        contentAreaClassName="p-6 pt-0" 
+        headerAreaClassName="p-6 border-b-0"
+        contentAreaClassName="p-6 pt-0"
       >
-        <p className="text-slate-600 mt-1">{t('dashboardPage.adminWelcome', { name: currentUser.name })}</p>
+        <p className="text-slate-600 mt-1">
+          {t('dashboardPage.adminWelcome', { name: currentUser.name })}
+        </p>
       </SectionCard>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Cards de KPI */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="p-5 bg-white rounded-xl shadow-lg flex items-center space-x-4">
           <div className="p-3 bg-blue-100 rounded-full">
-            <UserGroupIcon className="w-8 h-8 text-blue-600" />
+            <Users className="w-8 h-8 text-blue-600" />
           </div>
           <div>
-            <p className="text-sm text-slate-500">{t('adminDashboardPage.totalManagedUsers')}</p>
-            <p className="text-3xl font-bold text-slate-800">{totalManagedUsers > 0 ? totalManagedUsers : t('common.notAvailableShort')}</p>
+            <p className="text-sm text-slate-500">{t('adminDashboardPage.totalUsers')}</p>
+            <p className="text-3xl font-bold text-slate-800">{totalUsers}</p>
           </div>
         </div>
+
         <div className="p-5 bg-white rounded-xl shadow-lg flex items-center space-x-4">
           <div className="p-3 bg-yellow-100 rounded-full">
-            <BellAlertIcon className="w-8 h-8 text-yellow-600" />
+            <Bell className="w-8 h-8 text-yellow-600" />
           </div>
           <div>
-            <p className="text-sm text-slate-500">{t('adminDashboardPage.pendingRequestsTitle')}</p>
+            <p className="text-sm text-slate-500">{t('adminDashboardPage.pendingRequests')}</p>
             <p className="text-3xl font-bold text-slate-800">{pendingRequestsCount}</p>
+          </div>
+        </div>
+
+        <div className="p-5 bg-white rounded-xl shadow-lg flex items-center space-x-4">
+          <div className="p-3 bg-green-100 rounded-full">
+            <Calendar className="w-8 h-8 text-green-600" />
+          </div>
+          <div>
+            <p className="text-sm text-slate-500">{t('adminDashboardPage.onVacation')}</p>
+            <p className="text-3xl font-bold text-slate-800">
+              {overlapData.length > 0 ? overlapData[0].users.length : 0}
+            </p>
           </div>
         </div>
       </div>
 
+      {/* Timeline de Férias */}
       <SectionCard
-        title={t('adminDashboardPage.peakConcurrencyChart.title')}
-        titleIcon={ChartBarIcon}
+        title={t('adminDashboardPage.vacationTimeline')}
+        titleIcon={Calendar}
         titleIconProps={{ className: "w-6 h-6 text-indigo-600" }}
-        titleTextClassName="text-lg font-semibold text-slate-700"
       >
-        {isLoadingChart ? (
-             <div className="h-72 flex items-center justify-center bg-slate-50 p-4 rounded-md border border-slate-200">
-                <svg className="mx-auto h-8 w-8 text-indigo-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-             </div>
-        ) : (
-          <div className="h-72 flex items-end space-x-1 md:space-x-2 bg-slate-50 p-4 rounded-md border border-slate-200 relative">
-            {monthlyChartData.map((data) => (
-                <div 
-                    key={data.month} 
-                    className="flex-1 h-full flex flex-col justify-end items-center group"
-                    title={data.monthName}
-                    onClick={() => handleBarClick(data)} // Still allow click for potential future data
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleBarClick(data)}
-                >
-                  <div className={`w-full rounded-t-sm transition-all duration-300 ease-out 
-                                 ${data.barHeightValue > 0 ? (data.exceedsThreshold ? 'bg-red-400 hover:bg-red-500' : 'bg-indigo-400 hover:bg-indigo-500') : 'bg-slate-200'}
-                                 ${data.barHeightValue > 0 ? 'cursor-pointer' : 'cursor-default'}`} 
-                       style={{ height: `${data.barHeightValue > 0 ? (data.barHeightValue / (allPeaksAreZero ? 1 : Math.max(...monthlyChartData.map(d => d.barHeightValue), 1))) * 100 : 0}%`}}>
-                  </div>
-                  <span className="mt-1 text-xs text-slate-600">{data.monthName}</span>
-                </div>
-            ))}
-            {allPeaksAreZero && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-sm text-slate-500 bg-white/80 p-2 rounded">
-                        {t('adminDashboardPage.peakConcurrencyChart.dataUnavailable')}
-                    </p>
-                </div>
-            )}
-          </div>
-        )}
-         <p className="text-xs text-slate-500 mt-2 text-center italic">
-            {t('adminDashboardPage.peakConcurrencyChart.yAxisLabel')}
-            <br />
-            {t('adminDashboardPage.peakConcurrencyChart.featureNote')}
-        </p>
+        <div className="overflow-x-auto">
+          {renderVacationTimeline()}
+        </div>
       </SectionCard>
 
-      {isConflictModalOpen && selectedMonthConflictData && (
-         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setIsConflictModalOpen(false)}>
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-4">
-              <h4 className="text-lg font-semibold text-slate-800">
-                {t('adminDashboardPage.peakConcurrencyChart.conflictModalTitle', { month: selectedMonthConflictData.monthName, year: chartYear })}
-              </h4>
-              <button onClick={() => setIsConflictModalOpen(false)} className="text-slate-500 hover:text-slate-700">
-                <XCircleIcon className="w-6 h-6" />
-              </button>
-            </div>
-             <p className="text-sm text-slate-500">{t('adminDashboardPage.peakConcurrencyChart.noDetailedConflicts')}</p>
-            </div>
-        </div>
-      )}
+      {/* Estatísticas por Departamento */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <SectionCard
+          title={t('adminDashboardPage.departmentStats')}
+          titleIcon={Briefcase}
+          titleIconProps={{ className: "w-6 h-6 text-indigo-600" }}
+        >
+          <div className="space-y-4">
+            {departmentStats.map(dept => (
+              <div key={dept.name} className="flex items-center justify-between">
+                <span className="text-slate-700">{dept.name}</span>
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm text-slate-500">
+                    {t('adminDashboardPage.totalEmployees')}: {dept.totalEmployees}
+                  </span>
+                  <span className="text-sm text-green-600">
+                    {t('adminDashboardPage.onVacation')}: {dept.onVacation}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+
+        {/* Próximas Férias */}
+        <SectionCard
+          title={t('adminDashboardPage.upcomingVacations')}
+          titleIcon={Calendar}
+          titleIconProps={{ className: "w-6 h-6 text-indigo-600" }}
+        >
+          <div className="space-y-3">
+            {upcomingVacations.map(vacation => (
+              <div key={`${vacation.userId}-${vacation.startDate}`} className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm"
+                    style={{ backgroundColor: getUserColor(vacation.userName) }}
+                  >
+                    {getUserInitials(vacation.userName)}
+                  </div>
+                  <span className="text-slate-700">{vacation.userName}</span>
+                </div>
+                <div className="text-sm text-slate-500">
+                  {new Date(vacation.startDate).toLocaleDateString()} - {new Date(vacation.endDate).toLocaleDateString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      </div>
     </div>
   );
 };

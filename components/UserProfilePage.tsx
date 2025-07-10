@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { UserCircleIcon } from './icons'; 
+import { User } from 'lucide-react';
 import SectionCard from './common/SectionCard';
 
 const UserProfilePage: React.FC = () => {
@@ -10,7 +10,7 @@ const UserProfilePage: React.FC = () => {
     <div className="max-w-2xl mx-auto">
       <SectionCard
         title={t('userProfilePage.title')}
-        titleIcon={UserCircleIcon}
+        titleIcon={User}
         titleIconProps={{ className: "w-8 h-8 text-indigo-600" }}
         cardClassName="bg-white shadow-xl rounded-lg"
         headerAreaClassName="p-6 md:p-8 border-b border-slate-200"

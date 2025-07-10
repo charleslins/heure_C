@@ -21,13 +21,17 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-     "esModuleInterop": true,
+    "esModuleInterop": true,
 
-    /* Path Aliases (Optional - Add if you use them) */
-    // "baseUrl": ".",
-    // "paths": {
-    //   "@/*": ["src/*"]
-    // }
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@utils/*": ["utils/*"],
+      "@components/*": ["components/*"],
+      "@contexts/*": ["contexts/*"],
+      "@hooks/*": ["hooks/*"]
+    }
   },
   "include": ["src", "vite.config.ts", "tailwind.config.js", "postcss.config.js", "components", "hooks", "contexts", "utils", "types.ts", "constants.ts", "i18n.ts", "App.tsx", "index.tsx", "AdminDashboardPage.tsx"]
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import { IconProps } from './icons';
+import type { LucideProps } from 'lucide-react';
 
 interface SectionCardProps {
-  title?: React.ReactNode;
-  titleIcon?: React.ComponentType<IconProps>;
-  titleIconProps?: IconProps;
+  title?: string;
+  titleIcon?: React.ComponentType<LucideProps>;
+  titleIconProps?: LucideProps;
   headerActions?: React.ReactNode;
   children: React.ReactNode;
   cardClassName?: string;

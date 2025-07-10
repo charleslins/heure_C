@@ -1,0 +1,30 @@
+# Regras de Internacionalização
+
+description: Padrões e diretrizes para internacionalização
+globs: **/*.{tsx,ts,json}
+alwaysApply: true
+
+## Estrutura
+- Namespaces organizados
+- Chaves hierárquicas
+- Traduções completas
+- Fallbacks definidos
+
+## Implementação
+- useTranslation hook
+- Chaves estruturadas
+- Interpolação de variáveis
+- Pluralização
+
+## Boas Práticas
+- Manter traduções atualizadas
+- Usar namespaces
+- Documentar chaves
+- Testar traduções
+
+## Observações Importantes
+1. Seguir estrutura definida
+2. Manter consistência
+3. Documentar traduções
+4. Testar diferentes idiomas
+5. Atualizar regularmente

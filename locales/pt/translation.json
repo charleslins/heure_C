@@ -1,5 +1,6 @@
 {
-  "appName": "Gestor de Horas",
+  "appName": "GH",
+  "appNameShort": "GH",
   "appTitle": "Gestor de Horas DEV",
   "nav": {
     "dashboard": "Painel",
@@ -128,42 +129,54 @@
     }
   },
   "holidayManagementPage": {
-    "title": "Gestão de Dias Feriados",
-    "saveConfigButton": "Salvar Configuração",
-    "configCardTitle": "Configuração",
-    "countryLabel": "País",
-    "countryGlobal": "Global (Todos)",
-    "yearLabel": "Ano",
-    "loadConfigButton": "Carregar Configuração",
-    "addHolidayCardTitle": "Adicionar Dia Feriado",
+    "title": "Adicionar Dia Feriado",
+    "typeLabel": "Tipo",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Adicione uma descrição opcional",
+    "repeatsAnnually": "Repete anualmente",
+    "addButton": "Adicionar",
     "nameLabel": "Nome",
     "namePlaceholder": "Ex: Feriado Municipal",
     "dateLabel": "Data",
-    "addButton": "Adicionar",
-    "summaryCardTitle": "Resumo {{year}}",
-    "officialHolidays": "Feriados oficiais:",
-    "customHolidays": "Feriados personalizados:",
-    "totalLabel": "Total:",
+    "summaryTitle": "Resumo {{year}}",
+    "officialHolidays": "Feriados oficiais",
+    "customHolidays": "Feriados personalizados",
+    "totalLabel": "Total",
     "holidaysForYearTitle": "Dias Feriados {{year}} - {{country}}",
-    "noHolidaysFound": "Nenhum feriado encontrado para {{year}}.",
+    "noHolidaysFound": "Nenhum feriado encontrado para {{year}}",
     "customLabel": "Personalizado",
-    "alertFillNameDate": "Por favor, preencha o nome e a data do feriado.",
-    "alertYearMismatch": "O feriado deve ser para o ano selecionado ({{year}}). Por favor, ajuste a data ou o ano selecionado.",
-    "alertDateExists": "Já existe um feriado cadastrado para esta data.",
-    "alertConfigSaved": "Configuração de feriados salva (automaticamente ao adicionar/remover)."
+    "officialLabel": "Oficial",
+    "alertFillNameDate": "Por favor, preencha o nome e a data do feriado",
+    "alertYearMismatch": "O feriado deve ser para o ano selecionado ({{year}}). Por favor, ajuste a data ou o ano selecionado",
+    "alertDateExists": "Já existe um feriado cadastrado para esta data",
+    "alertConfigSaved": "Configuração de feriados salva (automaticamente ao adicionar/remover)"
   },
   "adminDashboard": {
     "title": "Painel Admin",
     "pendingRequests": "Solicitações Pendentes",
     "manageHolidays": "Gerir Feriados",
-    "vacationSummary": "Resumo de Férias",
+    "vacationSummary": {
+      "title": "Resumo de Férias",
+      "totalEmployees": "Total de Funcionários",
+      "totalVacationDays": "Total de Dias de Férias",
+      "pendingDays": "Dias Pendentes",
+      "remainingDays": "Dias Restantes",
+      "employee": "Funcionário",
+      "department": "Departamento",
+      "totalDays": "Total de Dias",
+      "usedDays": "Dias Utilizados",
+      "noData": "Não há dados de férias disponíveis",
+      "loadingData": "Carregando dados de férias..."
+    },
     "globalSettings": "Configurações",
     "totalEmployees": "Total de Funcionários",
     "totalVacationDays": "Total de Dias de Férias",
     "pendingDays": "Dias Pendentes",
     "remainingDays": "Dias Restantes",
     "approveAllFor": "Aprovar todas para",
-    "noPendingRequests": "Nenhuma solicitação pendente no momento",
+    "noPendingRequests": "Não há solicitações pendentes no momento",
+    "checkBackLater": "Volte mais tarde para verificar novas solicitações",
+    "loadingRequests": "Carregando solicitações...",
     "totalDays": "Total de Dias",
     "usedDays": "Dias Utilizados",
     "employee": "Funcionário",
@@ -232,7 +245,14 @@
       "conflictDayEntry": "{{date}}: {{count}} usuários - {{users}}",
       "exceedsThresholdWarning": "Excede o limite de {{threshold}} usuários!"
     },
-    "batchApprovalError": "Algumas solicitações não puderam ser aprovadas em lote. Verifique os erros individuais."
+    "batchApprovalError": "Algumas solicitações não puderam ser aprovadas em lote. Verifique os erros individuais.",
+    "users": {
+      "title": "Gerenciamento de Usuários",
+      "confirmDelete": "Tem certeza que deseja excluir este usuário?",
+      "createUser": "Novo Usuário",
+      "editUser": "Editar Usuário",
+      "loadingUsers": "Carregando usuários..."
+    }
   },
   "userProfilePage": {
     "title": "Configurações do Perfil",
@@ -242,7 +262,10 @@
   },
   "roles": {
     "user": "Usuário",
-    "admin": "Admin"
+    "admin": "Administrador",
+    "manager": "Gerente",
+    "supervisor": "Supervisor",
+    "employee": "Funcionário"
   },
   "days": {
     "Sun": "Dom", "Mon": "Seg", "Tue": "Ter", "Wed": "Qua", "Thu": "Qui", "Fri": "Sex", "Sat": "Sáb",
@@ -278,7 +301,30 @@
       "save": "Salvar",
       "date": "Data",
       "actions": "Ações",
-      "comment": "Comentário"
+      "comment": "Comentário",
+      "name": "Nome",
+      "email": "E-mail",
+      "role": "Função",
+      "status": "Status",
+      "active": "Ativo",
+      "inactive": "Inativo",
+      "activate": "Ativar",
+      "deactivate": "Desativar",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "andMore": "e mais",
+      "firstName": "Nome",
+      "lastName": "Sobrenome",
+      "language": "Idioma",
+      "selectRole": "Selecione uma função",
+      "cancel": "Cancelar",
+      "saving": "Salvando...",
+      "success": "Sucesso",
+      "error": "Erro",
+      "description": "Descrição",
+      "type": "Tipo",
+      "repeatsAnnually": "Repete anualmente",
+      "noData": "Nenhum dado disponível"
   },
   "holidays": {
     "AnoNovo": "Ano Novo",
@@ -344,6 +390,58 @@
       "error": "Erro ao criar funcionário",
       "loadingInitialData": "Erro ao carregar dados iniciais",
       "loadingMunicipalities": "Erro ao carregar municípios"
+    }
+  },
+  "landingPage": {
+    "menu": {
+      "home": "Início",
+      "features": "Funcionalidades",
+      "team": "Equipe",
+      "contact": "Contato"
+    },
+    "userLogin": "Login Usuário",
+    "adminLogin": "Login Administrador",
+    "heroTitle": "Gestão de Horas e Férias para Empresas Modernas",
+    "heroSubtitle": "Organize, controle e otimize a jornada dos seus colaboradores com tecnologia, segurança e praticidade.",
+    "heroImageAlt": "Gestão de tempo e produtividade",
+    "getStarted": "Comece Agora",
+    "adminArea": "Área do Administrador",
+    "benefits": {
+      "vacationControl": "Controle fácil e seguro de férias dos colaboradores",
+      "automaticReports": "Relatórios automáticos e exportação de dados",
+      "multiLanguage": "Multi-idioma e acesso global",
+      "intuitiveInterface": "Interface intuitiva e responsiva",
+      "errorReduction": "Redução de erros e burocracia"
+    },
+    "copyright": "© {{year}} HeureC. Todos os direitos reservados.",
+    "close": "Fechar"
+  },
+  "requestTypes": {
+    "vacation": "Férias",
+    "leave": "Licença",
+    "other": "Outro"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "user": "Usuário",
+    "manager": "Gerente",
+    "supervisor": "Supervisor"
+  },
+  "adminDashboardPage": {
+    "title": "Painel Administrativo",
+    "totalUsers": "Total de Usuários",
+    "pendingRequests": "Solicitações Pendentes",
+    "onVacation": "Em Férias",
+    "vacationTimeline": "Linha do Tempo de Férias",
+    "noVacationData": "Nenhum dado de férias para exibir",
+    "departmentStats": "Estatísticas por Departamento",
+    "totalEmployees": "Total de Funcionários",
+    "upcomingVacations": "Próximas Férias",
+    "peakConcurrencyChart": {
+      "title": "Pico de Concorrência de Férias por Mês",
+      "yAxisLabel": "Máx. de usuários de férias em um único dia",
+      "dataUnavailable": "Dados de concorrência atualmente indisponíveis",
+      "featureNote": "A funcionalidade completa do gráfico requer listagem de usuários"
     }
   }
 }
