@@ -5,29 +5,20 @@ import { useGlobalDataContext } from "../contexts/GlobalDataContext";
 import { useCurrentUserDataContext } from "@/contexts/CurrentUserDataContext";
 import { useNotificationContext } from "@/contexts/NotificationContext";
 import { useVacationCalculations } from "@/hooks/useVacationCalculations";
-import { getDaysInMonth, formatDateToYYYYMMDD } from "@/utils/timeUtils";
+import { formatDateToYYYYMMDD } from "@/utils/timeUtils";
 import { printVacationRequest } from "@/utils/printVacationRequest";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
-import LoadingScreen from "./LoadingScreen";
+import LoadingScreen from "../components/LoadingScreen";
 import { VacationStatus } from "../types/types";
-import LanguageLandingPage from "./LanguageLandingPage";
+
+interface VacationConfigPageProps {
+  currentDate: Date;
+  onDateChange: (date: Date) => void;
+}
 
 import { BarChart3, CalendarDays, Plane } from "lucide-react";
 import Button from "../components/common/Button";
 import { useFormatting } from "../hooks/useFormatting";
-
-const statusColors: Record<string, string> = {
-  workday: "bg-white text-indigo-700 border border-indigo-200",
-  weekend: "bg-slate-100 text-slate-300",
-  [VacationStatus.SELECTED]:
-    "bg-indigo-100 text-indigo-700 border border-indigo-400",
-  [VacationStatus.PENDING_APPROVAL]:
-    "bg-yellow-100 text-yellow-700 border border-yellow-400",
-  [VacationStatus.APPROVED]:
-    "bg-green-100 text-green-700 border border-green-400",
-  [VacationStatus.REJECTED]: "bg-red-100 text-red-700 border border-red-400",
-  empty: "bg-transparent",
-};
 
 const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
   currentDate,
@@ -52,7 +43,6 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
   const [displayDate, setDisplayDate] = useState<Date>(
     new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   );
-  const [allYearVacations, setAllYearVacations] = useState<unknown[]>([]);
 
   const year = displayDate.getFullYear();
   const month = displayDate.getMonth();
@@ -124,7 +114,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
     weeklyContract,
     globalHolidays,
     currentMonthUserVacations,
-    daysInCalendarMonth,
+    daysInCalendarMonth: [],
   });
 
   // Saldo anual correto (reativo ao local, sempre ANUAL)
@@ -229,56 +219,6 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
     ]
   );
 
-  const handleDeleteVacationFromList = useCallback(
-    async (dateStr: string) => {
-      const existingVacation = vacations.find((v) => v.date === dateStr);
-      if (
-        existingVacation &&
-        (existingVacation.status === VacationStatus.SELECTED ||
-          existingVacation.status === VacationStatus.REJECTED ||
-          existingVacation.status === VacationStatus.PENDING_APPROVAL)
-      ) {
-        const updatedVacations = vacations.filter((v) => v.date !== dateStr);
-        setVacations(updatedVacations);
-
-        // Salvar imediatamente após a remoção
-        if (currentUser) {
-          try {
-            await updateSpecificUserVacations(
-              currentUser.id,
-              year,
-              month,
-              updatedVacations
-            );
-            addNotification("Férias removidas com sucesso.", "success");
-          } catch (error) {
-            console.error("Erro ao salvar as férias:", error);
-            addNotification("Erro ao remover férias.", "error");
-          }
-        } else {
-          addNotification("Férias removidas com sucesso.", "success");
-        }
-      } else if (
-        existingVacation &&
-        existingVacation.status === VacationStatus.APPROVED
-      ) {
-        addNotification(
-          "Não é possível remover um dia já aprovado.",
-          "warning"
-        );
-      }
-    },
-    [
-      vacations,
-      setVacations,
-      addNotification,
-      currentUser,
-      updateSpecificUserVacations,
-      year,
-      month,
-    ]
-  );
-
   const handleSubmitForApproval = useCallback(async () => {
     const updatedVacations = vacations.map((v) => {
       const vDate = new Date(v.date + "T00:00:00");
@@ -324,37 +264,6 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
     addNotification,
     currentUser,
     updateSpecificUserVacations,
-  ]);
-
-  const handlePrintRequestInternal = useCallback(() => {
-    if (!currentUser) return;
-    const printableVacations = currentMonthUserVacations
-      .filter(
-        (v) =>
-          v.status === VacationStatus.PENDING_APPROVAL ||
-          v.status === VacationStatus.APPROVED
-      )
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    if (printableVacations.length === 0) {
-      addNotification("Nenhuma férias para imprimir.", "info");
-      return;
-    }
-    printVacationRequest(
-      currentUser,
-      printableVacations,
-      displayDate.toLocaleDateString(i18n.language, {
-        month: "long",
-        year: "numeric",
-      }),
-      { t, language: i18n.language }
-    );
-  }, [
-    currentUser,
-    currentMonthUserVacations,
-    displayDate,
-    i18n.language,
-    t,
-    addNotification,
   ]);
 
   const changeDisplayedMonth = async (increment: number) => {
@@ -410,11 +319,11 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
   for (let i = 0; i < offset; i++) {
     calendarDays.push({});
   }
-  for (let d = 1; d <= daysInCalendarMonth.length; d++) {
+  for (let d = 1; d <= 31; d++) {
     const dateObj = new Date(year, month, d);
     const dateStr = formatDateToYYYYMMDD(dateObj);
     const vacation = currentMonthUserVacations.find((v) => v.date === dateStr);
-    const holiday = currentMonthGlobalHolidays.find((h) => h.date === dateStr);
+    const holiday = globalHolidays.find((h) => h.date === dateStr);
     const dayName = dateObj
       .toLocaleDateString("en-US", { weekday: "long" })
       .toLowerCase();
@@ -698,7 +607,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
                 <span>{t("vacationPage.holidaysTitle")}</span>
               </div>
               <ul className="space-y-1">
-                {currentMonthGlobalHolidays.map((h: any, i: number) => (
+                {globalHolidays.map((h: any, i: number) => (
                   <li key={i} className="flex items-center gap-2 text-sm">
                     <span className="inline-block w-2 h-2 bg-yellow-200 rounded-full"></span>
                     <span>{h.name}</span>

@@ -5,6 +5,21 @@ import {
 } from "../types/types";
 import { getDayOfWeekName, formatDateToYYYYMMDD } from "@/utils/timeUtils";
 
+interface UseVacationCalculationsProps {
+  allYearVacations: any[];
+  userGlobalSettings: any;
+  weeklyContract: any;
+  globalHolidays: any[];
+  currentMonthUserVacations: any[];
+  daysInCalendarMonth: any[];
+}
+
+interface VacationCalculations {
+  remainingAnnualVacationDays: number;
+  effectiveAnnualAllowance: number;
+  monthSummary: any;
+}
+
 export const useVacationCalculations = ({
   allYearVacations,
   userGlobalSettings,

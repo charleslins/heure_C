@@ -9,7 +9,7 @@ import {
   Municipality,
 } from "../utils/employeeManagement";
 import { useNotificationContext } from "../contexts/NotificationContext";
-import EmployeeRegistrationForm from "./EmployeeRegistrationForm";
+import EmployeeRegistrationForm from "../components/EmployeeRegistrationForm";
 
 const EmployeeManagementPage: React.FC = () => {
   const { t } = useTranslation();
@@ -161,7 +161,7 @@ const EmployeeManagementPage: React.FC = () => {
                 value={selectedCanton || ""}
                 onChange={(e) =>
                   setSelectedCanton(
-                    e.target.value ? parseInt(e.target.value) : null,
+                    e.target.value ? parseInt(e.target.value) : null
                   )
                 }
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

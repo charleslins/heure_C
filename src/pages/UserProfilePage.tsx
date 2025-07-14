@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { User } from "lucide-react";
-import SectionCard from "./common/SectionCard";
+import SectionCard from "../components/common/SectionCard";
 
 const UserProfilePage: React.FC = () => {
   const { t } = useTranslation();

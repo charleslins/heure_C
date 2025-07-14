@@ -13,6 +13,15 @@ import {
 import SectionCard from "../common/SectionCard";
 import Button from "../common/Button";
 
+interface MonthlyVacationListProps {
+  currentMonthUserVacations: any[];
+  onDeleteVacation: (date: string) => void;
+  onSubmitForApproval: () => void;
+  onPrintRequest: () => void;
+  displayDate: Date;
+  user: any;
+}
+
 const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
   currentMonthUserVacations,
   onDeleteVacation,
@@ -111,7 +120,11 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
                   <XCircle className="w-4 h-4 mr-1" />
                 )}
                 <span className="block truncate">
-                  {formatDate(vacation.date, { weekday: "short", day: "numeric", month: "short" })}
+                  {formatDate(vacation.date, {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short",
+                  })}
                 </span>
                 {(vacation.status === VacationStatus.SELECTED ||
                   vacation.status === VacationStatus.REJECTED ||

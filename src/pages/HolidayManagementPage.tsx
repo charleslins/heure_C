@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Calendar, BarChart3 } from "lucide-react";
-import SectionCard from "./common/SectionCard";
-import Button from "./common/Button";
+import SectionCard from "../components/common/SectionCard";
+import Button from "../components/common/Button";
 import { useGlobalDataContext } from "../contexts/GlobalDataContext";
 import { useNotificationContext } from "../contexts/NotificationContext";
 

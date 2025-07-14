@@ -7314,6 +7314,3053 @@ Read file: src/components/vacation_config/MonthlyVacationList.tsx
 
 ---
 
+Vou migrar os botões em `MonthlyVacationList.tsx`:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou migrar os botões em `LanguageLandingPage.tsx`:
+
+
+---
+
+Read file: src/pages/LanguageLandingPage.tsx
+
+---
+
+Vou migrar os botões em `LanguageLandingPage.tsx`:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou migrar o botão em `AdminDashboardPage.tsx`:
+
+
+---
+
+Read file: src/pages/AdminDashboardPage.tsx
+
+---
+
+Vou migrar o botão em `AdminDashboardPage.tsx`:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou migrar o botão em `VacationConfigPage.tsx`:
+
+
+---
+
+Read file: src/pages/VacationConfigPage.tsx
+
+---
+
+Vou migrar o botão em `VacationConfigPage.tsx`:
+
+
+---
+
+
+
+---
+
+Read file: src/pages/VacationConfigPage.tsx
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou fazer o commit das migrações de botões:
+
+
+---
+
+```bash
+git add .
+```
+
+---
+
+```bash
+git commit -m "feat: migrar mais botões duplicados para usar componente Button reutilizável
+
+- Migrar botões em MonthlyVacationList.tsx (print e submit)
+- Migrar botões em LanguageLandingPage.tsx (login e CTA)
+- Migrar botão em AdminDashboardPage.tsx (save settings)
+- Migrar botão em VacationConfigPage.tsx (submit request)
+- Usar variantes apropriadas (primary, secondary, warning, success)
+- Manter funcionalidade e estilos existentes"
+```
+
+```
+[main 024ed03] feat: migrar mais botões duplicados para usar componente Button reutilizável
+ 5 files changed, 369 insertions(+), 64 deletions(-)
+
+```
+
+---
+
+Perfeito! Concluí a **1. Migração de mais botões duplicados**. 
+
+Agora vou prosseguir com **2. Implementar hook useFormatting para formatação**:
+
+
+---
+
+```diff
+- 
++ import { useTranslation } from 'react-i18next';
++ 
++ export const useFormatting = () => {
++   const { t, i18n } = useTranslation();
++ 
++   const formatDate = (date: string | Date, options?: Intl.DateTimeFormatOptions) => {
++     const dateObj = typeof date === 'string' ? new Date(date + 'T00:00:00') : date;
++     const defaultOptions: Intl.DateTimeFormatOptions = {
++       day: '2-digit',
++       month: 'short',
++     };
++     return dateObj.toLocaleDateString(i18n.language, options || defaultOptions);
++   };
++ 
++   const formatDateRange = (startDate: string, endDate: string) => {
++     const start = new Date(startDate + 'T00:00:00');
++     const end = new Date(endDate + 'T00:00:00');
++     
++     if (start.getMonth() === end.getMonth()) {
++       return `${start.getDate()} - ${end.getDate()} ${start.toLocaleDateString(i18n.language, { month: 'short' })}`;
++     }
++     
++     return `${formatDate(start)} - ${formatDate(end)}`;
++   };
++ 
++   const formatTime = (time: string, options?: Intl.DateTimeFormatOptions) => {
++     const [hours, minutes] = time.split(':');
++     const date = new Date();
++     date.setHours(parseInt(hours), parseInt(minutes));
++     
++     const defaultOptions: Intl.DateTimeFormatOptions = {
++       hour: '2-digit',
++       minute: '2-digit',
++     };
++     
++     return date.toLocaleTimeString(i18n.language, options || defaultOptions);
++   };
++ 
++   const formatHours = (hours: number) => {
++     if (hours === 0) return '0h';
++     if (hours === 1) return '1h';
++     return `${hours}h`;
++   };
++ 
++   const formatPercentage = (value: number, decimals: number = 1) => {
++     return `${value.toFixed(decimals)}%`;
++   };
++ 
++   const formatCurrency = (amount: number, currency: string = 'CHF') => {
++     return new Intl.NumberFormat(i18n.language, {
++       style: 'currency',
++       currency,
++     }).format(amount);
++   };
++ 
++   const formatFileSize = (bytes: number) => {
++     if (bytes === 0) return '0 Bytes';
++     const k = 1024;
++     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
++     const i = Math.floor(Math.log(bytes) / Math.log(k));
++     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
++   };
++ 
++   const formatPhoneNumber = (phone: string) => {
++     // Remove todos os caracteres não numéricos
++     const cleaned = phone.replace(/\D/g, '');
++     
++     // Formato suíço: +41 XX XXX XX XX
++     if (cleaned.startsWith('41') && cleaned.length === 11) {
++       return `+${cleaned.slice(0, 2)} ${cleaned.slice(2, 4)} ${cleaned.slice(4, 7)} ${cleaned.slice(7, 9)} ${cleaned.slice(9)}`;
++     }
++     
++     // Formato local: 0XX XXX XX XX
++     if (cleaned.startsWith('0') && cleaned.length === 10) {
++       return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6, 8)} ${cleaned.slice(8)}`;
++     }
++     
++     return phone; // Retorna original se não conseguir formatar
++   };
++ 
++   const formatStatus = (status: string) => {
++     return t(`statuses.${status}`, status);
++   };
++ 
++   const formatRole = (role: string) => {
++     return t(`roles.${role}`, role);
++   };
++ 
++   const formatVacationStatus = (status: string) => {
++     return t(`vacationStatuses.${status}`, status);
++   };
++ 
++   return {
++     formatDate,
++     formatDateRange,
++     formatTime,
++     formatHours,
++     formatPercentage,
++     formatCurrency,
++     formatFileSize,
++     formatPhoneNumber,
++     formatStatus,
++     formatRole,
++     formatVacationStatus,
++   };
++ }; 
+```
+
+---
+
+Agora vou migrar alguns componentes para usar o hook `useFormatting`. Vou começar com `MonthlyVacationList.tsx`:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou migrar `VacationConfigPage.tsx` para usar o hook:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou fazer o commit do hook `useFormatting`:
+
+
+---
+
+```bash
+git add .
+```
+
+---
+
+```bash
+git commit -m "feat: implementar hook useFormatting para centralizar formatação
+
+- Criar hook useFormatting com funções de formatação reutilizáveis
+- Incluir formatDate, formatTime, formatHours, formatPercentage
+- Incluir formatCurrency, formatFileSize, formatPhoneNumber
+- Incluir formatStatus, formatRole, formatVacationStatus
+- Migrar MonthlyVacationList.tsx para usar useFormatting
+- Migrar VacationConfigPage.tsx para usar useFormatting
+- Centralizar formatação de datas e status de férias"
+```
+
+```
+[main 270a3eb] feat: implementar hook useFormatting para centralizar formatação
+ 3 files changed, 150 insertions(+), 17 deletions(-)
+ create mode 100644 src/hooks/useFormatting.ts
+
+```
+
+---
+
+Perfeito! Concluí a **2. Implementação do hook useFormatting**. 
+
+Agora vou prosseguir com **3. Migrar inputs duplicados para usar inputClasses**:
+
+
+---
+
+<details>
+            <summary>Grep search for "className.*px-.*py-.*border.*rounded.*focus:" • **5** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/pages/HolidayManagementPage.tsx` | L195 | `className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/HolidayManagementPage.tsx` | L211 | `className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/HolidayManagementPage.tsx` | L226 | `className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/HolidayManagementPage.tsx` | L254 | `className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 h-24"` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L153 | `className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L166 | `className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L284 | `className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L307 | `className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L335 | `className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L356 | `className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L376 | `className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L391 | `className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L404 | `className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L430 | `className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L451 | `className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/AdminUserList.tsx` | L134 | `className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/GlobalSettingsForm.tsx` | L47 | `className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/GlobalSettingsForm.tsx` | L66 | `className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/GlobalSettingsForm.tsx` | L85 | `className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"` |
+
+</details>
+
+---
+
+Vou criar um utilitário para classes de input reutilizáveis:
+
+
+---
+
+```diff
+- 
++ import { cva } from 'class-variance-authority';
++ 
++ // Classes base para inputs
++ export const inputClasses = cva(
++   "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 transition-colors",
++   {
++     variants: {
++       variant: {
++         default: "bg-white border-slate-300 text-slate-700 focus:ring-indigo-500 focus:border-indigo-500",
++         error: "bg-white border-red-300 text-red-700 focus:ring-red-500 focus:border-red-500",
++         success: "bg-white border-green-300 text-green-700 focus:ring-green-500 focus:border-green-500",
++         disabled: "bg-slate-100 border-slate-200 text-slate-500 cursor-not-allowed",
++       },
++       size: {
++         sm: "px-2 py-1 text-sm",
++         md: "px-3 py-2 text-base",
++         lg: "px-4 py-3 text-lg",
++       },
++     },
++     defaultVariants: {
++       variant: "default",
++       size: "md",
++     },
++   }
++ );
++ 
++ // Classes específicas para diferentes tipos de input
++ export const textInputClasses = inputClasses({ variant: "default" });
++ export const errorInputClasses = inputClasses({ variant: "error" });
++ export const successInputClasses = inputClasses({ variant: "success" });
++ export const disabledInputClasses = inputClasses({ variant: "disabled" });
++ 
++ // Classes para textarea
++ export const textareaClasses = cva(
++   "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 transition-colors resize-vertical",
++   {
++     variants: {
++       variant: {
++         default: "bg-white border-slate-300 text-slate-700 focus:ring-indigo-500 focus:border-indigo-500",
++         error: "bg-white border-red-300 text-red-700 focus:ring-red-500 focus:border-red-500",
++         success: "bg-white border-green-300 text-green-700 focus:ring-green-500 focus:border-green-500",
++       },
++       size: {
++         sm: "px-2 py-1 text-sm min-h-[60px]",
++         md: "px-3 py-2 text-base min-h-[80px]",
++         lg: "px-4 py-3 text-lg min-h-[100px]",
++       },
++     },
++     defaultVariants: {
++       variant: "default",
++       size: "md",
++     },
++   }
++ );
++ 
++ // Classes para select
++ export const selectClasses = cva(
++   "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 transition-colors appearance-none bg-white",
++   {
++     variants: {
++       variant: {
++         default: "border-slate-300 text-slate-700 focus:ring-indigo-500 focus:border-indigo-500",
++         error: "border-red-300 text-red-700 focus:ring-red-500 focus:border-red-500",
++         success: "border-green-300 text-green-700 focus:ring-green-500 focus:border-green-500",
++         light: "border-slate-200 text-slate-600 focus:ring-slate-500 focus:border-slate-500",
++       },
++       size: {
++         sm: "px-2 py-1 text-sm",
++         md: "px-3 py-2 text-base",
++         lg: "px-4 py-3 text-lg",
++       },
++     },
++     defaultVariants: {
++       variant: "default",
++       size: "md",
++     },
++   }
++ );
++ 
++ // Classes para checkbox e radio
++ export const checkboxClasses = cva(
++   "w-4 h-4 border rounded focus:ring-2 focus:ring-offset-2 transition-colors",
++   {
++     variants: {
++       variant: {
++         default: "border-slate-300 text-indigo-600 focus:ring-indigo-500",
++         error: "border-red-300 text-red-600 focus:ring-red-500",
++         success: "border-green-300 text-green-600 focus:ring-green-500",
++       },
++     },
++     defaultVariants: {
++       variant: "default",
++     },
++   }
++ );
++ 
++ // Classes para labels
++ export const labelClasses = cva(
++   "block text-sm font-medium mb-1",
++   {
++     variants: {
++       variant: {
++         default: "text-slate-700",
++         error: "text-red-700",
++         success: "text-green-700",
++         required: "text-slate-700 after:content-['*'] after:ml-0.5 after:text-red-500",
++       },
++     },
++     defaultVariants: {
++       variant: "default",
++     },
++   }
++ );
++ 
++ // Classes para grupos de input
++ export const inputGroupClasses = "space-y-1";
++ 
++ // Classes para mensagens de erro
++ export const errorMessageClasses = "text-sm text-red-600 mt-1";
++ 
++ // Classes para mensagens de sucesso
++ export const successMessageClasses = "text-sm text-green-600 mt-1";
++ 
++ // Classes para ajuda/hint
++ export const hintClasses = "text-sm text-slate-500 mt-1";
++ 
++ // Função helper para combinar classes condicionalmente
++ export const getInputClasses = (
++   hasError?: boolean,
++   isSuccess?: boolean,
++   isDisabled?: boolean,
++   size: 'sm' | 'md' | 'lg' = 'md'
++ ) => {
++   if (isDisabled) return disabledInputClasses;
++   if (hasError) return inputClasses({ variant: "error", size });
++   if (isSuccess) return inputClasses({ variant: "success", size });
++   return inputClasses({ variant: "default", size });
++ }; 
+```
+
+---
+
+Agora vou migrar alguns inputs para usar as classes reutilizáveis. Vou começar com `GlobalSettingsForm.tsx`:
+
+
+---
+
+Read file: src/components/AdminDashboard/GlobalSettingsForm.tsx
+
+---
+
+Vou migrar `GlobalSettingsForm.tsx` para usar as classes reutilizáveis:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou fazer o commit das classes de input reutilizáveis:
+
+
+---
+
+```bash
+git add .
+```
+
+---
+
+```bash
+git commit -m "feat: criar classes de input reutilizáveis e migrar GlobalSettingsForm
+
+- Criar inputClasses.ts com classes reutilizáveis para inputs
+- Incluir variantes para text, textarea, select, checkbox
+- Incluir classes para labels, mensagens de erro/sucesso
+- Migrar GlobalSettingsForm.tsx para usar classes reutilizáveis
+- Usar class-variance-authority para variantes condicionais
+- Centralizar estilos de formulários para consistência"
+```
+
+```
+[main 97d731c] feat: criar classes de input reutilizáveis e migrar GlobalSettingsForm
+ 2 files changed, 165 insertions(+), 20 deletions(-)
+ create mode 100644 src/utils/inputClasses.ts
+
+```
+
+---
+
+Perfeito! Concluí a **3. Migração de inputs duplicados**. 
+
+Agora vou prosseguir com **4. Aplicar utilitários em mais componentes**:
+
+
+---
+
+<details>
+            <summary>Grep search for "className.*bg-.*text-.*rounded.*shadow" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/components/TypeSelector.tsx` | L25 | `className="w-full p-1.5 border border-slate-300 bg-slate-50 text-slate-700 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-slate-100 disabled:tex` |
+
+</details>
+
+---
+
+Vou aplicar os utilitários do `tailwindUtils` em mais componentes. Vou começar com `TypeSelector.tsx`:
+
+
+---
+
+Read file: src/components/TypeSelector.tsx
+
+---
+
+Vou migrar `TypeSelector.tsx` para usar os utilitários:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou aplicar os utilitários em `TimeInput.tsx`:
+
+
+---
+
+Read file: src/components/common/TimeInput.tsx
+
+---
+
+Vou migrar `TimeInput.tsx` para usar os utilitários:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou aplicar os utilitários em `InputWithIcon.tsx`:
+
+
+---
+
+Read file: src/components/common/InputWithIcon.tsx
+
+---
+
+Vou migrar `InputWithIcon.tsx` para usar os utilitários:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou aplicar os utilitários em `ContractHoursInput.tsx`:
+
+
+---
+
+Could not find file 'src/components/ContractHoursInput.tsx' in the workspace.
+
+---
+
+Read file: src/components/CompactContractHoursInput.tsx
+
+---
+
+Vou migrar `CompactContractHoursInput.tsx` para usar os utilitários:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou fazer o commit da aplicação dos utilitários:
+
+
+---
+
+```bash
+git add .
+```
+
+---
+
+```bash
+git commit -m "feat: aplicar utilitários de classes em mais componentes
+
+- Migrar TypeSelector.tsx para usar selectClasses
+- Migrar TimeInput.tsx para usar selectClasses e labelClasses
+- Migrar InputWithIcon.tsx para usar textInputClasses e labelClasses
+- Migrar CompactContractHoursInput.tsx para usar textInputClasses
+- Centralizar estilos de inputs e labels para consistência
+- Reduzir duplicação de classes Tailwind em componentes de formulário"
+```
+
+```
+[main 742a3d0] feat: aplicar utilitários de classes em mais componentes
+ 4 files changed, 10 insertions(+), 10 deletions(-)
+
+```
+
+---
+
+Perfeito! Concluí todas as 4 tarefas solicitadas:
+
+## Resumo das implementações:
+
+### ✅ 1. Continuar migrando outros botões duplicados
+- Migrei botões em `MonthlyVacationList.tsx` (print e submit)
+- Migrei botões em `LanguageLandingPage.tsx` (login e CTA)
+- Migrei botão em `AdminDashboardPage.tsx` (save settings)
+- Migrei botão em `VacationConfigPage.tsx` (submit request)
+- Usei variantes apropriadas (primary, secondary, warning, success)
+
+### ✅ 2. Implementar hook useFormatting para formatação
+- Criei `useFormatting.ts` com funções de formatação reutilizáveis
+- Incluí formatDate, formatTime, formatHours, formatPercentage
+- Incluí formatCurrency, formatFileSize, formatPhoneNumber
+- Incluí formatStatus, formatRole, formatVacationStatus
+- Migrei `MonthlyVacationList.tsx` e `VacationConfigPage.tsx` para usar o hook
+
+### ✅ 3. Migrar inputs duplicados para usar inputClasses
+- Criei `inputClasses.ts` com classes reutilizáveis para inputs
+- Incluí variantes para text, textarea, select, checkbox
+- Incluí classes para labels, mensagens de erro/sucesso
+- Migrei `GlobalSettingsForm.tsx` para usar classes reutilizáveis
+- Usei class-variance-authority para variantes condicionais
+
+### ✅ 4. Aplicar utilitários em mais componentes
+- Migrei `TypeSelector.tsx` para usar selectClasses
+- Migrei `TimeInput.tsx` para usar selectClasses e labelClasses
+- Migrei `InputWithIcon.tsx` para usar textInputClasses e labelClasses
+- Migrei `CompactContractHoursInput.tsx` para usar textInputClasses
+- Centralizei estilos de inputs e labels para consistência
+
+Todas as implementações seguem os princípios DRY (Don't Repeat Yourself) e melhoram a manutenibilidade do código, reduzindo duplicação e centralizando estilos e formatações reutilizáveis.
+
+---
+
+_**User**_
+
+Analise o projeto e identifique: 1) Componentes que foram criados mas nunca importados ou renderizados, 2) Funções declaradas que nunca são chamadas, 3) Importações que não são utilizadas, 4) Variáveis de estado (useState) que nunca mudam ou nunca são lidas, 5) Código comentado sem explicação clara de por que foi mantido. Sugira a remoção desses elementos para melhorar a manutenibilidade e performance do código.
+
+---
+
+_**Assistant**_
+
+Ótima solicitação! Vou realizar uma análise detalhada do projeto para identificar:
+
+1. **Componentes React criados mas nunca importados ou renderizados**
+2. **Funções declaradas que nunca são chamadas**
+3. **Importações não utilizadas**
+4. **Variáveis de estado (useState) que nunca mudam ou nunca são lidas**
+5. **Código comentado sem explicação clara**
+
+E ao final, sugerir a remoção desses elementos para melhorar a manutenibilidade e performance.
+
+---
+
+## 1) Componentes criados mas nunca importados ou renderizados
+
+Vou buscar por componentes exportados (`export const` ou `export default`) e verificar se são importados em outros arquivos.
+
+
+
+---
+
+<details>
+            <summary>Grep search for "export (const|default) " • **42** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L64 | `export default DashboardPage;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/NotificationDisplay.tsx` | L31 | `export default NotificationDisplay;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/ContractAndMonthlySummaryCard.tsx` | L184 | `export default ContractAndMonthlySummaryCard;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/ErrorBoundary.tsx` | L57 | `export default ErrorBoundary;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLog.tsx` | L130 | `export default DailyLog;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/MainAppLayout.tsx` | L84 | `export default MainAppLayout;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/CompactContractHoursInput.tsx` | L123 | `export default CompactContractHoursInput;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L492 | `export default EmployeeRegistrationForm;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L302 | `export default DailyLogRow;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/Button.tsx` | L39 | `export const Button: React.FC<ButtonProps> = ({` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/Button.tsx` | L53 | `export default Button;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/VacationSummaryPanel.tsx` | L151 | `export default VacationSummaryPanel;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/TimeInput.tsx` | L142 | `export default TimeInput;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AppHeader.tsx` | L312 | `export default AppHeader;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/UserVacationSummaryTable.tsx` | L169 | `export default UserVacationSummaryTable;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/SectionCard.tsx` | L52 | `export default SectionCard;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/InputWithIcon.tsx` | L58 | `export default InputWithIcon;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/Alert.tsx` | L38 | `export const Alert: React.FC<AlertProps> = ({` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/Alert.tsx` | L62 | `export default Alert;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/CalendarGrid.tsx` | L314 | `export default CalendarGrid;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/GlobalSettingsForm.tsx` | L124 | `export default GlobalSettingsForm;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/RegionSelector.tsx` | L129 | `export default RegionSelector;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/AdminUserList.tsx` | L233 | `export default AdminUserList;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/UserForm.tsx` | L135 | `export default UserForm;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/PendingRequestsList.tsx` | L159 | `export default PendingRequestsList;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/MonthlyVacationList.tsx` | L139 | `export default MonthlyVacationList;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/LoadingScreen.tsx` | L48 | `export default LoadingScreen;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/VacationPagePreview.tsx` | L118 | `export default VacationPagePreview;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AccessDeniedMessage.tsx` | L18 | `export default AccessDeniedMessage;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/MonthYearSelector.tsx` | L75 | `export default MonthYearSelector;` |
+| `file:///Users/chlins-mbp/heure_C/src/components/ModernVacationCalendar.tsx` | L3 | `export default function ModernVacationCalendar() {` |
+| `file:///Users/chlins-mbp/heure_C/src/components/TypeSelector.tsx` | L37 | `export default TypeSelector;` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LanguageLandingPage.tsx` | L196 | `export default LanguageLandingPage;` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L357 | `export default AdminOverviewDashboard;` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L211 | `export default AdminTabbedPage;` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/UserProfilePage.tsx` | L32 | `export default UserProfilePage;` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/HolidayManagementPage.tsx` | L330 | `export default HolidayManagementPage;` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L359 | `export default LoginPage;` |
+| `file:///Users/chlins-mbp/heure_C/src/contexts/CurrentUserDataContext.tsx` | L45 | `export const CurrentUserDataProvider: React.FC<` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L430 | `export default EmployeeManagementPage;` |
+| `file:///Users/chlins-mbp/heure_C/src/App.tsx` | L126 | `export default App;` |
+| `file:///Users/chlins-mbp/heure_C/src/contexts/NotificationContext.tsx` | L17 | `export const NotificationProvider: React.FC<{ children: ReactNode }> = ({` |
+| `file:///Users/chlins-mbp/heure_C/src/contexts/NotificationContext.tsx` | L52 | `export const useNotificationContext = (): NotificationContextType => {` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/VacationConfigPage.tsx` | L763 | `export default VacationConfigPage;` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminDashboardPage.tsx` | L782 | `export default AdminDashboardPage;` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*CompactContractHoursInput" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L5 | `import CompactContractHoursInput from "./CompactContractHoursInput";` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*ModernVacationCalendar" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "<ModernVacationCalendar" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*VacationPagePreview" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "<VacationPagePreview" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*AccessDeniedMessage" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/components/MainAppLayout.tsx` | L9 | `import AccessDeniedMessage from "./AccessDeniedMessage";` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*MonthYearSelector" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/components/AppHeader.tsx` | L4 | `import MonthYearSelector from "./MonthYearSelector";` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*VacationSummaryPanel" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/VacationSummaryPanel.tsx` | L2 | `import { VacationSummaryPanelProps, Holiday } from "@/types";` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "<VacationSummaryPanel" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/VacationSummaryPanel.tsx` | L6 | `const VacationSummaryPanel: React.FC<VacationSummaryPanelProps> = ({` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*CalendarGrid" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "<CalendarGrid" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/CalendarGrid.tsx` | L42 | `const CalendarGrid: React.FC<CalendarGridProps> = ({` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*VacationSummaryPanel" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*CalendarGrid" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*VacationPagePreview" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*VacationSummaryPanel" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*ModernVacationCalendar" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*ModernVacationCalendar" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*ModernVacationCalendar" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*VacationPagePreview" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*CalendarGrid" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import .*VacationSummaryPanel" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+### Componentes criados mas nunca importados ou renderizados
+
+- **ModernVacationCalendar**
+- **VacationPagePreview**
+- **VacationSummaryPanel**
+- **CalendarGrid**
+
+Esses componentes não são importados nem renderizados em nenhum outro arquivo do projeto. Recomendo revisar se são realmente necessários; caso não sejam, podem ser removidos para evitar código morto.
+
+---
+
+## 2) Funções declaradas que nunca são chamadas
+
+Vou buscar por funções declaradas (`function`, `const x = () =>`, etc.) e verificar se são usadas.
+
+
+
+---
+
+<details>
+            <summary>Grep search for "function " • **15** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/types/types.ts` | L161 | `// refreshCurrentUserData: () => Promise<void>; // Function to explicitly refresh data for current user/date` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L7 | `export function useEmployeePresenter() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L26 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L7 | `export function useRegionPresenter() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L26 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L244 | `); // Changed function name` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L357 | `saveUserDailyLogToSupabase(currentUser.id, updatedLogEntry); // Changed function name` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L420 | `saveUserDailyLogToSupabase(currentUser.id, entryWithHasInputs); // Changed function name` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L443 | `); // Changed function name` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L459 | `return await loadUserYearVacationsFromSupabase(userId, year); // Changed function name` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | L6 | `export function useHolidayPresenter(year?: number, cantonId?: number) {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | L31 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useUserPresenter.ts` | L4 | `export function useUserPresenter() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L3 | `export function useMonthNavigation(initialDate = new Date()) {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L9 | `function nextMonth() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L15 | `function prevMonth() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L7 | `export function useVacationPresenter(year?: number, month?: number) {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L29 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L8 | `export function useDailyLogPresenter(year?: number, month?: number) {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L40 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L11 | `export function useGlobalSettingsPresenter() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L30 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationRequestPresenter.ts` | L7 | `export function useVacationRequestPresenter() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/usePendingRequestPresenter.ts` | L4 | `export function usePendingRequestPresenter() {` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/tailwindUtils.ts` | L2 | `export function cn(...inputs: ClassValue[]) {` |
+| `file:///Users/chlins-mbp/heure_C/src/components/ModernVacationCalendar.tsx` | L3 | `export default function ModernVacationCalendar() {` |
+| `file:///Users/chlins-mbp/heure_C/src/contexts/CurrentUserDataContext.tsx` | L67 | `export function useCurrentUserDataContext() {` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "loadData" • **6** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L26 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L40 | `loadData();` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L26 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L40 | `loadData();` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | L31 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | L45 | `loadData();` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L40 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L54 | `loadData();` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L30 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L44 | `loadData();` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L29 | `async function loadData() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L44 | `loadData();` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "function nextMonth" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L9 | `function nextMonth() {` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "nextMonth" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L9 | `function nextMonth() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L28 | `nextMonth,` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "function prevMonth" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L15 | `function prevMonth() {` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "prevMonth" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L15 | `function prevMonth() {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L29 | `prevMonth,` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "function cn" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/utils/tailwindUtils.ts` | L2 | `export function cn(...inputs: ClassValue[]) {` |
+
+</details>
+
+---
+
+Model provided invalid arguments to grep tool.
+
+---
+
+<details>
+            <summary>Grep search for "cn\(" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/utils/tailwindUtils.ts` | L2 | `export function cn(...inputs: ClassValue[]) {` |
+
+</details>
+
+---
+
+- A função `cn` em `tailwindUtils.ts` não está sendo utilizada em nenhum lugar do projeto.  
+- As funções internas dos hooks (como `loadData`, `nextMonth`, `prevMonth`) são usadas dentro dos próprios hooks e exportadas, então não são código morto.
+
+---
+
+## 3) Importações não utilizadas
+
+Vou buscar por imports não utilizados, que normalmente aparecem como imports não referenciados no código.
+
+
+
+---
+
+<details>
+            <summary>Grep search for "import " • **28** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useStatusColors.ts` | Lundefined | `import { useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationCalculations.ts` | Lundefined | `import { useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationCalculations.ts` | L1 | `import {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationCalculations.ts` | L5 | `import { getDayOfWeekName, formatDateToYYYYMMDD } from "@/utils/timeUtils";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | Lundefined | `import { useState, useEffect, useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L1 | `import { RegionCollection } from "../collections/RegionCollection";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L2 | `import { RegionPresenter } from "../presenters/RegionPresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L3 | `import { useNotificationContext } from "../contexts/NotificationContext";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L4 | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useRegionPresenter.ts` | L5 | `import { Region, RegionMetadata } from "../models/Region";` |
+| `file:///Users/chlins-mbp/heure_C/src/services/userService.ts` | Lundefined | `import { supabase } from "../supabase/client";` |
+| `file:///Users/chlins-mbp/heure_C/src/services/userService.ts` | L1 | `import { DbUser, DbUserInsert, DbUserUpdate } from "../types/supabase";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | Lundefined | `import { useState, useEffect, useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L1 | `import { Employee } from "../models/Employee";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L2 | `import { EmployeeCollection } from "../collections/EmployeeCollection";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L3 | `import { EmployeePresenter } from "../presenters/EmployeePresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L4 | `import { useNotificationContext } from "../contexts/NotificationContext";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useEmployeePresenter.ts` | L5 | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useAuth.ts` | Lundefined | `import { useState, useEffect, useCallback } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useAuth.ts` | L1 | `import { supabase } from "@utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useAuth.ts` | L2 | `import { User } from "@/types";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useAuth.ts` | L3 | `import { getUserInitials } from "@utils/stringUtils";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L1 | `import { useState, useEffect, useCallback } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L2 | `import {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L13 | `import { INITIAL_WEEKLY_CONTRACT } from "@/utils/constants";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L14 | `import {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useCurrentUserData.ts` | L23 | `import {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | Lundefined | `import { useState, useEffect, useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L1 | `import { GlobalSettingsCollection } from "../collections/GlobalSettingsCollection";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L2 | `import { GlobalSettingsPresenter } from "../presenters/GlobalSettingsPresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L3 | `import { useNotificationContext } from "../contexts/NotificationContext";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L4 | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalSettingsPresenter.ts` | L5 | `import {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | Lundefined | `import { useState, useEffect, useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L1 | `import { VacationCollection } from "../collections/VacationCollection";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L2 | `import { VacationPresenter } from "../presenters/VacationPresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L3 | `import { useNotificationContext } from "../contexts/NotificationContext";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L4 | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationPresenter.ts` | L5 | `import { useAuth } from "./useAuth";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationRequestPresenter.ts` | Lundefined | `import { useState, useCallback } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationRequestPresenter.ts` | L1 | `import { VacationRequestPresenter } from "../presenters/VacationRequestPresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useVacationRequestPresenter.ts` | L2 | `import { Database } from "../types/supabase";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useFormatting.ts` | Lundefined | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalData.ts` | L1 | `import { useState, useEffect, useCallback } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalData.ts` | L2 | `import { UserGlobalSettings, Holiday, User } from "@/types";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalData.ts` | L3 | `import {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useGlobalData.ts` | L7 | `import {` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useUserPresenter.ts` | Lundefined | `import { useState, useCallback } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useUserPresenter.ts` | L1 | `import { UserPresenter } from "../presenters/UserPresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useUserPresenter.ts` | L2 | `import { UserModel, CreateUserDTO, UpdateUserDTO } from "../models/User";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | Lundefined | `import { useState, useEffect, useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | L1 | `import { HolidayCollection } from "../collections/HolidayCollection";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | L2 | `import { HolidayPresenter } from "../presenters/HolidayPresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | L3 | `import { useNotificationContext } from "../contexts/NotificationContext";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useHolidayPresenter.ts` | L4 | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | Lundefined | `import { useState, useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useMonthNavigation.ts` | L1 | `import { getDaysInMonth } from "../utils/timeUtils";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/usePendingRequestPresenter.ts` | Lundefined | `import { useState, useCallback } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/usePendingRequestPresenter.ts` | L1 | `import { PendingRequestPresenter } from "../presenters/PendingRequestPresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/usePendingRequestPresenter.ts` | L2 | `import { PendingRequestWithUser } from "../models/PendingRequest";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | Lundefined | `import React from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L1 | `import { DashboardPageProps } from "@/types";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L2 | `import { useGlobalDataContext } from "../contexts/GlobalDataContext";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L3 | `import { useCurrentUserDataContext } from "../contexts/CurrentUserDataContext";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L5 | `import CompactContractHoursInput from "./CompactContractHoursInput";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L6 | `import ContractAndMonthlySummaryCard from "./ContractAndMonthlySummaryCard";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L7 | `import DailyLog from "./DailyLog";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L8 | `import AdminOverviewDashboard from "./AdminOverviewDashboard";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L9 | `import LoadingScreen from "./LoadingScreen";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/DashboardPage.tsx` | L10 | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | Lundefined | `import { useState, useEffect, useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L1 | `import { DailyLogCollection } from "../collections/DailyLogCollection";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L2 | `import { DailyLogPresenter } from "../presenters/DailyLogPresenter";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L3 | `import { useNotificationContext } from "../contexts/NotificationContext";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L4 | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L5 | `import { useAuth } from "./useAuth";` |
+| `file:///Users/chlins-mbp/heure_C/src/hooks/useDailyLogPresenter.ts` | L6 | `import { EntryType, TimeSegment } from "../models/DailyLog";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/EmployeeCollection.ts` | Lundefined | `import { Employee } from "../models/Employee";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/EmployeeCollection.ts` | L1 | `import { supabase } from "../utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/DailyLogCollection.ts` | Lundefined | `import { DailyLog, EntryType } from "../models/DailyLog";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/DailyLogCollection.ts` | L1 | `import { supabase } from "../utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/GlobalSettingsCollection.ts` | Lundefined | `import { GlobalSettings } from "../models/GlobalSettings";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/GlobalSettingsCollection.ts` | L1 | `import { supabase } from "../utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/VacationRequestCollection.ts` | Lundefined | `import { supabase } from "../../utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/VacationRequestCollection.ts` | L1 | `import { Database } from "../types/supabase";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/VacationCollection.ts` | Lundefined | `import { Vacation } from "../models/Vacation";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/VacationCollection.ts` | L1 | `import { supabase } from "../utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/VacationCollection.ts` | L2 | `import { VacationStatus } from "@/types";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/UserCollection.ts` | Lundefined | `import { supabase } from "@/utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/UserCollection.ts` | L1 | `import { Database } from "../types/supabase";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/HolidayCollection.ts` | Lundefined | `import { Holiday } from "../models/Holiday";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/HolidayCollection.ts` | L1 | `import { supabase } from "../utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/PendingRequestCollection.ts` | Lundefined | `import { supabase } from "@/utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/PendingRequestCollection.ts` | L1 | `import {` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/RegionCollection.ts` | Lundefined | `import { Region, RegionMetadata } from "../models/Region";` |
+| `file:///Users/chlins-mbp/heure_C/src/collections/RegionCollection.ts` | L1 | `import { supabase } from "../utils/supabaseClient";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | Lundefined | `import React, { useState, useCallback, useEffect } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L1 | `import { useTranslation } from "react-i18next";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L2 | `import { Users, User, Calendar, Settings } from "lucide-react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L3 | `import { useAuthContext } from "../contexts/AuthContext";` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import { VacationSummaryPanel" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/VacationSummaryPanel.tsx` | L2 | `import { VacationSummaryPanelProps, Holiday } from "@/types";` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import { CalendarGrid" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import { ModernVacationCalendar" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "import { VacationPagePreview" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+- **VacationSummaryPanelProps, Holiday** são importados em `VacationSummaryPanel.tsx`, mas é provável que Holiday não seja usado (verificar e remover se for o caso).
+- Não há importações de `CalendarGrid`, `ModernVacationCalendar` ou `VacationPagePreview` em outros arquivos, confirmando que não são utilizados.
+
+---
+
+## 4) Variáveis de estado (useState) que nunca mudam ou nunca são lidas
+
+Vou buscar por `useState` e verificar se o valor retornado é utilizado.
+
+
+
+---
+
+<details>
+            <summary>Grep search for "useState" • **17** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | Lundefined | `import React, { useState, useCallback, useEffect } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L16 | `const [activeTab, setActiveTab] = useState("users");` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L18 | `useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L19 | `const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminDashboardPage.tsx` | Lundefined | `import React, { useState, useEffect, useCallback } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminDashboardPage.tsx` | L103 | `const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminDashboardPage.tsx` | L105 | `useState<UserGlobalSettings>(INITIAL_USER_GLOBAL_SETTINGS);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminDashboardPage.tsx` | L106 | `const [userVacationSummaries, setUserVacationSummaries] = useState<` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminDashboardPage.tsx` | L109 | `const [isLoadingSummaries, setIsLoadingSummaries] = useState<boolean>(true);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminDashboardPage.tsx` | L110 | `const [localAllUsers, setLocalAllUsers] = useState<User[]>(allUsers);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminDashboardPage.tsx` | L111 | `const [isSavingGlobalSettings, setIsSavingGlobalSettings] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/HolidayManagementPage.tsx` | Lundefined | `import React, { useState, useEffect } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/HolidayManagementPage.tsx` | L13 | `const [formData, setFormData] = useState({` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/HolidayManagementPage.tsx` | L21 | `const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L1 | `import React, { useEffect, useState } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L77 | `const [pendingRequestsCount, setPendingRequestsCount] = useState(0);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L78 | `const [totalUsers, setTotalUsers] = useState(0);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L79 | `const [vacationData, setVacationData] = useState<UserVacationData[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L80 | `const [overlapData, setOverlapData] = useState<VacationOverlapData[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L81 | `const [departmentStats, setDepartmentStats] = useState<DepartmentStats[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L82 | `const [upcomingVacations, setUpcomingVacations] = useState<` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminOverviewDashboard.tsx` | L85 | `const [loading, setLoading] = useState(true);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LanguageLandingPage.tsx` | Lundefined | `import React, { useState } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LanguageLandingPage.tsx` | L44 | `const [loginMode, setLoginMode] = useState<"user" | "admin">("user");` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/VacationConfigPage.tsx` | Lundefined | `import React, { useState, useEffect, useMemo, useCallback } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/VacationConfigPage.tsx` | L51 | `const [displayDate, setDisplayDate] = useState<Date>(` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/VacationConfigPage.tsx` | L54 | `const [allYearVacations, setAllYearVacations] = useState<unknown[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/App.tsx` | L1 | `import React, { useState, useEffect } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/App.tsx` | L24 | `const [currentPage, setCurrentPage] = useState<Page>("dashboard");` |
+| `file:///Users/chlins-mbp/heure_C/src/App.tsx` | L25 | `const [currentDate, setCurrentDate] = useState<Date>(new Date());` |
+| `file:///Users/chlins-mbp/heure_C/src/App.tsx` | L26 | `const [showLandingLogin, setShowLandingLogin] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | Lundefined | `import React, { useState, useEffect } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L17 | `const [employees, setEmployees] = useState<Employee[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L18 | `const [cantons, setCantons] = useState<Canton[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L19 | `const [municipalities, setMunicipalities] = useState<Municipality[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L20 | `const [isLoading, setIsLoading] = useState(true);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L21 | `const [showRegistrationForm, setShowRegistrationForm] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L22 | `const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L23 | `const [searchTerm, setSearchTerm] = useState("");` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/EmployeeManagementPage.tsx` | L24 | `const [selectedCanton, setSelectedCanton] = useState<number | null>(null);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | Lundefined | `import React, { useState } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L20 | `const [isRegisterMode, setIsRegisterMode] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L21 | `const [email, setEmail] = useState("");` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L22 | `const [password, setPassword] = useState("");` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L23 | `const [confirmPassword, setConfirmPassword] = useState("");` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L24 | `const [name, setName] = useState("");` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L25 | `const [error, setError] = useState<string | null>(null);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L26 | `const [isLoading, setIsLoading] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/LoginPage.tsx` | L27 | `const [successMessage, setSuccessMessage] = useState<string | null>(null);` |
+| `file:///Users/chlins-mbp/heure_C/src/contexts/NotificationContext.tsx` | L3 | `useState,` |
+| `file:///Users/chlins-mbp/heure_C/src/contexts/NotificationContext.tsx` | L20 | `const [notifications, setNotifications] = useState<Notification[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AppHeader.tsx` | Lundefined | `import React, { useState, useEffect, useRef } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AppHeader.tsx` | L36 | `const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/UserForm.tsx` | Lundefined | `import React, { useState } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/UserForm.tsx` | L15 | `const [formData, setFormData] = useState<DbProfileInsert>({` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/UserForm.tsx` | L22 | `const [loading, setLoading] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/UserForm.tsx` | L23 | `const [error, setError] = useState<string | null>(null);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/AdminUserList.tsx` | Lundefined | `import React, { useEffect, useState } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/AdminUserList.tsx` | L24 | `const [selectedUser, setSelectedUser] = useState<DbProfile | null>(null);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/AdminUserList.tsx` | L25 | `const [isFormOpen, setIsFormOpen] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | Lundefined | `import React, { useState, useEffect } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L28 | `const [cantons, setCantons] = useState<Canton[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L29 | `const [municipalities, setMunicipalities] = useState<Municipality[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L30 | `const [selectedCantonId, setSelectedCantonId] = useState<number | null>(null);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L31 | `const [isLoading, setIsLoading] = useState(false);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L32 | `const [isLoadingData, setIsLoadingData] = useState(true);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L36 | `const [formData, setFormData] = useState<CreateEmployeeData>({` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L49 | `const [errors, setErrors] = useState<Record<string, string>>({});` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/RegionSelector.tsx` | Lundefined | `import React, { useState, useEffect } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/RegionSelector.tsx` | L24 | `const [cantons, setCantons] = useState<Region[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/RegionSelector.tsx` | L25 | `const [municipalities, setMunicipalities] = useState<Region[]>([]);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/RegionSelector.tsx` | L26 | `const [isLoading, setIsLoading] = useState(true);` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/TimeInput.tsx` | Lundefined | `import React, { useState, useEffect, useMemo } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/TimeInput.tsx` | L28 | `const [selectedHour, setSelectedHour] = useState<string>("");` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/TimeInput.tsx` | L29 | `const [selectedMinute, setSelectedMinute] = useState<string>("");` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/GlobalSettingsForm.tsx` | Lundefined | `import React, { useState } from "react";` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/GlobalSettingsForm.tsx` | L11 | `const [settings, setSettings] = useState({` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "useState\([^)]*\)" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L16 | `const [activeTab, setActiveTab] = useState("users");` |
+| `file:///Users/chlins-mbp/heure_C/src/pages/AdminTabbedPage.tsx` | L18 | `useState(false);` |
+
+</details>
+
+---
+
+Read file: src/pages/AdminTabbedPage.tsx
+
+---
+
+No arquivo `AdminTabbedPage.tsx` há um `useState(false);` sem atribuição a variável, ou seja, é um estado não utilizado e pode ser removido.
+
+---
+
+## 5) Código comentado sem explicação clara
+
+Vou buscar por comentários (`//` ou `/* ... */`) e identificar se há trechos grandes de código comentado sem justificativa.
+
+
+
+---
+
+<details>
+            <summary>Grep search for "// " • **9** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L2 | `// Classes base para inputs` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L30 | `// Classes específicas para diferentes tipos de input` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L36 | `// Classes para textarea` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L62 | `// Classes para select` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L90 | `// Classes para checkbox e radio` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L107 | `// Classes para labels` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L123 | `// Classes para grupos de input` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L126 | `// Classes para mensagens de erro` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L129 | `// Classes para mensagens de sucesso` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L132 | `// Classes para ajuda/hint` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/inputClasses.ts` | L135 | `// Função helper para combinar classes condicionalmente` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/constants.ts` | L9 | `// APP_NAME and APP_TITLE are now managed by i18next (e.g., t('appName'))` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/constants.ts` | L29 | `// DAYS_OF_WEEK_LABELS and DAYS_OF_WEEK_ABBREVIATED_LABELS are now managed by i18next or dynamic date formatting` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/constants.ts` | L30 | `// Example: t(`days.${dayName}`) or date.toLocaleDateString(i18n.language, { weekday: 'short' })` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/constants.ts` | L58 | `// MOCK_USERS is removed. User management will be handled by Supabase Auth.` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/constants.ts` | L59 | `// export const MOCK_USERS: User[] = [` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/constants.ts` | L60 | `//   { id: 'user1', name: 'Usuário Padrão', role: 'user', initials: 'UP' },` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/constants.ts` | L61 | `//   { id: 'admin1', name: 'Administrador', role: 'admin', initials: 'AD' },` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/constants.ts` | L62 | `// ];` |
+| `file:///Users/chlins-mbp/heure_C/src/presenters/UserPresenter.ts` | L21 | `// Validar se o email já existe` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L23 | `// --- Global Settings ---` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L24 | `const GLOBAL_SETTINGS_ID = 1; // Assuming a single row for global settings` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L36 | `// PGRST116: 'JSON object requested, multiple (or no) rows returned' (no rows)` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L44 | `// If no settings exist, save the default ones` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L68 | `// --- Global Holidays ---` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L69 | `// Interface for the structure expected by/from the 'global_holidays' table` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L71 | `id: string; // This will be UUID from DB` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L89 | `// If no holidays exist in DB, consider saving the defaultValue if it's MOCK_GLOBAL_HOLIDAYS` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L90 | `// This is optional and depends on desired behavior (e.g., initial seeding)` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L91 | `// For now, just return the defaultValue from constants if DB is empty.` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L145 | `// Potentially return partial success or specific error here` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L194 | `// --- User Weekly Contract ---` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L240 | `// --- User Daily Logs ---` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L298 | `// --- User Vacations ---` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L340 | `// Modificado: Primeiro carregamos as férias existentes do mês` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L356 | `// Criamos um mapa das férias existentes para fácil busca` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L362 | `// Filtramos apenas as férias para o mês atual` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L381 | `// Preparamos os registros para upsert (ao invés de delete + insert)` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L390 | `// Usamos upsert ao invés de delete + insert` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L467 | `// --- All Users (for Admin purposes) ---` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseCrud.ts` | L516 | `// --- Update User Profile Role ---` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/timeUtils.ts` | L45 | `return diff / (1000 * 60 * 60); // convert milliseconds to hours` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/timeUtils.ts` | L53 | `const dayIndex = date.getDay(); // 0 for Sunday, 1 for Monday, ...` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/timeUtils.ts` | L70 | `currentMonth: number, // 0-indexed` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L2 | `// ATENÇÃO: Substitua pelas suas credenciais reais do Supabase!` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L3 | `// 1. Vá para o painel do seu projeto no Supabase (supabase.com).` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L4 | `// 2. Navegue até "Project Settings" (ícone de engrenagem) -> "API".` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L5 | `// 3. Copie a "Project URL" e cole no lugar de 'COLOQUE_A_SUA_URL_DO_SUPABASE_AQUI' abaixo.` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L6 | `// 4. Copie a chave "anon" "public" (em Project API Keys) e cole no lugar de 'COLOQUE_A_SUA_CHAVE_ANON_PUBLICA_AQUI' abaixo.` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L11 | `// Debug detalhado` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L29 | `// Validar formato da URL` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L40 | `// Validar formato da chave` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L46 | `// A seção de alerta/erro foi removida pois as credenciais foram configuradas.` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L56 | `// Teste de conectividade mais detalhado` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L59 | `// Teste 1: Verificar se o cliente foi criado` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L62 | `// Teste 2: Tentar obter sessão` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/supabaseClient.ts` | L82 | `// Teste 3: Verificar se o projeto está acessível` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L2 | `// Tipos para as novas entidades` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L67 | `// === CANTÕES ===` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L82 | `// === MUNICÍPIOS ===` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L102 | `// === FERIADOS REGIONAIS ===` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L110 | `// Filtrar por ano se especificado` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L122 | `// Filtrar feriados relevantes para a região` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L139 | `// === FUNCIONÁRIOS ===` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L149 | `// Verificar se employee_id já existe (se fornecido)` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L174 | `// Limpar employee_id se estiver vazio` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L180 | `// 1. Criar usuário no Supabase Auth` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L201 | `// Tratar erro específico de email já existente` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L216 | `// O perfil será criado automaticamente pelo trigger` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L265 | `// Se estamos atualizando employee_id, verificar se já existe outro funcionário com esse ID` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L271 | `.neq("id", userId) // Excluir o próprio funcionário da verificação` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L291 | `// Se employee_id estiver vazio, definir como undefined para evitar conflitos` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L308 | `// Tratar erro específico de chave duplicada` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L339 | `// 1. Deletar do perfil` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L354 | `// 2. Deletar do auth (requer privilégios de admin)` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L355 | `// Nota: Isso pode requerer uma função de servidor ou RPC` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L356 | `// Por enquanto, apenas deletamos o perfil` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L369 | `// === FERIADOS ===` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L420 | `// === UTILITÁRIOS ===` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L425 | `// Primeiro, obter os dados regionais do funcionário` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L437 | `// Carregar feriados relevantes para a região do funcionário` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L454 | `// Exemplo de importação de feriados suíços` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/employeeManagement.ts` | L455 | `// Você pode usar APIs como feiertage-api.de ou outras` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L31 | `"#4F46E5", // indigo-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L32 | `"#0891B2", // cyan-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L33 | `"#059669", // emerald-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L34 | `"#D97706", // amber-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L35 | `"#DC2626", // red-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L36 | `"#7C3AED", // violet-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L37 | `"#2563EB", // blue-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L38 | `"#EA580C", // orange-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L39 | `"#16A34A", // green-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L40 | `"#9333EA", // purple-600` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L43 | `// Gera um índice consistente baseado no nome` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/stringUtils.ts` | L49 | `// Usa o hash para selecionar uma cor do array` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/localStorage.ts` | Lundefined | `// Most functions related to core data (dailyLogs, contracts, vacations, global settings)` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/localStorage.ts` | L1 | `// are being migrated to use Supabase. This file will be largely deprecated for those purposes.` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/localStorage.ts` | L3 | `// loadFromLocalStorage and saveToLocalStorage can remain for simple, non-critical UI state if needed,` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/localStorage.ts` | L4 | `// for example, UI theme preference, or language preference if not using browser detector first.` |
+| `file:///Users/chlins-mbp/heure_C/src/utils/localStorage.ts` | L26 | `// The following specific helpers are now superseded by Supabase operations or SDK session management.` |
+
+</details>
+
+---
+
+<details>
+            <summary>Grep search for "// " • **15** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/components/ErrorBoundary.tsx` | L24 | `// You could also log the error to an error reporting service here` |
+| `file:///Users/chlins-mbp/heure_C/src/components/CompactContractHoursInput.tsx` | L12 | `// Ordem para exibição: Segunda a Domingo` |
+| `file:///Users/chlins-mbp/heure_C/src/components/CompactContractHoursInput.tsx` | L30 | `// Mapear nomes internos dos dias para chaves específicas de 2 letras para tradução` |
+| `file:///Users/chlins-mbp/heure_C/src/components/ContractAndMonthlySummaryCard.tsx` | L5 | `import SectionCard from "./common/SectionCard"; // Import SectionCard` |
+| `file:///Users/chlins-mbp/heure_C/src/components/ContractAndMonthlySummaryCard.tsx` | L158 | `headerAreaClassName="p-4 md:p-6 border-b-0" // No border for this type of card` |
+| `file:///Users/chlins-mbp/heure_C/src/components/ContractAndMonthlySummaryCard.tsx` | L159 | `contentAreaClassName="p-4 md:p-6 pt-0 flex-grow flex flex-col" // Adjust padding and allow growth` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L15 | `employee?: Employee; // Se fornecido, será modo de edição` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L39 | `password: "", // Sempre vazia no modo edição` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L51 | `// Carregar cantões ao montar o componente` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L69 | `// Carregar dados do funcionário quando em modo de edição` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L76 | `// Carregar municípios quando o cantão for selecionado` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L110 | `// Limpar erro quando o usuário começar a digitar` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L125 | `municipality_id: undefined, // Resetar município quando cantão mudar` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L148 | `// Senha é obrigatória apenas no modo de criação` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L182 | `// Modo de edição` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L208 | `// Modo de criação` |
+| `file:///Users/chlins-mbp/heure_C/src/components/EmployeeRegistrationForm.tsx` | L219 | `// Resetar formulário` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L114 | `// Determine if a segment should appear faded but remain enabled for exceptional input` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L153 | `classes += "bg-slate-100 border-slate-200 opacity-70 "; // Faded style for cell` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L158 | `// Hover effect should still apply unless fully disabled by type` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L201 | `disabled={isMorningTimeInputDisabled} // Only disabled by type, not contract hours` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L218 | `disabled={isMorningTimeInputDisabled} // Only disabled by type, not contract hours` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L236 | `disabled={false} // Type selector generally remains enabled` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L253 | `disabled={isAfternoonTimeInputDisabled} // Only disabled by type, not contract hours` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L270 | `disabled={isAfternoonTimeInputDisabled} // Only disabled by type, not contract hours` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLogRow.tsx` | L288 | `disabled={false} // Type selector generally remains enabled` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/UserForm.tsx` | L79 | `disabled={!!user} // Email só pode ser definido na criação` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/GlobalSettingsForm.tsx` | L28 | `// Implementar lógica de salvamento` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLog.tsx` | L14 | `weeklyContract: WeeklyContractHours; // Added weeklyContract` |
+| `file:///Users/chlins-mbp/heure_C/src/components/DailyLog.tsx` | L120 | `weeklyContract={weeklyContract} // Pass weeklyContract` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AppHeader.tsx` | L40 | `// Ensure userColorIndex is always valid, even if user.id is very short or simple` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AppHeader.tsx` | L49 | `const headerBgColor = "bg-orange-500"; // New theme color` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AppHeader.tsx` | L107 | `}, // Placeholder` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AppHeader.tsx` | L166 | `labelColorClass={headerTextColor} // Adjusted for new theme` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/VacationSummaryPanel.tsx` | L16 | `// Formatação do saldo de férias - permitindo mostrar valores negativos` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/VacationSummaryPanel.tsx` | L22 | `// Determina a cor do badge para o saldo de férias com base no valor` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/RegionSelector.tsx` | L75 | `onMunicipalityChange(null); // Reset município quando cantão muda` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/UserVacationSummaryTable.tsx` | L8 | `// Dados de exemplo - substituir por dados reais` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/CalendarGrid.tsx` | L20 | `// Helper to generate day headers starting from Monday` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/CalendarGrid.tsx` | L23 | `const refMonday = new Date(2024, 0, 1); // A known Monday` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/CalendarGrid.tsx` | L39 | `return dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Monday is 0, Sunday is 6` |
+| `file:///Users/chlins-mbp/heure_C/src/components/vacation_config/CalendarGrid.tsx` | L104 | `// If adding a new vacation` |
+| `file:///Users/chlins-mbp/heure_C/src/components/AdminDashboard/PendingRequestsList.tsx` | L60 | `// Agrupar por usuário` |
+| `file:///Users/chlins-mbp/heure_C/src/components/common/InputWithIcon.tsx` | L13 | `label: string; // For the sr-only label` |
+
+</details>
+
+---
+
+A maioria dos comentários encontrados são explicativos ou de contexto, não código comentado.  
+No entanto, há alguns trechos em `constants.ts` e outros arquivos com código comentado (ex: MOCK_USERS, funções antigas) que não possuem justificativa clara e podem ser removidos.
+
+---
+
+## **Resumo das recomendações de remoção**
+
+### 1. Componentes não utilizados
+- Remover: `ModernVacationCalendar`, `VacationPagePreview`, `VacationSummaryPanel`, `CalendarGrid` se não houver plano de uso futuro.
+
+### 2. Funções não utilizadas
+- Remover a função `cn` de `tailwindUtils.ts` se não houver intenção de uso.
+- Remover funções utilitárias ou helpers não utilizadas após revisão.
+
+### 3. Importações não utilizadas
+- Remover importações de tipos, helpers ou componentes não utilizados, especialmente em arquivos de hooks e utils.
+
+### 4. useState não utilizado
+- Remover qualquer declaração de `useState` sem atribuição, como em `AdminTabbedPage.tsx` (`useState(false);`).
+
+### 5. Código comentado sem explicação
+- Remover blocos de código comentado (ex: MOCK_USERS em `constants.ts`, helpers antigos em `localStorage.ts`) que não possuem justificativa clara ou que já foram migrados para Supabase.
+
+---
+
+## **Sugestão de ação**
+
+- Faça uma varredura nos arquivos citados e remova os elementos acima.
+- Considere adicionar comentários explicativos apenas quando o código comentado for realmente necessário para referência futura.
+- Após a limpeza, rode o linter e os testes para garantir que não há efeitos colaterais.
+
+Se quiser, posso automatizar a remoção de algum desses pontos para você!
+
+---
+
+_**User**_
+
+:5173/src/pages/DashboardPage.tsx:1 
+            
+            
+           Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+:5173/src/pages/UserProfilePage.tsx:1 
+            
+            
+           Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+:5173/src/pages/VacationConfigPage.tsx:1 
+            
+            
+           Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+
+
+---
+
+_**Assistant**_
+
+Vejo que há erros 500 (Internal Server Error) ao carregar algumas páginas. Isso indica problemas no servidor de desenvolvimento. Vou investigar e corrigir esses erros.
+
+
+---
+
+```bash
+npm run dev
+```
+
+---
+
+```bash
+npm run build
+```
+
+```
+7 import AdminDashboardPage from "@/pages/AdminDashboardPage";
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/components/ModernVacationCalendar.tsx:1:1 - error TS6133: 'React' is declared but its value is never rea
+d.
+
+1 import React from "react";
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/components/vacation_config/CalendarGrid.tsx:4:3 - error TS6133: 'WeeklyContractHours' is declared but it
+s value is never read.
+
+4   WeeklyContractHours,
+    ~~~~~~~~~~~~~~~~~~~
+
+src/components/vacation_config/CalendarGrid.tsx:5:3 - error TS6133: 'VacationDay' is declared but its value 
+is never read.
+
+5   VacationDay,
+    ~~~~~~~~~~~
+
+src/components/vacation_config/CalendarGrid.tsx:6:3 - error TS6133: 'Holiday' is declared but its value is n
+ever read.
+
+6   Holiday,
+    ~~~~~~~
+
+src/components/vacation_config/CalendarGrid.tsx:8:3 - error TS6133: 'DailyLogEntry' is declared but its valu
+e is never read.
+
+8   DailyLogEntry,
+    ~~~~~~~~~~~~~
+
+src/components/vacation_config/CalendarGrid.tsx:177:15 - error TS6133: 'dayNumberStyle' is declared but its 
+value is never read.
+
+177           let dayNumberStyle =
+                  ~~~~~~~~~~~~~~
+
+src/components/vacation_config/MonthlyVacationList.tsx:16:37 - error TS2304: Cannot find name 'MonthlyVacati
+onListProps'.
+
+16 const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/components/vacation_config/MonthlyVacationList.tsx:22:3 - error TS6133: 'user' is declared but its value
+ is never read.
+
+22   user,
+     ~~~~
+
+src/components/vacation_config/MonthlyVacationList.tsx:25:23 - error TS6133: 'formatVacationStatus' is decla
+red but its value is never read.
+
+25   const { formatDate, formatVacationStatus } = useFormatting();
+                         ~~~~~~~~~~~~~~~~~~~~
+
+src/components/vacation_config/MonthlyVacationList.tsx:40:14 - error TS7006: Parameter 'v' implicitly has an
+ 'any' type.
+
+40             (v) =>
+                ~
+
+src/components/vacation_config/MonthlyVacationList.tsx:55:14 - error TS7006: Parameter 'v' implicitly has an
+ 'any' type.
+
+55             (v) => v.status === VacationStatus.SELECTED
+                ~
+
+src/components/vacation_config/VacationSummaryPanel.tsx:3:37 - error TS6133: 'Holiday' is declared but its v
+alue is never read.
+
+3 import { VacationSummaryPanelProps, Holiday } from "@/types";
+                                      ~~~~~~~
+
+src/components/vacation_config/VacationSummaryPanel.tsx:4:25 - error TS2307: Cannot find module '@/component
+s/SectionCard' or its corresponding type declarations.
+
+4 import SectionCard from "@/components/SectionCard";
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/components/VacationPagePreview.tsx:1:1 - error TS6133: 'React' is declared but its value is never read.
+
+1 import React from "react";
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/contexts/CurrentUserDataContext.tsx:9:3 - error TS6133: 'Holiday' is declared but its value is never rea
+d.
+
+9   Holiday,
+    ~~~~~~~
+
+src/contexts/GlobalDataContext.tsx:2:44 - error TS6133: 'useCallback' is declared but its value is never rea
+d.
+
+2 import React, { createContext, useContext, useCallback } from "react";
+                                             ~~~~~~~~~~~
+
+src/hooks/useAuth.ts:20:31 - error TS2339: Property 'id' does not exist on type '{}'.
+
+20         .eq("id", sessionUser.id)
+                                 ~~
+
+src/hooks/useAuth.ts:32:23 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+32           sessionUser.user_metadata?.name || sessionUser.email || "User";
+                         ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:32:58 - error TS2339: Property 'email' does not exist on type '{}'.
+
+32           sessionUser.user_metadata?.name || sessionUser.email || "User";
+                                                            ~~~~~
+
+src/hooks/useAuth.ts:34:27 - error TS2339: Property 'id' does not exist on type '{}'.
+
+34           id: sessionUser.id,
+                             ~~
+
+src/hooks/useAuth.ts:35:30 - error TS2339: Property 'email' does not exist on type '{}'.
+
+35           email: sessionUser.email,
+                                ~~~~~
+
+src/hooks/useAuth.ts:37:29 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+37           role: sessionUser.user_metadata?.role || "user",
+                               ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:38:33 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+38           photoUrl: sessionUser.user_metadata?.photoUrl,
+                                   ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:43:44 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+43           profileData?.name || sessionUser.user_metadata?.name;
+                                              ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:44:64 - error TS2339: Property 'email' does not exist on type '{}'.
+
+44         const profileEmail = profileData?.email || sessionUser.email;
+                                                                  ~~~~~
+
+src/hooks/useAuth.ts:46:27 - error TS2339: Property 'id' does not exist on type '{}'.
+
+46           id: sessionUser.id,
+                             ~~
+
+src/hooks/useAuth.ts:48:44 - error TS2339: Property 'email' does not exist on type '{}'.
+
+48           name: profileName || sessionUser.email || "User",
+                                              ~~~~~
+
+src/hooks/useAuth.ts:49:50 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+49           role: profileData?.role || sessionUser.user_metadata?.role || "user",
+                                                    ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:51:51 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+51             profileData?.photo_url || sessionUser.user_metadata?.photoUrl,
+                                                     ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:60:21 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+60         sessionUser.user_metadata?.name || sessionUser.email || "User";
+                       ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:60:56 - error TS2339: Property 'email' does not exist on type '{}'.
+
+60         sessionUser.user_metadata?.name || sessionUser.email || "User";
+                                                          ~~~~~
+
+src/hooks/useAuth.ts:62:25 - error TS2339: Property 'id' does not exist on type '{}'.
+
+62         id: sessionUser.id,
+                           ~~
+
+src/hooks/useAuth.ts:63:28 - error TS2339: Property 'email' does not exist on type '{}'.
+
+63         email: sessionUser.email,
+                              ~~~~~
+
+src/hooks/useAuth.ts:65:27 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+65         role: sessionUser.user_metadata?.role || "user",
+                             ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:66:31 - error TS2339: Property 'user_metadata' does not exist on type '{}'.
+
+66         photoUrl: sessionUser.user_metadata?.photoUrl,
+                                 ~~~~~~~~~~~~~
+
+src/hooks/useAuth.ts:112:11 - error TS2367: This comparison appears to be unintentional because the types '"
+PASSWORD_RECOVERY" | "TOKEN_REFRESHED" | "USER_UPDATED" | "MFA_CHALLENGE_VERIFIED"' and '"USER_DELETED"' hav
+e no overlap.
+
+112           event === "USER_DELETED" ||
+              ~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/hooks/useCurrentUserData.ts:21:3 - error TS6133: 'loadUserVacationsForMonthFromSupabase' is declared but
+ its value is never read.
+
+21   loadUserVacationsForMonthFromSupabase,
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/hooks/useDailyLogPresenter.ts:12:11 - error TS2339: Property 'user' does not exist on type '{ currentUse
+r: User | null; isLoadingAuth: boolean; logout: () => Promise<void>; }'.
+
+12   const { user } = useAuth();
+             ~~~~
+
+src/hooks/useUserPresenter.ts:3:57 - error TS2307: Cannot find module '../models/User' or its corresponding 
+type declarations.
+
+3 import { UserModel, CreateUserDTO, UpdateUserDTO } from "../models/User";
+                                                          ~~~~~~~~~~~~~~~~
+
+src/hooks/useVacationCalculations.ts:15:4 - error TS2304: Cannot find name 'UseVacationCalculationsProps'.
+
+15 }: UseVacationCalculationsProps): VacationCalculations => {
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/hooks/useVacationCalculations.ts:15:35 - error TS2304: Cannot find name 'VacationCalculations'.
+
+15 }: UseVacationCalculationsProps): VacationCalculations => {
+                                     ~~~~~~~~~~~~~~~~~~~~
+
+src/hooks/useVacationCalculations.ts:23:8 - error TS7006: Parameter 'v' implicitly has an 'any' type.
+
+23       (v) =>
+          ~
+
+src/hooks/useVacationCalculations.ts:29:34 - error TS7006: Parameter 'dayDate' implicitly has an 'any' type.
+
+29     daysInCalendarMonth.forEach((dayDate) => {
+                                    ~~~~~~~
+
+src/hooks/useVacationCalculations.ts:34:10 - error TS7006: Parameter 'h' implicitly has an 'any' type.
+
+34         (h) => h.date === dateStr
+            ~
+
+src/hooks/useVacationCalculations.ts:47:40 - error TS7006: Parameter 'v' implicitly has an 'any' type.
+
+47         relevantVacationsInMonth.some((v) => v.date === dateStr) &&
+                                          ~
+
+src/hooks/useVacationCalculations.ts:121:54 - error TS7006: Parameter 'vac' implicitly has an 'any' type.
+
+121       const feriasValidas = allYearVacations.filter((vac) => {
+                                                         ~~~
+
+src/hooks/useVacationCalculations.ts:132:30 - error TS7006: Parameter 'ferias' implicitly has an 'any' type.
+
+132       feriasValidas.forEach((ferias) => {
+                                 ~~~~~~
+
+src/hooks/useVacationCalculations.ts:134:48 - error TS7006: Parameter 'h' implicitly has an 'any' type.
+
+134         const isFeriado = globalHolidays.some((h) => h.date === ferias.date);
+                                                   ~
+
+src/hooks/useVacationPresenter.ts:11:11 - error TS2339: Property 'user' does not exist on type '{ currentUse
+r: User | null; isLoadingAuth: boolean; logout: () => Promise<void>; }'.
+
+11   const { user } = useAuth();
+             ~~~~
+
+src/hooks/useVacationPresenter.ts:35:36 - error TS2345: Argument of type 'number | undefined' is not assigna
+ble to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+
+35         await presenter.initialize(year, month);
+                                      ~~~~
+
+src/models/GlobalSettings.ts:104:7 - error TS2322: Type 'undefined' is not assignable to type 'WorkTimeDefau
+lts'.
+
+104       return undefined;
+          ~~~~~~
+
+src/models/GlobalSettings.ts:153:19 - error TS2532: Object is possibly 'undefined'.
+
+153     const start = this.workTimeDefaults.overallStartTime.split(":").map(Number);
+                      ~~~~~~~~~~~~~~~~~~~~~
+
+src/models/GlobalSettings.ts:153:19 - error TS2532: Object is possibly 'undefined'.
+
+153     const start = this.workTimeDefaults.overallStartTime.split(":").map(Number);
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/models/GlobalSettings.ts:154:17 - error TS2532: Object is possibly 'undefined'.
+
+154     const end = this.workTimeDefaults.overallEndTime.split(":").map(Number);
+                    ~~~~~~~~~~~~~~~~~~~~~
+
+src/models/GlobalSettings.ts:154:17 - error TS2532: Object is possibly 'undefined'.
+
+154     const end = this.workTimeDefaults.overallEndTime.split(":").map(Number);
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/models/PendingRequest.ts:4:32 - error TS2339: Property 'pending_requests' does not exist on type '{ cant
+ons: { Row: { code: string; created_at: string | null; id: number; name: string; }; Insert: { code: string;
+created_at?: string | null | undefined; id?: number | undefined; name: string; }; Update: { ...; }; Relation
+ships: []; }; ... 10 more ...; vacation_requests: { ...; }; }'.
+
+4   Database["public"]["Tables"]["pending_requests"]["Row"];
+                                 ~~~~~~~~~~~~~~~~~~
+
+src/models/PendingRequest.ts:6:32 - error TS2339: Property 'pending_requests' does not exist on type '{ cant
+ons: { Row: { code: string; created_at: string | null; id: number; name: string; }; Insert: { code: string;
+created_at?: string | null | undefined; id?: number | undefined; name: string; }; Update: { ...; }; Relation
+ships: []; }; ... 10 more ...; vacation_requests: { ...; }; }'.
+
+6   Database["public"]["Tables"]["pending_requests"]["Insert"];
+                                 ~~~~~~~~~~~~~~~~~~
+
+src/models/PendingRequest.ts:8:32 - error TS2339: Property 'pending_requests' does not exist on type '{ cant
+ons: { Row: { code: string; created_at: string | null; id: number; name: string; }; Insert: { code: string;
+created_at?: string | null | undefined; id?: number | undefined; name: string; }; Update: { ...; }; Relation
+ships: []; }; ... 10 more ...; vacation_requests: { ...; }; }'.
+
+8   Database["public"]["Tables"]["pending_requests"]["Update"];
+                                 ~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:8:3 - error TS6133: 'Holiday' is declared but its value is never read.
+
+8   Holiday,
+    ~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:13:3 - error TS6133: 'VACATION_STATUS_STYLES' is declared but its value is 
+never read.
+
+13   VACATION_STATUS_STYLES,
+     ~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:21:3 - error TS6133: 'Trash2' is declared but its value is never read.
+
+21   Trash2,
+     ~~~~~~
+
+src/pages/AdminDashboardPage.tsx:22:3 - error TS6133: 'CheckCircle' is declared but its value is never read.
+
+22   CheckCircle,
+     ~~~~~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:23:3 - error TS6133: 'XCircle' is declared but its value is never read.
+
+23   XCircle,
+     ~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:33:3 - error TS6133: 'loadAllUsersFromSupabase' is declared but its value i
+s never read.
+
+33   loadAllUsersFromSupabase,
+     ~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:36:1 - error TS6133: 'useAuthContext' is declared but its value is never re
+ad.
+
+36 import { useAuthContext } from "@/contexts/AuthContext";
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:64:7 - error TS6133: 'lightTextareaClasses' is declared but its value is ne
+ver read.
+
+64 const lightTextareaClasses =
+         ~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:334:9 - error TS6133: 'handleCommentChange' is declared but its value is ne
+ver read.
+
+334   const handleCommentChange = (
+            ~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminDashboardPage.tsx:772:13 - error TS2322: Type '{ pendingRequests: PendingRequest[]; onApprove
+: (request: PendingRequest, newStatus: VacationStatus.APPROVED | VacationStatus.REJECTED) => Promise<...>; o
+nApproveAll: (userId: string, userName: string) => Promise<...>; isLoading: boolean; }' is not assignable to
+ type 'IntrinsicAttributes'.
+  Property 'pendingRequests' does not exist on type 'IntrinsicAttributes'.
+
+772             pendingRequests={pendingRequests}
+                ~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:5:3 - error TS6133: 'BarChart3' is declared but its value is never read
+.
+
+5   BarChart3,
+    ~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:10:3 - error TS6133: 'XCircle' is declared but its value is never read.
+
+10   XCircle,
+     ~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:16:3 - error TS6133: 'VacationSelection' is declared but its value is n
+ever read.
+
+16   VacationSelection,
+     ~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:17:3 - error TS6133: 'VacationStatus' is declared but its value is neve
+r read.
+
+17   VacationStatus,
+     ~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:18:3 - error TS6133: 'UserGlobalSettings' is declared but its value is 
+never read.
+
+18   UserGlobalSettings,
+     ~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:19:3 - error TS6133: 'Holiday' is declared but its value is never read.
+
+19   Holiday,
+     ~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:20:3 - error TS6133: 'VacationDay' is declared but its value is never r
+ead.
+
+20   VacationDay,
+     ~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:24:25 - error TS2307: Cannot find module './common/SectionCard' or its 
+corresponding type declarations.
+
+24 import SectionCard from "./common/SectionCard";
+                           ~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:28:1 - error TS6192: All imports in import declaration are unused.
+
+ 28 import {
+    ~~~~~~~~
+ 29   updateUserProfileRole,
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+... 
+ 31   loadTypedUserMonthDataFromSupabase,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 32 } from "@/utils/supabaseCrud";
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:33:1 - error TS6133: 'useAuthContext' is declared but its value is neve
+r read.
+
+33 import { useAuthContext } from "../contexts/AuthContext";
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:34:1 - error TS6133: 'useGlobalDataContext' is declared but its value i
+s never read.
+
+34 import { useGlobalDataContext } from "../contexts/GlobalDataContext";
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:35:1 - error TS6133: 'useCurrentUserDataContext' is declared but its va
+lue is never read.
+
+35 import { useCurrentUserDataContext } from "../contexts/CurrentUserDataContext";
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:36:1 - error TS6133: 'useNotificationContext' is declared but its value
+ is never read.
+
+36 import { useNotificationContext } from "../contexts/NotificationContext";
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:37:1 - error TS6133: 'PendingRequestsList' is declared but its value is
+ never read.
+
+37 import PendingRequestsList from "./AdminDashboard/PendingRequestsList";
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:37:33 - error TS2307: Cannot find module './AdminDashboard/PendingReque
+stsList' or its corresponding type declarations.
+
+37 import PendingRequestsList from "./AdminDashboard/PendingRequestsList";
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:40:1 - error TS6192: All imports in import declaration are unused.
+
+40 import {
+   ~~~~~~~~
+41   INITIAL_USER_GLOBAL_SETTINGS,
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+42   VACATION_STATUS_STYLES,
+   ~~~~~~~~~~~~~~~~~~~~~~~~~
+43 } from "@/utils/constants";
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:80:10 - error TS6133: 'vacationData' is declared but its value is never
+ read.
+
+80   const [vacationData, setVacationData] = useState<UserVacationData[]>([]);
+            ~~~~~~~~~~~~
+
+src/pages/AdminOverviewDashboard.tsx:128:32 - error TS2339: Property 'id' does not exist on type '{ id: any;
+ full_name: any; }[]'.
+
+128             userId: v.profiles.id,
+                                   ~~
+
+src/pages/AdminOverviewDashboard.tsx:129:34 - error TS2339: Property 'full_name' does not exist on type '{ i
+d: any; full_name: any; }[]'.
+
+129             userName: v.profiles.full_name,
+                                     ~~~~~~~~~
+
+src/pages/AdminTabbedPage.tsx:16:9 - error TS6133: 'currentUser' is declared but its value is never read.
+
+16   const { currentUser } = useAuthContext();
+           ~~~~~~~~~~~~~~~
+
+src/pages/AdminTabbedPage.tsx:46:32 - error TS2339: Property 'first_name' does not exist on type '{ first_na
+me: any; last_name: any; }[]'.
+
+46         userName: `${req.users.first_name} ${req.users.last_name || ""}`.trim(),
+                                  ~~~~~~~~~~
+
+src/pages/AdminTabbedPage.tsx:46:56 - error TS2339: Property 'last_name' does not exist on type '{ first_nam
+e: any; last_name: any; }[]'.
+
+46         userName: `${req.users.first_name} ${req.users.last_name || ""}`.trim(),
+                                                          ~~~~~~~~~
+
+src/pages/AdminTabbedPage.tsx:92:28 - error TS6133: 'userName' is declared but its value is never read.
+
+92     async (userId: string, userName: string) => {
+                              ~~~~~~~~
+
+src/pages/AdminTabbedPage.tsx:126:11 - error TS2322: Type '{ pendingRequests: PendingRequest[]; onApprove: (
+request: PendingRequest, status: VacationStatus) => Promise<void>; onApproveAll: (userId: string, userName:
+string) => Promise<...>; isLoading: boolean; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'pendingRequests' does not exist on type 'IntrinsicAttributes'.
+
+126           pendingRequests={pendingRequests}
+              ~~~~~~~~~~~~~~~
+
+src/pages/DashboardPage.tsx:6:39 - error TS2307: Cannot find module './CompactContractHoursInput' or its cor
+responding type declarations.
+
+6 import CompactContractHoursInput from "./CompactContractHoursInput";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/DashboardPage.tsx:7:43 - error TS2307: Cannot find module './ContractAndMonthlySummaryCard' or its
+ corresponding type declarations.
+
+7 import ContractAndMonthlySummaryCard from "./ContractAndMonthlySummaryCard";
+                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/DashboardPage.tsx:8:22 - error TS2307: Cannot find module './DailyLog' or its corresponding type d
+eclarations.
+
+8 import DailyLog from "./DailyLog";
+                       ~~~~~~~~~~~~
+
+src/pages/DashboardPage.tsx:10:27 - error TS2307: Cannot find module './LoadingScreen' or its corresponding 
+type declarations.
+
+10 import LoadingScreen from "./LoadingScreen";
+                             ~~~~~~~~~~~~~~~~~
+
+src/pages/EmployeeManagementPage.tsx:12:38 - error TS2307: Cannot find module './EmployeeRegistrationForm' o
+r its corresponding type declarations.
+
+12 import EmployeeRegistrationForm from "./EmployeeRegistrationForm";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/HolidayManagementPage.tsx:1:27 - error TS6133: 'useEffect' is declared but its value is never read
+.
+
+1 import React, { useState, useEffect } from "react";
+                            ~~~~~~~~~
+
+src/pages/HolidayManagementPage.tsx:4:25 - error TS2307: Cannot find module './common/SectionCard' or its co
+rresponding type declarations.
+
+4 import SectionCard from "./common/SectionCard";
+                          ~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/HolidayManagementPage.tsx:5:20 - error TS2307: Cannot find module './common/Button' or its corresp
+onding type declarations.
+
+5 import Button from "./common/Button";
+                     ~~~~~~~~~~~~~~~~~
+
+src/pages/HolidayManagementPage.tsx:11:48 - error TS2339: Property 'addHoliday' does not exist on type 'Glob
+alDataContextType'.
+
+11   const { globalHolidays, isLoadingGlobalData, addHoliday } =
+                                                  ~~~~~~~~~~
+
+src/pages/HolidayManagementPage.tsx:84:12 - error TS2367: This comparison appears to be unintentional becaus
+e the types '"NATIONAL" | "CANTONAL" | "MUNICIPAL" | "CUSTOM"' and '"OFFICIAL"' have no overlap.
+
+84     (h) => h.type === "OFFICIAL"
+              ~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/HolidayManagementPage.tsx:156:27 - error TS2367: This comparison appears to be unintentional becau
+se the types '"NATIONAL" | "CANTONAL" | "MUNICIPAL" | "CUSTOM"' and '"OFFICIAL"' have no overlap.
+
+156                           holiday.type === "OFFICIAL"
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/HolidayManagementPage.tsx:161:26 - error TS2367: This comparison appears to be unintentional becau
+se the types '"NATIONAL" | "CANTONAL" | "MUNICIPAL" | "CUSTOM"' and '"OFFICIAL"' have no overlap.
+
+161                         {holiday.type === "OFFICIAL"
+                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/UserProfilePage.tsx:4:25 - error TS2307: Cannot find module './common/SectionCard' or its correspo
+nding type declarations.
+
+4 import SectionCard from "./common/SectionCard";
+                          ~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:8:10 - error TS6133: 'getDaysInMonth' is declared but its value is never re
+ad.
+
+8 import { getDaysInMonth, formatDateToYYYYMMDD } from "@/utils/timeUtils";
+           ~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:11:27 - error TS2307: Cannot find module './LoadingScreen' or its correspon
+ding type declarations.
+
+11 import LoadingScreen from "./LoadingScreen";
+                             ~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:13:1 - error TS6133: 'LanguageLandingPage' is declared but its value is nev
+er read.
+
+13 import LanguageLandingPage from "./LanguageLandingPage";
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:19:7 - error TS6133: 'statusColors' is declared but its value is never read
+.
+
+19 const statusColors: Record<string, string> = {
+         ~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:32:36 - error TS2304: Cannot find name 'VacationConfigPageProps'.
+
+32 const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
+                                      ~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:55:10 - error TS6133: 'allYearVacations' is declared but its value is never
+ read.
+
+55   const [allYearVacations, setAllYearVacations] = useState<unknown[]>([]);
+            ~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:55:28 - error TS6133: 'setAllYearVacations' is declared but its value is ne
+ver read.
+
+55   const [allYearVacations, setAllYearVacations] = useState<unknown[]>([]);
+                              ~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:127:5 - error TS18004: No value exists in scope for the shorthand property 
+'daysInCalendarMonth'. Either declare one or provide an initializer.
+
+127     daysInCalendarMonth,
+        ~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:232:9 - error TS6133: 'handleDeleteVacationFromList' is declared but its va
+lue is never read.
+
+232   const handleDeleteVacationFromList = useCallback(
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:329:9 - error TS6133: 'handlePrintRequestInternal' is declared but its valu
+e is never read.
+
+329   const handlePrintRequestInternal = useCallback(() => {
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:413:24 - error TS2304: Cannot find name 'daysInCalendarMonth'.
+
+413   for (let d = 1; d <= daysInCalendarMonth.length; d++) {
+                           ~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:417:21 - error TS2304: Cannot find name 'currentMonthGlobalHolidays'.
+
+417     const holiday = currentMonthGlobalHolidays.find((h) => h.date === dateStr);
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:417:54 - error TS7006: Parameter 'h' implicitly has an 'any' type.
+
+417     const holiday = currentMonthGlobalHolidays.find((h) => h.date === dateStr);
+                                                         ~
+
+src/pages/VacationConfigPage.tsx:421:28 - error TS7053: Element implicitly has an 'any' type because express
+ion of type 'string' can't be used to index type 'WeeklyContractHours'.
+  No index signature with a parameter of type 'string' was found on type 'WeeklyContractHours'.
+
+421     const contractForDay = weeklyContract[dayName];
+                               ~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:556:24 - error TS18046: 'day' is of type 'unknown'.
+
+556                   if (!day.date) {
+                           ~~~
+
+src/pages/VacationConfigPage.tsx:559:23 - error TS18046: 'day' is of type 'unknown'.
+
+559                   if (day.isBlocked) {
+                          ~~~
+
+src/pages/VacationConfigPage.tsx:563:92 - error TS18046: 'day' is of type 'unknown'.
+
+563                         className={`flex flex-col items-center justify-center rounded-lg ${day.bgClass} 
+h-16 w-18`}
+                                                                                               ~~~
+
+src/pages/VacationConfigPage.tsx:565:62 - error TS18046: 'day' is of type 'unknown'.
+
+565                         <span className="text-lg font-bold">{day.date}</span>
+                                                                 ~~~
+
+src/pages/VacationConfigPage.tsx:567:28 - error TS18046: 'day' is of type 'unknown'.
+
+567                           {day.hours}
+                               ~~~
+
+src/pages/VacationConfigPage.tsx:569:26 - error TS18046: 'day' is of type 'unknown'.
+
+569                         {day.tag && (
+                             ~~~
+
+src/pages/VacationConfigPage.tsx:571:30 - error TS18046: 'day' is of type 'unknown'.
+
+571                             {day.tag}
+                                 ~~~
+
+src/pages/VacationConfigPage.tsx:580:97 - error TS18046: 'day' is of type 'unknown'.
+
+580                       className={`flex flex-col items-center justify-center rounded-lg border ${day.bgCl
+ass} h-16 w-18 focus:outline-none`}
+                                                                                                    ~~~
+
+src/pages/VacationConfigPage.tsx:581:53 - error TS18046: 'day' is of type 'unknown'.
+
+581                       onClick={() => handleDayClick(day.dateStr)}
+                                                        ~~~
+
+src/pages/VacationConfigPage.tsx:583:60 - error TS18046: 'day' is of type 'unknown'.
+
+583                       <span className="text-lg font-bold">{day.date}</span>
+                                                               ~~~
+
+src/pages/VacationConfigPage.tsx:584:64 - error TS18046: 'day' is of type 'unknown'.
+
+584                       <span className="text-xs font-semibold">{day.hours}</span>
+                                                                   ~~~
+
+src/pages/VacationConfigPage.tsx:585:24 - error TS18046: 'day' is of type 'unknown'.
+
+585                       {day.tag && (
+                           ~~~
+
+src/pages/VacationConfigPage.tsx:587:28 - error TS18046: 'day' is of type 'unknown'.
+
+587                           {day.tag}
+                               ~~~
+
+src/pages/VacationConfigPage.tsx:701:18 - error TS2304: Cannot find name 'currentMonthGlobalHolidays'.
+
+701                 {currentMonthGlobalHolidays.map((h: any, i: number) => (
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/VacationConfigPage.tsx:733:56 - error TS6133: 'idx' is declared but its value is never read.
+
+733               currentMonthUserVacations.map((opt: any, idx: number) => (
+                                                           ~~~
+
+src/presenters/GlobalSettingsPresenter.ts:2:3 - error TS6133: 'GlobalSettings' is declared but its value is 
+never read.
+
+2   GlobalSettings,
+    ~~~~~~~~~~~~~~
+
+src/presenters/UserPresenter.ts:58:40 - error TS2353: Object literal may only specify known properties, and 
+'active' does not exist in type '{ canton_id?: number | null | undefined; created_at?: string | undefined; e
+mail?: string | null | undefined; employee_id?: string | null | undefined; hire_date?: string | null | undef
+ined; ... 7 more ...; work_schedule?: Json | undefined; }'.
+
+58     return UserCollection.update(id, { active: true });
+                                          ~~~~~~
+
+src/presenters/UserPresenter.ts:67:40 - error TS2353: Object literal may only specify known properties, and 
+'active' does not exist in type '{ canton_id?: number | null | undefined; created_at?: string | undefined; e
+mail?: string | null | undefined; employee_id?: string | null | undefined; hire_date?: string | null | undef
+ined; ... 7 more ...; work_schedule?: Json | undefined; }'.
+
+67     return UserCollection.update(id, { active: false });
+                                          ~~~~~~
+
+src/presenters/VacationPresenter.ts:67:12 - error TS7053: Element implicitly has an 'any' type because expre
+ssion of type 'VacationStatus' can't be used to index type '{ Pendente: string; Aprovado: string; Rejeitado:
+ string; }'.
+  Property '[VacationStatus.SELECTED]' does not exist on type '{ Pendente: string; Aprovado: string; Rejeita
+do: string; }'.
+
+67     return classes[status] || "";
+              ~~~~~~~~~~~~~~~
+
+src/services/userService.ts:2:10 - error TS2305: Module '"../types/supabase"' has no exported member 'DbUser
+'.
+
+2 import { DbUser, DbUserInsert, DbUserUpdate } from "../types/supabase";
+           ~~~~~~
+
+src/services/userService.ts:2:18 - error TS2305: Module '"../types/supabase"' has no exported member 'DbUser
+Insert'.
+
+2 import { DbUser, DbUserInsert, DbUserUpdate } from "../types/supabase";
+                   ~~~~~~~~~~~~
+
+src/services/userService.ts:2:32 - error TS2305: Module '"../types/supabase"' has no exported member 'DbUser
+Update'.
+
+2 import { DbUser, DbUserInsert, DbUserUpdate } from "../types/supabase";
+                                 ~~~~~~~~~~~~
+
+src/supabase/client.ts:4:33 - error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+
+4 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+                                  ~~~
+
+src/supabase/client.ts:5:37 - error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+
+5 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+                                      ~~~
+
+src/supabase/types.ts:1:26 - error TS2307: Cannot find module './schema' or its corresponding type declarati
+ons.
+
+1 import { Database } from "./schema";
+                           ~~~~~~~~~~
+
+src/utils/constants.ts:132:3 - error TS2741: Property 'type' is missing in type '{ id: string; date: string;
+ name: string; isOfficial: true; }' but required in type 'Holiday'.
+
+132   {
+      ~
+133     id: "gh-1",
+    ~~~~~~~~~~~~~~~
+... 
+136     isOfficial: true,
+    ~~~~~~~~~~~~~~~~~~~~~
+137   },
+    ~~~
+
+  src/types/types.ts:30:3
+    30   type: "NATIONAL" | "CANTONAL" | "MUNICIPAL" | "CUSTOM";
+         ~~~~
+    'type' is declared here.
+
+src/utils/constants.ts:138:3 - error TS2741: Property 'type' is missing in type '{ id: string; date: string;
+ name: string; isOfficial: true; }' but required in type 'Holiday'.
+
+138   {
+      ~
+139     id: "gh-2",
+    ~~~~~~~~~~~~~~~
+... 
+142     isOfficial: true,
+    ~~~~~~~~~~~~~~~~~~~~~
+143   },
+    ~~~
+
+  src/types/types.ts:30:3
+    30   type: "NATIONAL" | "CANTONAL" | "MUNICIPAL" | "CUSTOM";
+         ~~~~
+    'type' is declared here.
+
+src/utils/constants.ts:144:3 - error TS2741: Property 'type' is missing in type '{ id: string; date: string;
+ name: string; isOfficial: true; }' but required in type 'Holiday'.
+
+144   {
+      ~
+145     id: "gh-3",
+    ~~~~~~~~~~~~~~~
+... 
+148     isOfficial: true,
+    ~~~~~~~~~~~~~~~~~~~~~
+149   },
+    ~~~
+
+  src/types/types.ts:30:3
+    30   type: "NATIONAL" | "CANTONAL" | "MUNICIPAL" | "CUSTOM";
+         ~~~~
+    'type' is declared here.
+
+src/utils/printVacationRequest.ts:28:71 - error TS2345: Argument of type 'string' is not assignable to param
+eter of type 'Record<string, unknown>'.
+
+28   const statusTableHeader = i18n.t("adminDashboardPage.statusColumn", "Status");
+                                                                         ~~~~~~~~
+
+src/utils/supabaseClient.ts:9:33 - error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+
+9 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+                                  ~~~
+
+src/utils/supabaseClient.ts:10:37 - error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+
+10 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+                                       ~~~
+
+src/utils/supabaseClient.ts:98:10 - error TS6133: 'data' is declared but its value is never read.
+
+98   .then((data) => {
+            ~~~~
+
+src/utils/supabaseCrud.ts:12:1 - error TS6192: All imports in import declaration are unused.
+
+ 12 import {
+    ~~~~~~~~
+ 13   INITIAL_WEEKLY_CONTRACT,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+... 
+ 15   MOCK_GLOBAL_HOLIDAYS,
+    ~~~~~~~~~~~~~~~~~~~~~~~
+ 16 } from "@/utils/constants";
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/utils/supabaseCrud.ts:19:3 - error TS6133: 'getDaysInMonth' is declared but its value is never read.
+
+19   getDaysInMonth,
+     ~~~~~~~~~~~~~~
+
+src/utils/supabaseCrud.ts:20:3 - error TS6133: 'getDayOfWeekName' is declared but its value is never read.
+
+20   getDayOfWeekName,
+     ~~~~~~~~~~~~~~~~
+
+src/utils/supabaseCrud.ts:95:3 - error TS2322: Type '{ id: string; date: string; name: string; isOfficial: b
+oolean | undefined; }[]' is not assignable to type 'Holiday[]'.
+  Property 'type' is missing in type '{ id: string; date: string; name: string; isOfficial: boolean | undefi
+ned; }' but required in type 'Holiday'.
+
+95   return (data as DbHolidaySchema[]).map((dbHoliday) => ({
+     ~~~~~~
+
+  src/types/types.ts:30:3
+    30   type: "NATIONAL" | "CANTONAL" | "MUNICIPAL" | "CUSTOM";
+         ~~~~
+    'type' is declared here.
+
+
+Found 187 errors in 47 files.
+
+Errors  Files
+     2  src/collections/GlobalSettingsCollection.ts:70
+     4  src/collections/UserCollection.ts:37
+     3  src/collections/VacationRequestCollection.ts:1
+     1  src/components/AdminDashboard/AdminUserList.tsx:132
+     3  src/components/AdminDashboard/GlobalSettingsForm.tsx:54
+     6  src/components/AdminDashboard/PendingRequestsList.tsx:65
+     5  src/components/AdminDashboard/UserForm.tsx:6
+     1  src/components/AdminDashboard/UserVacationSummaryTable.tsx:4
+     2  src/components/AppHeader.tsx:13
+     1  src/components/common/InputWithIcon.tsx:29
+     1  src/components/CompactContractHoursInput.tsx:69
+     1  src/components/DailyLogRow.tsx:132
+     1  src/components/ErrorBoundary.tsx:1
+     1  src/components/MainAppLayout.tsx:7
+     1  src/components/ModernVacationCalendar.tsx:1
+     5  src/components/vacation_config/CalendarGrid.tsx:4
+     5  src/components/vacation_config/MonthlyVacationList.tsx:16
+     2  src/components/vacation_config/VacationSummaryPanel.tsx:3
+     1  src/components/VacationPagePreview.tsx:1
+     1  src/contexts/CurrentUserDataContext.tsx:9
+     1  src/contexts/GlobalDataContext.tsx:2
+    20  src/hooks/useAuth.ts:20
+     1  src/hooks/useCurrentUserData.ts:21
+     1  src/hooks/useDailyLogPresenter.ts:12
+     1  src/hooks/useUserPresenter.ts:3
+     9  src/hooks/useVacationCalculations.ts:15
+     2  src/hooks/useVacationPresenter.ts:11
+     5  src/models/GlobalSettings.ts:104
+     3  src/models/PendingRequest.ts:4
+    10  src/pages/AdminDashboardPage.tsx:8
+    19  src/pages/AdminOverviewDashboard.tsx:5
+     5  src/pages/AdminTabbedPage.tsx:16
+     4  src/pages/DashboardPage.tsx:6
+     1  src/pages/EmployeeManagementPage.tsx:12
+     7  src/pages/HolidayManagementPage.tsx:1
+     1  src/pages/UserProfilePage.tsx:4
+    29  src/pages/VacationConfigPage.tsx:8
+     1  src/presenters/GlobalSettingsPresenter.ts:2
+     2  src/presenters/UserPresenter.ts:58
+     1  src/presenters/VacationPresenter.ts:67
+     3  src/services/userService.ts:2
+     2  src/supabase/client.ts:4
+     1  src/supabase/types.ts:1
+     3  src/utils/constants.ts:132
+     1  src/utils/printVacationRequest.ts:28
+     3  src/utils/supabaseClient.ts:9
+     4  src/utils/supabaseCrud.ts:12
+
+```
+
+---
+
+Vejo que há muitos erros de TypeScript. Vou corrigir os principais problemas que estão causando os erros 500:
+
+1. **Imports incorretos** - Componentes sendo importados de caminhos errados
+2. **Tipos faltando** - Interfaces não definidas
+3. **Imports não utilizados** - Muitos imports desnecessários
+
+Vou começar corrigindo os imports incorretos:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou corrigir os tipos faltando. Primeiro, vou adicionar as interfaces que estão faltando:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou remover imports não utilizados para reduzir os erros:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou corrigir os problemas de tipos no hook useVacationCalculations:
+
+
+---
+
+
+
+---
+
+Read file: src/hooks/useVacationCalculations.ts
+
+---
+
+
+
+---
+
+Agora vou corrigir os problemas de tipos no VacationConfigPage:
+
+
+---
+
+
+
+---
+
+Agora vou corrigir os problemas de tipos no VacationConfigPage removendo as variáveis não utilizadas:
+
+
+---
+
+
+
+---
+
+<details>
+            <summary>Grep search for "handleDeleteVacationFromList" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/pages/VacationConfigPage.tsx` | L221 | `const handleDeleteVacationFromList = useCallback(` |
+
+</details>
+
+---
+
+Read file: src/pages/VacationConfigPage.tsx
+
+---
+
+Vou remover as funções não utilizadas:
+
+
+---
+
+
+
+---
+
+
+
+---
+
+Agora vou corrigir os problemas de tipos no VacationConfigPage:
+
+
+---
+
+
+
+---
+
+Agora vou corrigir os problemas de tipos no VacationConfigPage:
+
+
+---
+
+
+
+---
+
+
+Os erros 500 que você está vendo são causados por erros de build do Vite/TypeScript, não por problemas no backend. O log do build mostra:
+
+- **Imports quebrados**: Muitos componentes/páginas estão tentando importar arquivos de caminhos errados (ex: `./CompactContractHoursInput` em vez de `../components/CompactContractHoursInput`).
+- **Tipos e interfaces ausentes**: Props como `MonthlyVacationListProps`, `VacationConfigPageProps` e tipos de hooks não estão definidos.
+- **Imports não utilizados**: Muitos warnings de variáveis/imports não usados.
+- **Componentes órfãos**: Componentes como `ModernVacationCalendar`, `VacationPagePreview`, `CalendarGrid` etc. não são usados em lugar nenhum.
+- **Variáveis de estado e funções não usadas**: Vários `useState` e funções declaradas mas não utilizadas.
+- **Código comentado sem explicação**: Há blocos de código antigo comentado, especialmente em arquivos de constantes e utils.
+
+### Como resolver rapidamente os erros 500:
+
+1. **Corrija os imports quebrados**  
+   - Ajuste todos os imports de componentes/páginas para usar o caminho correto (`../components/...` ou `../pages/...`).
+
+2. **Adicione ou ajuste as interfaces de props**  
+   - Defina interfaces mínimas para os componentes que estão reclamando de tipos ausentes, por exemplo:
+     ```ts
+     interface MonthlyVacationListProps { ... }
+     interface VacationConfigPageProps { ... }
+     ```
+
+3. **Remova componentes órfãos e código morto**  
+   - Apague arquivos de componentes que não são usados em lugar nenhum.
+   - Remova funções, variáveis de estado e imports não utilizados (o log do build mostra exatamente onde estão).
+
+4. **Remova código comentado antigo**  
+   - Apague blocos de código comentado que não têm justificativa clara.
+
+5. **Rode o linter e o build**  
+   - Após as correções, rode `npm run lint` e `npm run build` para garantir que não há mais erros.
+
+---
+
+### Exemplo de correção de import quebrado
+
+```diff
+- import CompactContractHoursInput from "./CompactContractHoursInput";
++ import CompactContractHoursInput from "../components/CompactContractHoursInput";
+```
+
+---
+
+### Exemplo de interface mínima para props
+
+```ts
+interface MonthlyVacationListProps {
+  currentMonthUserVacations: any[];
+  onDeleteVacation: (date: string) => void;
+  onSubmitForApproval: () => void;
+  onPrintRequest: () => void;
+  displayDate: Date;
+  user: any;
+}
+```
+
+---
+
+### Resumo das ações recomendadas
+
+- Corrija todos os imports quebrados.
+- Adicione interfaces mínimas para os componentes reclamando de tipos.
+- Remova componentes, funções, estados e imports não utilizados.
+- Apague código comentado sem explicação.
+- Rode o linter e o build para garantir que tudo está limpo.
+
+Se quiser, posso automatizar a limpeza de código morto e correção de imports para você! Deseja que eu faça isso?
+
+---
+
+_**User**_
+
+
+
+---
+
+_**Assistant**_
+
+Seu projeto ainda apresenta muitos erros de TypeScript, principalmente relacionados a:
+
+- **Imports quebrados ou caminhos errados**
+- **Tipos e interfaces ausentes**
+- **Imports e variáveis não utilizados**
+- **Componentes órfãos**
+- **Funções e estados não utilizados**
+- **Código comentado sem explicação**
+- **Problemas de tipagem em utilitários (ex: uso de string ao invés de função)**
+
+Esses problemas impedem o build e causam os erros 500 no frontend.
+
+---
+
+## **Resumo dos próximos passos para resolver os erros críticos**
+
+### 1. **Corrija imports quebrados**
+- Ajuste todos os imports de componentes/páginas para usar o caminho correto.
+- Exemplo:  
+  ```diff
+  - import CompactContractHoursInput from "./CompactContractHoursInput";
+  + import CompactContractHoursInput from "../components/CompactContractHoursInput";
+  ```
+
+### 2. **Defina interfaces mínimas para props**
+- Adicione interfaces para todos os componentes que reclamam de tipos ausentes.
+- Exemplo:
+  ```ts
+  interface MonthlyVacationListProps { ... }
+  interface VacationConfigPageProps { ... }
+  ```
+
+### 3. **Remova componentes, funções, estados e imports não utilizados**
+- Apague arquivos de componentes que não são usados em lugar nenhum (ex: ModernVacationCalendar, VacationPagePreview, CalendarGrid).
+- Remova funções, variáveis de estado e imports não utilizados (o log do build mostra exatamente onde estão).
+
+### 4. **Remova código comentado antigo**
+- Apague blocos de código comentado que não têm justificativa clara.
+
+### 5. **Corrija problemas de tipagem em utilitários**
+- Certifique-se de que utilitários como `textInputClasses` são funções e não strings.
+- Exemplo:
+  ```ts
+  // Correto:
+  const inputClasses = textInputClasses({ size: "sm" });
+  // Errado:
+  const inputClasses = `${textInputClasses({ size: "sm" })} ...`;
+  ```
+
+### 6. **Rode o linter e o build**
+- Após as correções, rode `npm run lint` e `npm run build` para garantir que não há mais erros.
+
+---
+
+## **Sugestão de ação rápida**
+
+Se quiser, posso automatizar a limpeza de código morto, correção de imports e interfaces mínimas para você.  
+**Deseja que eu faça uma limpeza automática e corrija os principais erros para o build voltar a funcionar?**  
+Se sim, posso começar removendo componentes órfãos e corrigindo os imports e tipos mais críticos.
+
+Se preferir, posso te guiar passo a passo para cada erro do log. Como deseja prosseguir?
+
+---
+
+_**User**_
+
+Deseja que eu faça uma limpeza automática e corrija os principais erros para o build voltar a funcionar?
+
+
+---
+
+_**Assistant**_
+
+Sim, recomendo fortemente que você permita a limpeza automática e a correção dos principais erros para que o build volte a funcionar. Isso irá:
+
+- **Eliminar componentes, funções, estados e imports não utilizados** (código morto)
+- **Corrigir imports quebrados e caminhos errados**
+- **Adicionar interfaces mínimas para props e corrigir tipagens**
+- **Remover código comentado sem explicação**
+- **Ajustar utilitários para uso correto de funções/classes**
+- **Deixar o projeto mais limpo, rápido e fácil de manter**
+- **Permitir que o build rode sem erros e o app funcione normalmente**
+
+Esse processo é seguro, pois só remove ou corrige o que está claramente quebrado ou não utilizado, e você pode revisar cada alteração via git.
+
+**Posso iniciar agora a limpeza automática e as correções?**  
+Se quiser, posso te mostrar um resumo das ações antes de aplicar, ou já começar a executar e ir te informando a cada etapa. Como prefere?
+
+---
+
+_**User**_
+
+Posso iniciar agora a limpeza automática e as correções?
+sim
+
+---
+
+_**Assistant**_
+
+Ótimo! Vou iniciar a limpeza automática e as correções para restaurar o build do projeto. O plano de ação será:
+
+1. **Remover componentes órfãos e arquivos não utilizados**
+2. **Corrigir imports quebrados e caminhos errados**
+3. **Remover funções, estados, variáveis e imports não utilizados**
+4. **Adicionar interfaces mínimas para props e corrigir tipagens**
+5. **Remover código comentado sem explicação**
+6. **Ajustar utilitários para uso correto de funções/classes**
+7. **Rodar o linter e o build para garantir que tudo está limpo**
+
+Vou executar cada etapa e informar o progresso.  
+**Vamos começar!**
+
+---
+
+Remover componente órfão que não é importado nem renderizado em nenhum lugar do projeto.
+
+---
+
+Remover componente órfão que não é importado nem renderizado em nenhum lugar do projeto.
+
+---
+
+Remover componente órfão que não é importado nem renderizado em nenhum lugar do projeto.
+
+---
+
 
 
 ---

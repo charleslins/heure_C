@@ -3,11 +3,11 @@ import { DashboardPageProps } from "@/types";
 import { useGlobalDataContext } from "../contexts/GlobalDataContext";
 import { useCurrentUserDataContext } from "../contexts/CurrentUserDataContext";
 
-import CompactContractHoursInput from "./CompactContractHoursInput";
-import ContractAndMonthlySummaryCard from "./ContractAndMonthlySummaryCard";
-import DailyLog from "./DailyLog";
+import CompactContractHoursInput from "../components/CompactContractHoursInput";
+import ContractAndMonthlySummaryCard from "../components/ContractAndMonthlySummaryCard";
+import DailyLog from "../components/DailyLog";
 import AdminOverviewDashboard from "./AdminOverviewDashboard";
-import LoadingScreen from "./LoadingScreen";
+import LoadingScreen from "../components/LoadingScreen";
 import { useTranslation } from "react-i18next";
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ currentUser }) => {
