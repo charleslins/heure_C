@@ -1,5 +1,5 @@
-import { Employee } from '../models/Employee';
-import { supabase } from '../utils/supabaseClient';
+import { Employee } from "../models/Employee";
+import { supabase } from "../utils/supabaseClient";
 
 export class EmployeeCollection {
   private employees: Employee[] = [];
@@ -11,15 +11,15 @@ export class EmployeeCollection {
   async loadAll(): Promise<void> {
     try {
       const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .order('name');
+        .from("profiles")
+        .select("*")
+        .order("name");
 
       if (error) throw error;
-      
-      this.employees = (data || []).map(emp => new Employee(emp));
+
+      this.employees = (data || []).map((emp) => new Employee(emp));
     } catch (error) {
-      console.error('Erro ao carregar funcionários:', error);
+      console.error("Erro ao carregar funcionários:", error);
       throw error;
     }
   }
@@ -27,16 +27,16 @@ export class EmployeeCollection {
   async loadByCantonId(cantonId: number): Promise<void> {
     try {
       const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('canton_id', cantonId)
-        .order('name');
+        .from("profiles")
+        .select("*")
+        .eq("canton_id", cantonId)
+        .order("name");
 
       if (error) throw error;
-      
-      this.employees = (data || []).map(emp => new Employee(emp));
+
+      this.employees = (data || []).map((emp) => new Employee(emp));
     } catch (error) {
-      console.error('Erro ao carregar funcionários do cantão:', error);
+      console.error("Erro ao carregar funcionários do cantão:", error);
       throw error;
     }
   }
@@ -46,28 +46,28 @@ export class EmployeeCollection {
   }
 
   getById(id: string): Employee | undefined {
-    return this.employees.find(emp => emp.id === id);
+    return this.employees.find((emp) => emp.id === id);
   }
 
   getAdmins(): Employee[] {
-    return this.employees.filter(emp => emp.isAdmin());
+    return this.employees.filter((emp) => emp.isAdmin());
   }
 
   getRegularUsers(): Employee[] {
-    return this.employees.filter(emp => !emp.isAdmin());
+    return this.employees.filter((emp) => !emp.isAdmin());
   }
 
   async add(employee: Employee): Promise<void> {
     try {
       const { error } = await supabase
-        .from('profiles')
+        .from("profiles")
         .insert(employee.toJSON());
 
       if (error) throw error;
-      
+
       this.employees.push(employee);
     } catch (error) {
-      console.error('Erro ao adicionar funcionário:', error);
+      console.error("Erro ao adicionar funcionário:", error);
       throw error;
     }
   }
@@ -75,18 +75,18 @@ export class EmployeeCollection {
   async update(employee: Employee): Promise<void> {
     try {
       const { error } = await supabase
-        .from('profiles')
+        .from("profiles")
         .update(employee.toJSON())
-        .eq('id', employee.id);
+        .eq("id", employee.id);
 
       if (error) throw error;
-      
-      const index = this.employees.findIndex(emp => emp.id === employee.id);
+
+      const index = this.employees.findIndex((emp) => emp.id === employee.id);
       if (index !== -1) {
         this.employees[index] = employee;
       }
     } catch (error) {
-      console.error('Erro ao atualizar funcionário:', error);
+      console.error("Erro ao atualizar funcionário:", error);
       throw error;
     }
   }
@@ -94,32 +94,33 @@ export class EmployeeCollection {
   async remove(employeeId: string): Promise<void> {
     try {
       const { error } = await supabase
-        .from('profiles')
+        .from("profiles")
         .delete()
-        .eq('id', employeeId);
+        .eq("id", employeeId);
 
       if (error) throw error;
-      
-      this.employees = this.employees.filter(emp => emp.id !== employeeId);
+
+      this.employees = this.employees.filter((emp) => emp.id !== employeeId);
     } catch (error) {
-      console.error('Erro ao remover funcionário:', error);
+      console.error("Erro ao remover funcionário:", error);
       throw error;
     }
   }
 
   filterBySearchTerm(searchTerm: string): Employee[] {
     const term = searchTerm.toLowerCase();
-    return this.employees.filter(emp => 
-      emp.name.toLowerCase().includes(term) ||
-      emp.email.toLowerCase().includes(term) ||
-      (emp.position && emp.position.toLowerCase().includes(term))
+    return this.employees.filter(
+      (emp) =>
+        emp.name.toLowerCase().includes(term) ||
+        emp.email.toLowerCase().includes(term) ||
+        (emp.position && emp.position.toLowerCase().includes(term)),
     );
   }
 
-  groupByRole(): { admins: Employee[], users: Employee[] } {
+  groupByRole(): { admins: Employee[]; users: Employee[] } {
     return {
       admins: this.getAdmins(),
-      users: this.getRegularUsers()
+      users: this.getRegularUsers(),
     };
   }
 
@@ -127,7 +128,7 @@ export class EmployeeCollection {
     return {
       total: this.employees.length,
       admins: this.getAdmins().length,
-      users: this.getRegularUsers().length
+      users: this.getRegularUsers().length,
     };
   }
-} 
+}

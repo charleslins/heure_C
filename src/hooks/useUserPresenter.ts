@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
-import { UserPresenter } from '../presenters/UserPresenter';
-import { UserModel, CreateUserDTO, UpdateUserDTO } from '../models/User';
+import { useState, useCallback } from "react";
+import { UserPresenter } from "../presenters/UserPresenter";
+import { UserModel, CreateUserDTO, UpdateUserDTO } from "../models/User";
 
 export function useUserPresenter() {
   const [users, setUsers] = useState<UserModel[]>([]);
@@ -14,7 +14,9 @@ export function useUserPresenter() {
       const loadedUsers = await UserPresenter.getAllUsers();
       setUsers(loadedUsers);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao carregar usuários');
+      setError(
+        err instanceof Error ? err.message : "Erro ao carregar usuários",
+      );
     } finally {
       setLoading(false);
     }
@@ -25,7 +27,7 @@ export function useUserPresenter() {
       setError(null);
       return await UserPresenter.getUserById(id);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao buscar usuário');
+      setError(err instanceof Error ? err.message : "Erro ao buscar usuário");
       return null;
     }
   }, []);
@@ -34,10 +36,10 @@ export function useUserPresenter() {
     try {
       setError(null);
       const newUser = await UserPresenter.createUser(dto);
-      setUsers(prev => [...prev, newUser]);
+      setUsers((prev) => [...prev, newUser]);
       return newUser;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao criar usuário');
+      setError(err instanceof Error ? err.message : "Erro ao criar usuário");
       return null;
     }
   }, []);
@@ -46,10 +48,14 @@ export function useUserPresenter() {
     try {
       setError(null);
       const updatedUser = await UserPresenter.updateUser(id, dto);
-      setUsers(prev => prev.map(user => user.id === id ? updatedUser : user));
+      setUsers((prev) =>
+        prev.map((user) => (user.id === id ? updatedUser : user)),
+      );
       return updatedUser;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao atualizar usuário');
+      setError(
+        err instanceof Error ? err.message : "Erro ao atualizar usuário",
+      );
       return null;
     }
   }, []);
@@ -58,10 +64,10 @@ export function useUserPresenter() {
     try {
       setError(null);
       await UserPresenter.deleteUser(id);
-      setUsers(prev => prev.filter(user => user.id !== id));
+      setUsers((prev) => prev.filter((user) => user.id !== id));
       return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao excluir usuário');
+      setError(err instanceof Error ? err.message : "Erro ao excluir usuário");
       return false;
     }
   }, []);
@@ -70,10 +76,12 @@ export function useUserPresenter() {
     try {
       setError(null);
       const updatedUser = await UserPresenter.activateUser(id);
-      setUsers(prev => prev.map(user => user.id === id ? updatedUser : user));
+      setUsers((prev) =>
+        prev.map((user) => (user.id === id ? updatedUser : user)),
+      );
       return updatedUser;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao ativar usuário');
+      setError(err instanceof Error ? err.message : "Erro ao ativar usuário");
       return null;
     }
   }, []);
@@ -82,10 +90,14 @@ export function useUserPresenter() {
     try {
       setError(null);
       const updatedUser = await UserPresenter.deactivateUser(id);
-      setUsers(prev => prev.map(user => user.id === id ? updatedUser : user));
+      setUsers((prev) =>
+        prev.map((user) => (user.id === id ? updatedUser : user)),
+      );
       return updatedUser;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao desativar usuário');
+      setError(
+        err instanceof Error ? err.message : "Erro ao desativar usuário",
+      );
       return null;
     }
   }, []);
@@ -100,6 +112,6 @@ export function useUserPresenter() {
     updateUser,
     deleteUser,
     activateUser,
-    deactivateUser
+    deactivateUser,
   };
-} 
+}

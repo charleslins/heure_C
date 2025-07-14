@@ -14,7 +14,7 @@ export class Region {
   id: number;
   name: string;
   code: string;
-  type: 'CANTON' | 'MUNICIPALITY';
+  type: "CANTON" | "MUNICIPALITY";
   parentId?: number; // ID do cantão para municípios
   coordinates?: Coordinates;
   metadata?: RegionMetadata;
@@ -24,9 +24,9 @@ export class Region {
 
   constructor(data: Partial<Region>) {
     this.id = data.id || 0;
-    this.name = data.name || '';
-    this.code = data.code || '';
-    this.type = data.type || 'CANTON';
+    this.name = data.name || "";
+    this.code = data.code || "";
+    this.type = data.type || "CANTON";
     this.parentId = data.parentId;
     this.coordinates = data.coordinates;
     this.metadata = data.metadata;
@@ -46,23 +46,23 @@ export class Region {
       metadata: this.metadata,
       isActive: this.isActive,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
     };
   }
 
   getDisplayName(): string {
-    if (this.type === 'CANTON') {
+    if (this.type === "CANTON") {
       return `${this.name} (${this.code})`;
     }
     return this.name;
   }
 
   isCanton(): boolean {
-    return this.type === 'CANTON';
+    return this.type === "CANTON";
   }
 
   isMunicipality(): boolean {
-    return this.type === 'MUNICIPALITY';
+    return this.type === "MUNICIPALITY";
   }
 
   hasCoordinates(): boolean {
@@ -84,7 +84,7 @@ export class Region {
     if (data.metadata !== undefined) {
       this.metadata = {
         ...this.metadata,
-        ...data.metadata
+        ...data.metadata,
       };
     }
     if (data.isActive !== undefined) this.isActive = data.isActive;
@@ -101,22 +101,30 @@ export class Region {
     this.updatedAt = new Date().toISOString();
   }
 
-  static createCanton(name: string, code: string, metadata?: RegionMetadata): Region {
+  static createCanton(
+    name: string,
+    code: string,
+    metadata?: RegionMetadata,
+  ): Region {
     return new Region({
       name,
       code,
-      type: 'CANTON',
-      metadata
+      type: "CANTON",
+      metadata,
     });
   }
 
-  static createMunicipality(name: string, cantonId: number, metadata?: RegionMetadata): Region {
+  static createMunicipality(
+    name: string,
+    cantonId: number,
+    metadata?: RegionMetadata,
+  ): Region {
     return new Region({
       name,
-      code: '', // Código será gerado pelo backend
-      type: 'MUNICIPALITY',
+      code: "", // Código será gerado pelo backend
+      type: "MUNICIPALITY",
       parentId: cantonId,
-      metadata
+      metadata,
     });
   }
-} 
+}

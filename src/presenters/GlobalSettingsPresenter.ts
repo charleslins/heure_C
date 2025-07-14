@@ -1,6 +1,11 @@
-import { GlobalSettings, WorkTimeDefaults, VacationRules, RegionalSettings } from '../models/GlobalSettings';
-import { GlobalSettingsCollection } from '../collections/GlobalSettingsCollection';
-import { useTranslation } from 'react-i18next';
+import {
+  GlobalSettings,
+  WorkTimeDefaults,
+  VacationRules,
+  RegionalSettings,
+} from "../models/GlobalSettings";
+import { GlobalSettingsCollection } from "../collections/GlobalSettingsCollection";
+import { useTranslation } from "react-i18next";
 
 export class GlobalSettingsPresenter {
   private collection: GlobalSettingsCollection;
@@ -23,99 +28,109 @@ export class GlobalSettingsPresenter {
       general: {
         tauxPercent: {
           value: settings.tauxPercent,
-          label: this.t('globalSettings.workRateLabel'),
-          description: this.t('globalSettings.workRateDescription')
+          label: this.t("globalSettings.workRateLabel"),
+          description: this.t("globalSettings.workRateDescription"),
         },
         annualVacationDays: {
           value: settings.annualVacationDays,
-          label: this.t('globalSettings.annualVacationDaysLabel'),
-          description: this.t('globalSettings.annualVacationDaysDescription'),
-          adjusted: settings.getAdjustedVacationDays()
-        }
+          label: this.t("globalSettings.annualVacationDaysLabel"),
+          description: this.t("globalSettings.annualVacationDaysDescription"),
+          adjusted: settings.getAdjustedVacationDays(),
+        },
       },
       workTime: {
         isConfigured: settings.isWorkTimeConfigured(),
         defaultHours: settings.getDefaultWorkHours(),
         start: settings.workTimeDefaults?.overallStartTime,
         end: settings.workTimeDefaults?.overallEndTime,
-        label: this.t('globalSettings.workTimeLabel'),
-        description: this.t('globalSettings.workTimeDescription')
+        label: this.t("globalSettings.workTimeLabel"),
+        description: this.t("globalSettings.workTimeDescription"),
       },
       vacationRules: {
         minAdvanceNotice: {
           value: settings.vacationRules.minAdvanceNotice,
-          label: this.t('globalSettings.minAdvanceNoticeLabel'),
-          description: this.t('globalSettings.minAdvanceNoticeDescription')
+          label: this.t("globalSettings.minAdvanceNoticeLabel"),
+          description: this.t("globalSettings.minAdvanceNoticeDescription"),
         },
         maxConsecutiveDays: {
           value: settings.vacationRules.maxConsecutiveDays,
-          label: this.t('globalSettings.maxConsecutiveDaysLabel'),
-          description: this.t('globalSettings.maxConsecutiveDaysDescription')
+          label: this.t("globalSettings.maxConsecutiveDaysLabel"),
+          description: this.t("globalSettings.maxConsecutiveDaysDescription"),
         },
         autoApproval: {
           enabled: settings.isAutoApprovalEnabled(),
-          label: this.t('globalSettings.autoApprovalLabel'),
-          description: this.t('globalSettings.autoApprovalDescription')
+          label: this.t("globalSettings.autoApprovalLabel"),
+          description: this.t("globalSettings.autoApprovalDescription"),
         },
         maxConcurrentUsers: settings.vacationRules.maxConcurrentUsers
           ? {
               value: settings.vacationRules.maxConcurrentUsers,
-              label: this.t('globalSettings.maxConcurrentUsersLabel'),
-              description: this.t('globalSettings.maxConcurrentUsersDescription')
+              label: this.t("globalSettings.maxConcurrentUsersLabel"),
+              description: this.t(
+                "globalSettings.maxConcurrentUsersDescription",
+              ),
             }
-          : undefined
+          : undefined,
       },
       regional: {
         defaultCanton: settings.regionalSettings.defaultCantonId,
         useRegionalHolidays: {
           enabled: settings.isRegionalHolidaysEnabled(),
-          label: this.t('globalSettings.useRegionalHolidaysLabel'),
-          description: this.t('globalSettings.useRegionalHolidaysDescription')
+          label: this.t("globalSettings.useRegionalHolidaysLabel"),
+          description: this.t("globalSettings.useRegionalHolidaysDescription"),
         },
         allowMunicipalityHolidays: {
           enabled: settings.isMunicipalityHolidaysEnabled(),
-          label: this.t('globalSettings.allowMunicipalityHolidaysLabel'),
-          description: this.t('globalSettings.allowMunicipalityHolidaysDescription')
-        }
-      }
+          label: this.t("globalSettings.allowMunicipalityHolidaysLabel"),
+          description: this.t(
+            "globalSettings.allowMunicipalityHolidaysDescription",
+          ),
+        },
+      },
     };
   }
 
-  async updateWorkTime(data: WorkTimeDefaults): Promise<{ success: boolean; message?: string }> {
+  async updateWorkTime(
+    data: WorkTimeDefaults,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.update({ workTimeDefaults: data });
       return { success: true };
     } catch (error) {
-      console.error('Erro ao atualizar horário de trabalho:', error);
+      console.error("Erro ao atualizar horário de trabalho:", error);
       return {
         success: false,
-        message: this.t('globalSettings.workTimeUpdateError')
+        message: this.t("globalSettings.workTimeUpdateError"),
       };
     }
   }
 
-  async updateVacationRules(data: VacationRules): Promise<{ success: boolean; message?: string }> {
+  async updateVacationRules(
+    data: VacationRules,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.update({ vacationRules: data });
       return { success: true };
     } catch (error) {
-      console.error('Erro ao atualizar regras de férias:', error);
+      console.error("Erro ao atualizar regras de férias:", error);
       return {
         success: false,
-        message: this.t('globalSettings.vacationRulesUpdateError')
+        message: this.t("globalSettings.vacationRulesUpdateError"),
       };
     }
   }
 
-  async updateRegionalSettings(data: RegionalSettings): Promise<{ success: boolean; message?: string }> {
+  async updateRegionalSettings(
+    data: RegionalSettings,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.update({ regionalSettings: data });
       return { success: true };
     } catch (error) {
-      console.error('Erro ao atualizar configurações regionais:', error);
+      console.error("Erro ao atualizar configurações regionais:", error);
       return {
         success: false,
-        message: this.t('globalSettings.regionalSettingsUpdateError')
+        message: this.t("globalSettings.regionalSettingsUpdateError"),
       };
     }
   }
@@ -128,10 +143,10 @@ export class GlobalSettingsPresenter {
       await this.collection.update(data);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao atualizar configurações gerais:', error);
+      console.error("Erro ao atualizar configurações gerais:", error);
       return {
         success: false,
-        message: this.t('globalSettings.generalSettingsUpdateError')
+        message: this.t("globalSettings.generalSettingsUpdateError"),
       };
     }
   }
@@ -141,20 +156,28 @@ export class GlobalSettingsPresenter {
       await this.collection.reset();
       return { success: true };
     } catch (error) {
-      console.error('Erro ao resetar configurações:', error);
+      console.error("Erro ao resetar configurações:", error);
       return {
         success: false,
-        message: this.t('globalSettings.resetError')
+        message: this.t("globalSettings.resetError"),
       };
     }
   }
 
-  validateVacationRequest(startDate: Date, endDate: Date, userId: string): {
+  validateVacationRequest(
+    startDate: Date,
+    endDate: Date,
+    userId: string,
+  ): {
     isValid: boolean;
     message?: string;
     autoApproved?: boolean;
   } {
-    const validation = this.collection.validateVacationRequest(startDate, endDate, userId);
+    const validation = this.collection.validateVacationRequest(
+      startDate,
+      endDate,
+      userId,
+    );
     if (!validation.isValid) {
       return validation;
     }
@@ -162,7 +185,7 @@ export class GlobalSettingsPresenter {
     const autoApproved = this.collection.shouldAutoApprove(startDate, endDate);
     return {
       isValid: true,
-      autoApproved
+      autoApproved,
     };
   }
 
@@ -177,4 +200,4 @@ export class GlobalSettingsPresenter {
   shouldConsiderMunicipalityHolidays(): boolean {
     return this.collection.shouldConsiderMunicipalityHolidays();
   }
-} 
+}

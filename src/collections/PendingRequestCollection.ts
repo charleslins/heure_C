@@ -1,15 +1,21 @@
-import { supabase } from '../../utils/supabaseClient';
-import { DbPendingRequest, DbPendingRequestInsert, DbPendingRequestUpdate, PendingRequestWithUser } from '../models/PendingRequest';
+import { supabase } from "@/utils/supabaseClient";
+import {
+  DbPendingRequest,
+  DbPendingRequestInsert,
+  DbPendingRequestUpdate,
+  PendingRequestWithUser,
+} from "../models/PendingRequest";
 
 export class PendingRequestCollection {
-  private static TABLE_NAME = 'pending_requests';
-  private static VIEW_NAME = 'pending_vacation_requests';
+  private static TABLE_NAME = "pending_requests";
+  private static VIEW_NAME = "pending_vacation_requests";
 
   static async findAll(): Promise<PendingRequestWithUser[]> {
     try {
       const { data, error } = await supabase
         .from(this.VIEW_NAME)
-        .select(`
+        .select(
+          `
           id,
           user_id,
           user_name,
@@ -21,15 +27,16 @@ export class PendingRequestCollection {
           status,
           created_at,
           updated_at
-        `)
-        .eq('status', 'pending')
-        .order('start_date', { ascending: true })
+        `,
+        )
+        .eq("status", "pending")
+        .order("start_date", { ascending: true })
         .returns<PendingRequestWithUser[]>();
 
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar solicitações pendentes:', error);
+      console.error("Erro ao buscar solicitações pendentes:", error);
       throw error;
     }
   }
@@ -38,20 +45,22 @@ export class PendingRequestCollection {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
         .returns<DbPendingRequest[]>();
 
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar solicitações do usuário:', error);
+      console.error("Erro ao buscar solicitações do usuário:", error);
       throw error;
     }
   }
 
-  static async create(request: DbPendingRequestInsert): Promise<DbPendingRequest> {
+  static async create(
+    request: DbPendingRequestInsert,
+  ): Promise<DbPendingRequest> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
@@ -63,17 +72,20 @@ export class PendingRequestCollection {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao criar solicitação:', error);
+      console.error("Erro ao criar solicitação:", error);
       throw error;
     }
   }
 
-  static async update(id: string, request: DbPendingRequestUpdate): Promise<DbPendingRequest> {
+  static async update(
+    id: string,
+    request: DbPendingRequestUpdate,
+  ): Promise<DbPendingRequest> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
         .update(request)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single()
         .returns<DbPendingRequest>();
@@ -81,15 +93,15 @@ export class PendingRequestCollection {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao atualizar solicitação:', error);
+      console.error("Erro ao atualizar solicitação:", error);
       throw error;
     }
   }
 
   static async updateStatus(
     id: string,
-    status: 'approved' | 'rejected',
-    adminComment?: string
+    status: "approved" | "rejected",
+    adminComment?: string,
   ): Promise<DbPendingRequest> {
     try {
       const { data, error } = await supabase
@@ -97,9 +109,9 @@ export class PendingRequestCollection {
         .update({
           status,
           admin_comment: adminComment,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single()
         .returns<DbPendingRequest>();
@@ -107,7 +119,7 @@ export class PendingRequestCollection {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao atualizar status da solicitação:', error);
+      console.error("Erro ao atualizar status da solicitação:", error);
       throw error;
     }
   }
@@ -117,11 +129,11 @@ export class PendingRequestCollection {
       const { error } = await supabase
         .from(this.TABLE_NAME)
         .delete()
-        .eq('id', id);
+        .eq("id", id);
 
       if (error) throw error;
     } catch (error) {
-      console.error('Erro ao deletar solicitação:', error);
+      console.error("Erro ao deletar solicitação:", error);
       throw error;
     }
   }
@@ -131,17 +143,17 @@ export class PendingRequestCollection {
       const { error } = await supabase
         .from(this.TABLE_NAME)
         .update({
-          status: 'approved',
-          admin_comment: 'Aprovado em lote',
-          updated_at: new Date().toISOString()
+          status: "approved",
+          admin_comment: "Aprovado em lote",
+          updated_at: new Date().toISOString(),
         })
-        .eq('user_id', userId)
-        .eq('status', 'pending');
+        .eq("user_id", userId)
+        .eq("status", "pending");
 
       if (error) throw error;
     } catch (error) {
-      console.error('Erro ao aprovar solicitações em lote:', error);
+      console.error("Erro ao aprovar solicitações em lote:", error);
       throw error;
     }
   }
-} 
+}

@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
-import { VacationCollection } from '../collections/VacationCollection';
-import { VacationPresenter } from '../presenters/VacationPresenter';
-import { useNotificationContext } from '../contexts/NotificationContext';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from './useAuth';
+import { useState, useEffect, useMemo } from "react";
+import { VacationCollection } from "../collections/VacationCollection";
+import { VacationPresenter } from "../presenters/VacationPresenter";
+import { useNotificationContext } from "../contexts/NotificationContext";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "./useAuth";
 
 export function useVacationPresenter(year?: number, month?: number) {
   const { t } = useTranslation();
@@ -14,10 +14,14 @@ export function useVacationPresenter(year?: number, month?: number) {
 
   // Criar instâncias das classes MCP
   const collection = useMemo(() => new VacationCollection(), []);
-  const presenter = useMemo(() => new VacationPresenter(collection), [collection]);
+  const presenter = useMemo(
+    () => new VacationPresenter(collection),
+    [collection],
+  );
 
   // Estado para armazenar os dados processados
-  const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getVacationListViewModel>>();
+  const [viewModel, setViewModel] =
+    useState<ReturnType<typeof presenter.getVacationListViewModel>>();
 
   // Carregar dados iniciais
   useEffect(() => {
@@ -31,8 +35,8 @@ export function useVacationPresenter(year?: number, month?: number) {
         await presenter.initialize(year, month);
         setViewModel(presenter.getVacationListViewModel());
       } catch (err) {
-        setError(t('vacationPage.loadingError'));
-        addNotification(t('vacationPage.loadingError'), 'error');
+        setError(t("vacationPage.loadingError"));
+        addNotification(t("vacationPage.loadingError"), "error");
       } finally {
         setIsLoading(false);
       }
@@ -44,21 +48,30 @@ export function useVacationPresenter(year?: number, month?: number) {
   const handleRequestVacation = async (date: string) => {
     const result = await presenter.requestVacation(date);
     if (result.success) {
-      addNotification(t('vacationPage.requestSuccess'), 'success');
+      addNotification(t("vacationPage.requestSuccess"), "success");
       setViewModel(presenter.getVacationListViewModel());
     } else {
-      addNotification(result.message || t('vacationPage.requestError'), 'error');
+      addNotification(
+        result.message || t("vacationPage.requestError"),
+        "error",
+      );
     }
     return result;
   };
 
-  const handleApproveVacation = async (vacationId: string, comment?: string) => {
+  const handleApproveVacation = async (
+    vacationId: string,
+    comment?: string,
+  ) => {
     const result = await presenter.approveVacation(vacationId, comment);
     if (result.success) {
-      addNotification(t('vacationPage.approvalSuccess'), 'success');
+      addNotification(t("vacationPage.approvalSuccess"), "success");
       setViewModel(presenter.getVacationListViewModel());
     } else {
-      addNotification(result.message || t('vacationPage.approvalError'), 'error');
+      addNotification(
+        result.message || t("vacationPage.approvalError"),
+        "error",
+      );
     }
     return result;
   };
@@ -66,10 +79,13 @@ export function useVacationPresenter(year?: number, month?: number) {
   const handleRejectVacation = async (vacationId: string, comment?: string) => {
     const result = await presenter.rejectVacation(vacationId, comment);
     if (result.success) {
-      addNotification(t('vacationPage.rejectionSuccess'), 'success');
+      addNotification(t("vacationPage.rejectionSuccess"), "success");
       setViewModel(presenter.getVacationListViewModel());
     } else {
-      addNotification(result.message || t('vacationPage.rejectionError'), 'error');
+      addNotification(
+        result.message || t("vacationPage.rejectionError"),
+        "error",
+      );
     }
     return result;
   };
@@ -77,10 +93,13 @@ export function useVacationPresenter(year?: number, month?: number) {
   const handleCancelVacation = async (vacationId: string) => {
     const result = await presenter.cancelVacation(vacationId);
     if (result.success) {
-      addNotification(t('vacationPage.cancellationSuccess'), 'success');
+      addNotification(t("vacationPage.cancellationSuccess"), "success");
       setViewModel(presenter.getVacationListViewModel());
     } else {
-      addNotification(result.message || t('vacationPage.cancellationError'), 'error');
+      addNotification(
+        result.message || t("vacationPage.cancellationError"),
+        "error",
+      );
     }
     return result;
   };
@@ -91,7 +110,7 @@ export function useVacationPresenter(year?: number, month?: number) {
       await presenter.loadPendingRequests();
       setViewModel(presenter.getVacationListViewModel());
     } catch (err) {
-      addNotification(t('vacationPage.loadingPendingError'), 'error');
+      addNotification(t("vacationPage.loadingPendingError"), "error");
     } finally {
       setIsLoading(false);
     }
@@ -106,8 +125,10 @@ export function useVacationPresenter(year?: number, month?: number) {
     rejectVacation: handleRejectVacation,
     cancelVacation: handleCancelVacation,
     loadPendingRequests,
-    getMonthlyStatistics: (y: number, m: number) => presenter.getMonthlyStatistics(y, m),
+    getMonthlyStatistics: (y: number, m: number) =>
+      presenter.getMonthlyStatistics(y, m),
     getPendingRequests: () => presenter.getPendingRequestsViewModel(),
-    getVacationsByDateRange: (start: Date, end: Date) => presenter.getVacationsByDateRange(start, end)
+    getVacationsByDateRange: (start: Date, end: Date) =>
+      presenter.getVacationsByDateRange(start, end),
   };
-} 
+}

@@ -1,8 +1,8 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { WeeklyContractHours, DayOfWeekName } from '../types';
-import { Clock } from 'lucide-react';
-import SectionCard from './common/SectionCard';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { WeeklyContractHours, DayOfWeekName } from "@/types";
+import { Clock } from "lucide-react";
+import SectionCard from "./common/SectionCard";
 
 interface CompactContractHoursInputProps {
   contractHours: WeeklyContractHours;
@@ -10,21 +10,41 @@ interface CompactContractHoursInputProps {
 }
 
 // Ordem para exibição: Segunda a Domingo
-const DISPLAY_DAYS_ORDER: DayOfWeekName[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+const DISPLAY_DAYS_ORDER: DayOfWeekName[] = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];
 
-const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({ contractHours, onContractHoursChange }) => {
+const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({
+  contractHours,
+  onContractHoursChange,
+}) => {
   const { t } = useTranslation();
 
   const getDayAbbreviation = (dayKey: DayOfWeekName) => {
     // Mapear nomes internos dos dias para chaves específicas de 2 letras para tradução
     const keyMap: { [key in DayOfWeekName]: string } = {
-      monday: 'LU', tuesday: 'MA', wednesday: 'ME', thursday: 'JE',
-      friday: 'VE', saturday: 'SA', sunday: 'DI'
+      monday: "LU",
+      tuesday: "MA",
+      wednesday: "ME",
+      thursday: "JE",
+      friday: "VE",
+      saturday: "SA",
+      sunday: "DI",
     };
     return t(`daysAbbreviated.${keyMap[dayKey]}`, keyMap[dayKey].toUpperCase());
   };
 
-  const handleHourChange = (day: DayOfWeekName, period: 'morning' | 'afternoon', value: string) => {
+  const handleHourChange = (
+    day: DayOfWeekName,
+    period: "morning" | "afternoon",
+    value: string,
+  ) => {
     const hours = parseFloat(value);
     if (!isNaN(hours) && hours >= 0 && hours <= 12) {
       onContractHoursChange({
@@ -45,11 +65,12 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({ c
     }
   };
 
-  const inputClasses = "block w-12 h-10 p-1 border border-slate-300 bg-slate-50 text-slate-700 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm text-center appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none";
+  const inputClasses =
+    "block w-12 h-10 p-1 border border-slate-300 bg-slate-50 text-slate-700 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm text-center appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none";
 
   return (
     <SectionCard
-      title={t('dashboardPage.contractualHoursTitle')}
+      title={t("dashboardPage.contractualHoursTitle")}
       titleIcon={Clock}
       titleIconProps={{ className: "w-6 h-6 text-indigo-600" }}
       titleTextClassName="text-lg font-semibold text-slate-800"
@@ -66,25 +87,31 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({ c
               </span>
               <input
                 type="number"
-                aria-label={`${t('dailyLog.morningHeader')} ${getDayAbbreviation(day)}`}
+                aria-label={`${t(
+                  "dailyLog.morningHeader",
+                )} ${getDayAbbreviation(day)}`}
                 min="0"
                 max="12"
-                step="0.25"
+                step="0.5"
                 value={contractHours[day]?.morning || 0}
-                onChange={(e) => handleHourChange(day, 'morning', e.target.value)}
+                onChange={(e) =>
+                  handleHourChange(day, "morning", e.target.value)
+                }
                 className={inputClasses}
-                placeholder="0"
               />
               <input
                 type="number"
-                aria-label={`${t('dailyLog.afternoonHeader')} ${getDayAbbreviation(day)}`}
+                aria-label={`${t(
+                  "dailyLog.afternoonHeader",
+                )} ${getDayAbbreviation(day)}`}
                 min="0"
                 max="12"
-                step="0.25"
+                step="0.5"
                 value={contractHours[day]?.afternoon || 0}
-                onChange={(e) => handleHourChange(day, 'afternoon', e.target.value)}
+                onChange={(e) =>
+                  handleHourChange(day, "afternoon", e.target.value)
+                }
                 className={inputClasses}
-                placeholder="0"
               />
             </div>
           ))}

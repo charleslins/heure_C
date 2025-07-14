@@ -1,25 +1,25 @@
-import { supabase } from '../../utils/supabaseClient';
-import { Database } from '../types/supabase';
+import { supabase } from "@/utils/supabaseClient";
+import { Database } from "../types/supabase";
 
-type DbProfile = Database['public']['Tables']['profiles']['Row'];
-type DbProfileInsert = Database['public']['Tables']['profiles']['Insert'];
-type DbProfileUpdate = Database['public']['Tables']['profiles']['Update'];
+type DbProfile = Database["public"]["Tables"]["profiles"]["Row"];
+type DbProfileInsert = Database["public"]["Tables"]["profiles"]["Insert"];
+type DbProfileUpdate = Database["public"]["Tables"]["profiles"]["Update"];
 
 export class UserCollection {
-  private static TABLE_NAME = 'profiles';
+  private static TABLE_NAME = "profiles";
 
   static async findAll(): Promise<DbProfile[]> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .select('*')
-        .order('name')
+        .select("*")
+        .order("name")
         .returns<DbProfile[]>();
 
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar usuários:', error);
+      console.error("Erro ao buscar usuários:", error);
       throw error;
     }
   }
@@ -28,15 +28,15 @@ export class UserCollection {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .select('*')
-        .eq('id', id)
+        .select("*")
+        .eq("id", id)
         .single()
         .returns<DbProfile>();
 
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao buscar usuário:', error);
+      console.error("Erro ao buscar usuário:", error);
       throw error;
     }
   }
@@ -45,15 +45,15 @@ export class UserCollection {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .select('*')
-        .eq('email', email)
+        .select("*")
+        .eq("email", email)
         .single()
         .returns<DbProfile>();
 
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao buscar usuário por email:', error);
+      console.error("Erro ao buscar usuário por email:", error);
       throw error;
     }
   }
@@ -64,7 +64,7 @@ export class UserCollection {
         .from(this.TABLE_NAME)
         .insert({
           ...data,
-          active: true
+          active: true,
         })
         .select()
         .single()
@@ -73,7 +73,7 @@ export class UserCollection {
       if (error) throw error;
       return newUser;
     } catch (error) {
-      console.error('Erro ao criar usuário:', error);
+      console.error("Erro ao criar usuário:", error);
       throw error;
     }
   }
@@ -83,7 +83,7 @@ export class UserCollection {
       const { data: updatedUser, error } = await supabase
         .from(this.TABLE_NAME)
         .update(data)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single()
         .returns<DbProfile>();
@@ -91,7 +91,7 @@ export class UserCollection {
       if (error) throw error;
       return updatedUser;
     } catch (error) {
-      console.error('Erro ao atualizar usuário:', error);
+      console.error("Erro ao atualizar usuário:", error);
       throw error;
     }
   }
@@ -101,12 +101,12 @@ export class UserCollection {
       const { error } = await supabase
         .from(this.TABLE_NAME)
         .delete()
-        .eq('id', id);
+        .eq("id", id);
 
       if (error) throw error;
     } catch (error) {
-      console.error('Erro ao deletar usuário:', error);
+      console.error("Erro ao deletar usuário:", error);
       throw error;
     }
   }
-} 
+}

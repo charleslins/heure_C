@@ -1,5 +1,5 @@
-import { GlobalSettings } from '../models/GlobalSettings';
-import { supabase } from '../utils/supabaseClient';
+import { GlobalSettings } from "../models/GlobalSettings";
+import { supabase } from "../utils/supabaseClient";
 
 export class GlobalSettingsCollection {
   private settings: GlobalSettings;
@@ -11,12 +11,13 @@ export class GlobalSettingsCollection {
   async load(): Promise<void> {
     try {
       const { data, error } = await supabase
-        .from('global_settings')
-        .select('*')
+        .from("global_settings")
+        .select("*")
         .single();
 
       if (error) {
-        if (error.code === 'PGRST116') { // Não encontrado
+        if (error.code === "PGRST116") {
+          // Não encontrado
           // Criar configurações padrão se não existirem
           const defaultSettings = GlobalSettings.createDefault();
           await this.save(defaultSettings);
@@ -28,7 +29,7 @@ export class GlobalSettingsCollection {
         this.settings = new GlobalSettings(data);
       }
     } catch (error) {
-      console.error('Erro ao carregar configurações globais:', error);
+      console.error("Erro ao carregar configurações globais:", error);
       throw error;
     }
   }
@@ -36,14 +37,14 @@ export class GlobalSettingsCollection {
   async save(settings: GlobalSettings): Promise<void> {
     try {
       const { error } = await supabase
-        .from('global_settings')
+        .from("global_settings")
         .upsert(settings.toJSON());
 
       if (error) throw error;
-      
+
       this.settings = settings;
     } catch (error) {
-      console.error('Erro ao salvar configurações globais:', error);
+      console.error("Erro ao salvar configurações globais:", error);
       throw error;
     }
   }
@@ -63,26 +64,35 @@ export class GlobalSettingsCollection {
   }
 
   // Métodos de validação específicos
-  validateVacationRequest(startDate: Date, endDate: Date, userId: string): {
+  validateVacationRequest(
+    startDate: Date,
+    endDate: Date,
+    userId: string,
+  ): {
     isValid: boolean;
     message?: string;
   } {
     // Verificar aviso mínimo
     const today = new Date();
-    const daysUntilStart = Math.floor((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    const daysUntilStart = Math.floor(
+      (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+    );
     if (daysUntilStart < this.settings.vacationRules.minAdvanceNotice) {
       return {
         isValid: false,
-        message: `Solicitações devem ser feitas com pelo menos ${this.settings.vacationRules.minAdvanceNotice} dias de antecedência.`
+        message: `Solicitações devem ser feitas com pelo menos ${this.settings.vacationRules.minAdvanceNotice} dias de antecedência.`,
       };
     }
 
     // Verificar dias consecutivos
-    const vacationDays = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    const vacationDays =
+      Math.floor(
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+      ) + 1;
     if (vacationDays > this.settings.vacationRules.maxConsecutiveDays) {
       return {
         isValid: false,
-        message: `O período máximo de férias consecutivas é de ${this.settings.vacationRules.maxConsecutiveDays} dias.`
+        message: `O período máximo de férias consecutivas é de ${this.settings.vacationRules.maxConsecutiveDays} dias.`,
       };
     }
 
@@ -95,8 +105,13 @@ export class GlobalSettingsCollection {
     }
 
     const today = new Date();
-    const daysUntilStart = Math.floor((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    const vacationDays = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    const daysUntilStart = Math.floor(
+      (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+    );
+    const vacationDays =
+      Math.floor(
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+      ) + 1;
 
     return (
       daysUntilStart >= this.settings.vacationRules.minAdvanceNotice &&
@@ -110,8 +125,9 @@ export class GlobalSettingsCollection {
   }
 
   shouldConsiderRegionalHolidays(cantonId?: number): boolean {
-    return this.settings.isRegionalHolidaysEnabled() && (
-      !cantonId || cantonId === this.settings.regionalSettings.defaultCantonId
+    return (
+      this.settings.isRegionalHolidaysEnabled() &&
+      (!cantonId || cantonId === this.settings.regionalSettings.defaultCantonId)
     );
   }
 
@@ -122,4 +138,4 @@ export class GlobalSettingsCollection {
   getAdjustedVacationDays(): number {
     return this.settings.getAdjustedVacationDays();
   }
-} 
+}

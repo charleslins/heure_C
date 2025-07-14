@@ -3,8 +3,8 @@ export interface VacationRequest {
   userId: string;
   userName?: string;
   date: string;
-  status?: 'pending' | 'approved' | 'rejected';
+  status?: "pending" | "approved" | "rejected";
   comment?: string;
   adminComment?: string;
   createdAt: Date;
-} 
+}

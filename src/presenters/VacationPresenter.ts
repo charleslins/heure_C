@@ -1,7 +1,7 @@
-import { Vacation } from '../models/Vacation';
-import { VacationCollection } from '../collections/VacationCollection';
-import { VacationStatus } from '../types';
-import { useTranslation } from 'react-i18next';
+import { Vacation } from "../models/Vacation";
+import { VacationCollection } from "../collections/VacationCollection";
+import { VacationStatus } from "@/types";
+import { useTranslation } from "react-i18next";
 
 export class VacationPresenter {
   private collection: VacationCollection;
@@ -19,7 +19,7 @@ export class VacationPresenter {
   }
 
   async initialize(year: number, month: number): Promise<void> {
-    if (!this.userId) throw new Error('UserId não definido');
+    if (!this.userId) throw new Error("UserId não definido");
     await this.collection.loadForUser(this.userId, year, month);
   }
 
@@ -32,13 +32,13 @@ export class VacationPresenter {
     const stats = this.collection.getStatistics();
 
     return {
-      vacations: vacations.map(v => this.mapVacationToViewModel(v)),
+      vacations: vacations.map((v) => this.mapVacationToViewModel(v)),
       statistics: {
         total: stats.total,
         pending: stats.pending,
         approved: stats.approved,
-        rejected: stats.rejected
-      }
+        rejected: stats.rejected,
+      },
     };
   }
 
@@ -48,77 +48,87 @@ export class VacationPresenter {
       date: vacation.getFormattedDate(),
       status: this.t(`vacationStatuses.${vacation.status}`),
       statusClass: this.getStatusClass(vacation.status),
-      adminComment: vacation.adminComment || this.t('common.noComment'),
+      adminComment: vacation.adminComment || this.t("common.noComment"),
       isWeekend: vacation.isWeekend(),
       isPending: vacation.isPending(),
       isApproved: vacation.isApproved(),
       isRejected: vacation.isRejected(),
       canEdit: vacation.isPending(),
-      canDelete: !vacation.isPending()
+      canDelete: !vacation.isPending(),
     };
   }
 
   private getStatusClass(status: VacationStatus): string {
     const classes = {
-      [VacationStatus.PENDING_APPROVAL]: 'bg-yellow-100 text-yellow-800',
-      [VacationStatus.APPROVED]: 'bg-green-100 text-green-800',
-      [VacationStatus.REJECTED]: 'bg-red-100 text-red-800'
+      [VacationStatus.PENDING_APPROVAL]: "bg-yellow-100 text-yellow-800",
+      [VacationStatus.APPROVED]: "bg-green-100 text-green-800",
+      [VacationStatus.REJECTED]: "bg-red-100 text-red-800",
     };
-    return classes[status] || '';
+    return classes[status] || "";
   }
 
-  async requestVacation(date: string): Promise<{ success: boolean, message?: string }> {
+  async requestVacation(
+    date: string,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
-      if (!this.userId) throw new Error('UserId não definido');
-      
+      if (!this.userId) throw new Error("UserId não definido");
+
       const vacation = Vacation.createFromDate(this.userId, date);
       await this.collection.add(vacation);
-      
+
       return { success: true };
     } catch (error) {
-      console.error('Erro ao solicitar férias:', error);
+      console.error("Erro ao solicitar férias:", error);
       return {
         success: false,
-        message: this.t('vacationPage.requestError')
+        message: this.t("vacationPage.requestError"),
       };
     }
   }
 
-  async approveVacation(vacationId: string, comment?: string): Promise<{ success: boolean, message?: string }> {
+  async approveVacation(
+    vacationId: string,
+    comment?: string,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.approveVacation(vacationId, comment);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao aprovar férias:', error);
+      console.error("Erro ao aprovar férias:", error);
       return {
         success: false,
-        message: this.t('vacationPage.approvalError')
+        message: this.t("vacationPage.approvalError"),
       };
     }
   }
 
-  async rejectVacation(vacationId: string, comment?: string): Promise<{ success: boolean, message?: string }> {
+  async rejectVacation(
+    vacationId: string,
+    comment?: string,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.rejectVacation(vacationId, comment);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao rejeitar férias:', error);
+      console.error("Erro ao rejeitar férias:", error);
       return {
         success: false,
-        message: this.t('vacationPage.rejectionError')
+        message: this.t("vacationPage.rejectionError"),
       };
     }
   }
 
-  async cancelVacation(vacationId: string): Promise<{ success: boolean, message?: string }> {
+  async cancelVacation(
+    vacationId: string,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.remove(vacationId);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao cancelar férias:', error);
+      console.error("Erro ao cancelar férias:", error);
       return {
         success: false,
-        message: this.t('vacationPage.cancellationError')
+        message: this.t("vacationPage.cancellationError"),
       };
     }
   }
@@ -127,21 +137,25 @@ export class VacationPresenter {
     return {
       totalDays: this.collection.getDaysInMonth(year, month),
       workingDays: this.collection.getWorkingDaysInMonth(year, month),
-      pendingDays: this.collection.getByMonth(year, month).filter(v => v.isPending()).length,
-      approvedDays: this.collection.getByMonth(year, month).filter(v => v.isApproved()).length
+      pendingDays: this.collection
+        .getByMonth(year, month)
+        .filter((v) => v.isPending()).length,
+      approvedDays: this.collection
+        .getByMonth(year, month)
+        .filter((v) => v.isApproved()).length,
     };
   }
 
   getPendingRequestsViewModel() {
     const pending = this.collection.getPending();
-    return pending.map(v => ({
+    return pending.map((v) => ({
       ...this.mapVacationToViewModel(v),
-      userId: v.userId
+      userId: v.userId,
     }));
   }
 
   getVacationsByDateRange(startDate: Date, endDate: Date) {
     const vacations = this.collection.getByDateRange(startDate, endDate);
-    return vacations.map(v => this.mapVacationToViewModel(v));
+    return vacations.map((v) => this.mapVacationToViewModel(v));
   }
-} 
+}

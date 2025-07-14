@@ -21,18 +21,20 @@
 ## Durante o Desenvolvimento
 
 1. **Tipagem**
+
    ```typescript
    // Sempre usar tipos do Supabase
-   import { Database } from '../types/supabase';
-   type DbEntity = Database['public']['Tables']['table_name']['Row'];
+   import { Database } from "../types/supabase";
+   type DbEntity = Database["public"]["Tables"]["table_name"]["Row"];
    ```
 
 2. **Queries**
+
    ```typescript
    // Sempre usar retornos tipados
    const { data, error } = await supabase
-     .from('table')
-     .select('*')
+     .from("table")
+     .select("*")
      .returns<DbEntity[]>();
    ```
 
@@ -42,7 +44,7 @@
      // Operação
      if (error) throw error;
    } catch (err) {
-     console.error('Descrição clara:', err);
+     console.error("Descrição clara:", err);
      throw err;
    }
    ```
@@ -72,6 +74,7 @@
    - Sufixo `DTO` para objetos de transferência
 
 2. **Estrutura de Arquivos**
+
    ```
    src/
    ├── collections/    # Acesso ao banco
@@ -95,4 +98,4 @@
 2. **Ferramentas**
    - VS Code com extensões recomendadas
    - ESLint + Prettier
-   - TypeScript 
+   - TypeScript

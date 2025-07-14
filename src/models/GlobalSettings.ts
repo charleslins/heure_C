@@ -27,7 +27,7 @@ export class GlobalSettings {
   updatedAt: string;
 
   constructor(data: Partial<GlobalSettings>) {
-    this.id = data.id || 'global-settings';
+    this.id = data.id || "global-settings";
     this.tauxPercent = data.tauxPercent || 100;
     this.annualVacationDays = data.annualVacationDays || 20;
     this.workTimeDefaults = data.workTimeDefaults;
@@ -35,12 +35,13 @@ export class GlobalSettings {
       minAdvanceNotice: data.vacationRules?.minAdvanceNotice || 14,
       maxConsecutiveDays: data.vacationRules?.maxConsecutiveDays || 30,
       autoApprovalEnabled: data.vacationRules?.autoApprovalEnabled || false,
-      maxConcurrentUsers: data.vacationRules?.maxConcurrentUsers
+      maxConcurrentUsers: data.vacationRules?.maxConcurrentUsers,
     };
     this.regionalSettings = {
       defaultCantonId: data.regionalSettings?.defaultCantonId,
       useRegionalHolidays: data.regionalSettings?.useRegionalHolidays || true,
-      allowMunicipalityHolidays: data.regionalSettings?.allowMunicipalityHolidays || false
+      allowMunicipalityHolidays:
+        data.regionalSettings?.allowMunicipalityHolidays || false,
     };
     this.createdAt = data.createdAt || new Date().toISOString();
     this.updatedAt = data.updatedAt || new Date().toISOString();
@@ -55,7 +56,7 @@ export class GlobalSettings {
       vacationRules: this.vacationRules,
       regionalSettings: this.regionalSettings,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
     };
   }
 
@@ -64,16 +65,22 @@ export class GlobalSettings {
       this.tauxPercent = this.validateTauxPercent(data.tauxPercent);
     }
     if (data.annualVacationDays !== undefined) {
-      this.annualVacationDays = this.validateAnnualVacationDays(data.annualVacationDays);
+      this.annualVacationDays = this.validateAnnualVacationDays(
+        data.annualVacationDays,
+      );
     }
     if (data.workTimeDefaults) {
-      this.workTimeDefaults = this.validateWorkTimeDefaults(data.workTimeDefaults);
+      this.workTimeDefaults = this.validateWorkTimeDefaults(
+        data.workTimeDefaults,
+      );
     }
     if (data.vacationRules) {
       this.vacationRules = this.validateVacationRules(data.vacationRules);
     }
     if (data.regionalSettings) {
-      this.regionalSettings = this.validateRegionalSettings(data.regionalSettings);
+      this.regionalSettings = this.validateRegionalSettings(
+        data.regionalSettings,
+      );
     }
     this.updatedAt = new Date().toISOString();
   }
@@ -90,7 +97,9 @@ export class GlobalSettings {
     return value;
   }
 
-  private validateWorkTimeDefaults(defaults: WorkTimeDefaults): WorkTimeDefaults {
+  private validateWorkTimeDefaults(
+    defaults: WorkTimeDefaults,
+  ): WorkTimeDefaults {
     if (!defaults.overallStartTime && !defaults.overallEndTime) {
       return undefined;
     }
@@ -102,22 +111,28 @@ export class GlobalSettings {
       minAdvanceNotice: Math.max(0, rules.minAdvanceNotice),
       maxConsecutiveDays: Math.max(1, rules.maxConsecutiveDays),
       autoApprovalEnabled: rules.autoApprovalEnabled,
-      maxConcurrentUsers: rules.maxConcurrentUsers !== undefined 
-        ? Math.max(1, rules.maxConcurrentUsers) 
-        : undefined
+      maxConcurrentUsers:
+        rules.maxConcurrentUsers !== undefined
+          ? Math.max(1, rules.maxConcurrentUsers)
+          : undefined,
     };
   }
 
-  private validateRegionalSettings(settings: RegionalSettings): RegionalSettings {
+  private validateRegionalSettings(
+    settings: RegionalSettings,
+  ): RegionalSettings {
     return {
       defaultCantonId: settings.defaultCantonId,
       useRegionalHolidays: settings.useRegionalHolidays,
-      allowMunicipalityHolidays: settings.allowMunicipalityHolidays
+      allowMunicipalityHolidays: settings.allowMunicipalityHolidays,
     };
   }
 
   isWorkTimeConfigured(): boolean {
-    return !!(this.workTimeDefaults?.overallStartTime && this.workTimeDefaults?.overallEndTime);
+    return !!(
+      this.workTimeDefaults?.overallStartTime &&
+      this.workTimeDefaults?.overallEndTime
+    );
   }
 
   isAutoApprovalEnabled(): boolean {
@@ -135,12 +150,12 @@ export class GlobalSettings {
   getDefaultWorkHours(): number {
     if (!this.isWorkTimeConfigured()) return 8; // Padrão de 8 horas
 
-    const start = this.workTimeDefaults.overallStartTime.split(':').map(Number);
-    const end = this.workTimeDefaults.overallEndTime.split(':').map(Number);
-    
+    const start = this.workTimeDefaults.overallStartTime.split(":").map(Number);
+    const end = this.workTimeDefaults.overallEndTime.split(":").map(Number);
+
     const startMinutes = start[0] * 60 + start[1];
     const endMinutes = end[0] * 60 + end[1];
-    
+
     return (endMinutes - startMinutes) / 60;
   }
 
@@ -153,18 +168,18 @@ export class GlobalSettings {
       tauxPercent: 100,
       annualVacationDays: 20,
       workTimeDefaults: {
-        overallStartTime: '08:00',
-        overallEndTime: '17:00'
+        overallStartTime: "08:00",
+        overallEndTime: "17:00",
       },
       vacationRules: {
         minAdvanceNotice: 14,
         maxConsecutiveDays: 30,
-        autoApprovalEnabled: false
+        autoApprovalEnabled: false,
       },
       regionalSettings: {
         useRegionalHolidays: true,
-        allowMunicipalityHolidays: false
-      }
+        allowMunicipalityHolidays: false,
+      },
     });
   }
-} 
+}

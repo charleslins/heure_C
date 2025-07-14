@@ -1,10 +1,10 @@
-import { useState, useEffect, useMemo } from 'react';
-import { DailyLogCollection } from '../collections/DailyLogCollection';
-import { DailyLogPresenter } from '../presenters/DailyLogPresenter';
-import { useNotificationContext } from '../contexts/NotificationContext';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from './useAuth';
-import { EntryType, TimeSegment } from '../models/DailyLog';
+import { useState, useEffect, useMemo } from "react";
+import { DailyLogCollection } from "../collections/DailyLogCollection";
+import { DailyLogPresenter } from "../presenters/DailyLogPresenter";
+import { useNotificationContext } from "../contexts/NotificationContext";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "./useAuth";
+import { EntryType, TimeSegment } from "../models/DailyLog";
 
 export function useDailyLogPresenter(year?: number, month?: number) {
   const { t } = useTranslation();
@@ -15,10 +15,14 @@ export function useDailyLogPresenter(year?: number, month?: number) {
 
   // Criar instâncias das classes MCP
   const collection = useMemo(() => new DailyLogCollection(), []);
-  const presenter = useMemo(() => new DailyLogPresenter(collection), [collection]);
+  const presenter = useMemo(
+    () => new DailyLogPresenter(collection),
+    [collection],
+  );
 
   // Estado para armazenar os dados processados
-  const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getDailyLogViewModel>>();
+  const [viewModel, setViewModel] =
+    useState<ReturnType<typeof presenter.getDailyLogViewModel>>();
 
   // Configurar usuário e data
   useEffect(() => {
@@ -41,8 +45,8 @@ export function useDailyLogPresenter(year?: number, month?: number) {
         await presenter.initialize();
         setViewModel(presenter.getDailyLogViewModel());
       } catch (err) {
-        setError(t('dailyLog.loadingError'));
-        addNotification(t('dailyLog.loadingError'), 'error');
+        setError(t("dailyLog.loadingError"));
+        addNotification(t("dailyLog.loadingError"), "error");
       } finally {
         setIsLoading(false);
       }
@@ -54,26 +58,29 @@ export function useDailyLogPresenter(year?: number, month?: number) {
   const handleCreateLog = async (date: string, type?: EntryType) => {
     const result = await presenter.createLog(date, type);
     if (result.success) {
-      addNotification(t('dailyLog.createSuccess'), 'success');
+      addNotification(t("dailyLog.createSuccess"), "success");
       setViewModel(presenter.getDailyLogViewModel());
     } else {
-      addNotification(result.message || t('dailyLog.createError'), 'error');
+      addNotification(result.message || t("dailyLog.createError"), "error");
     }
     return result;
   };
 
-  const handleUpdateLog = async (logId: string, data: {
-    type?: EntryType;
-    morning?: TimeSegment;
-    afternoon?: TimeSegment;
-    comment?: string;
-  }) => {
+  const handleUpdateLog = async (
+    logId: string,
+    data: {
+      type?: EntryType;
+      morning?: TimeSegment;
+      afternoon?: TimeSegment;
+      comment?: string;
+    },
+  ) => {
     const result = await presenter.updateLog(logId, data);
     if (result.success) {
-      addNotification(t('dailyLog.updateSuccess'), 'success');
+      addNotification(t("dailyLog.updateSuccess"), "success");
       setViewModel(presenter.getDailyLogViewModel());
     } else {
-      addNotification(result.message || t('dailyLog.updateError'), 'error');
+      addNotification(result.message || t("dailyLog.updateError"), "error");
     }
     return result;
   };
@@ -81,27 +88,29 @@ export function useDailyLogPresenter(year?: number, month?: number) {
   const handleRemoveLog = async (logId: string) => {
     const result = await presenter.removeLog(logId);
     if (result.success) {
-      addNotification(t('dailyLog.removeSuccess'), 'success');
+      addNotification(t("dailyLog.removeSuccess"), "success");
       setViewModel(presenter.getDailyLogViewModel());
     } else {
-      addNotification(result.message || t('dailyLog.removeError'), 'error');
+      addNotification(result.message || t("dailyLog.removeError"), "error");
     }
     return result;
   };
 
-  const handleBulkUpdate = async (updates: Array<{
-    date: string;
-    type?: EntryType;
-    morning?: TimeSegment;
-    afternoon?: TimeSegment;
-    comment?: string;
-  }>) => {
+  const handleBulkUpdate = async (
+    updates: Array<{
+      date: string;
+      type?: EntryType;
+      morning?: TimeSegment;
+      afternoon?: TimeSegment;
+      comment?: string;
+    }>,
+  ) => {
     const result = await presenter.bulkUpdateLogs(updates);
     if (result.success) {
-      addNotification(t('dailyLog.bulkUpdateSuccess'), 'success');
+      addNotification(t("dailyLog.bulkUpdateSuccess"), "success");
       setViewModel(presenter.getDailyLogViewModel());
     } else {
-      addNotification(result.message || t('dailyLog.bulkUpdateError'), 'error');
+      addNotification(result.message || t("dailyLog.bulkUpdateError"), "error");
     }
     return result;
   };
@@ -115,6 +124,6 @@ export function useDailyLogPresenter(year?: number, month?: number) {
     removeLog: handleRemoveLog,
     bulkUpdate: handleBulkUpdate,
     getLogsByType: (type: EntryType) => presenter.getLogsByType(type),
-    getIncompleteLogs: () => presenter.getIncompleteLogsViewModel()
+    getIncompleteLogs: () => presenter.getIncompleteLogsViewModel(),
   };
-} 
+}

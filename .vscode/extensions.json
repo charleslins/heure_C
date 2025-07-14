@@ -1,37 +1,37 @@
 {
   "recommendations": [
     // Git
-    "eamodio.gitlens",                    // GitLens - Visualização avançada do Git
-    "mhutchie.git-graph",                 // Git Graph - Visualização do histórico do Git
-    "donjayamanne.githistory",            // Git History - Histórico de arquivos
-    "codezombiech.gitignore",             // .gitignore - Suporte para arquivos .gitignore
-    
+    "eamodio.gitlens", // GitLens - Visualização avançada do Git
+    "mhutchie.git-graph", // Git Graph - Visualização do histórico do Git
+    "donjayamanne.githistory", // Git History - Histórico de arquivos
+    "codezombiech.gitignore", // .gitignore - Suporte para arquivos .gitignore
+
     // TypeScript/JavaScript
-    "dbaeumer.vscode-eslint",             // ESLint
-    "esbenp.prettier-vscode",             // Prettier
-    "ms-vscode.vscode-typescript-next",   // TypeScript Nightly
+    "dbaeumer.vscode-eslint", // ESLint
+    "esbenp.prettier-vscode", // Prettier
+    "ms-vscode.vscode-typescript-next", // TypeScript Nightly
     "streetsidesoftware.code-spell-check", // Code Spell Checker
-    
+
     // React
-    "dsznajder.es7-react-js-snippets",    // Snippets para React
-    "formulahendry.auto-rename-tag",      // Auto Rename Tag
-    "bradlc.vscode-tailwindcss",          // Tailwind CSS IntelliSense
-    
+    "dsznajder.es7-react-js-snippets", // Snippets para React
+    "formulahendry.auto-rename-tag", // Auto Rename Tag
+    "bradlc.vscode-tailwindcss", // Tailwind CSS IntelliSense
+
     // Supabase
-    "supabase.supabase-vscode",           // Supabase
-    
+    "supabase.supabase-vscode", // Supabase
+
     // Produtividade
     "christian-kohler.path-intellisense", // Path Intellisense
     "visualstudioexptteam.vscodeintellicode", // IntelliCode
-    "yzhang.markdown-all-in-one",         // Markdown All in One
-    "wayou.vscode-todo-highlight",        // TODO Highlight
-    "gruntfuggly.todo-tree",             // Todo Tree
-    
+    "yzhang.markdown-all-in-one", // Markdown All in One
+    "wayou.vscode-todo-highlight", // TODO Highlight
+    "gruntfuggly.todo-tree", // Todo Tree
+
     // Temas e Ícones
-    "pkief.material-icon-theme",          // Material Icon Theme
-    "zhuangtongfa.material-theme",        // One Dark Pro
-    
+    "pkief.material-icon-theme", // Material Icon Theme
+    "zhuangtongfa.material-theme", // One Dark Pro
+
     // Cursor
-    "cursor.cursor-vscode"                // Cursor IDE Integration
+    "cursor.cursor-vscode" // Cursor IDE Integration
   ]
-} 
+}

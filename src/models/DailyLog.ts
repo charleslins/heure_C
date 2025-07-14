@@ -1,4 +1,9 @@
-export type EntryType = 'Regular' | 'Vacance' | 'Ferié' | 'Récupération' | 'Maladie';
+export type EntryType =
+  | "Regular"
+  | "Vacance"
+  | "Ferié"
+  | "Récupération"
+  | "Maladie";
 
 export interface TimeSegment {
   start: string;
@@ -18,10 +23,11 @@ export class DailyLog {
   updatedAt: string;
 
   constructor(data: Partial<DailyLog>) {
-    this.id = data.id || `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    this.userId = data.userId || '';
-    this.date = data.date || '';
-    this.type = data.type || 'Regular';
+    this.id =
+      data.id || `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    this.userId = data.userId || "";
+    this.date = data.date || "";
+    this.type = data.type || "Regular";
     this.morning = data.morning;
     this.afternoon = data.afternoon;
     this.totalHours = data.totalHours || 0;
@@ -41,15 +47,15 @@ export class DailyLog {
       totalHours: this.totalHours,
       comment: this.comment,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
     };
   }
 
   private calculateSegmentHours(segment?: TimeSegment): number {
     if (!segment || !segment.start || !segment.end) return 0;
 
-    const startParts = segment.start.split(':').map(Number);
-    const endParts = segment.end.split(':').map(Number);
+    const startParts = segment.start.split(":").map(Number);
+    const endParts = segment.end.split(":").map(Number);
 
     const startMinutes = startParts[0] * 60 + startParts[1];
     const endMinutes = endParts[0] * 60 + endParts[1];
@@ -64,12 +70,12 @@ export class DailyLog {
     return this.totalHours;
   }
 
-  getFormattedDate(locale: string = 'pt-BR'): string {
+  getFormattedDate(locale: string = "pt-BR"): string {
     return new Date(this.date).toLocaleDateString(locale);
   }
 
   getFormattedTime(segment?: TimeSegment): string {
-    if (!segment) return '--:--';
+    if (!segment) return "--:--";
     return `${segment.start} - ${segment.end}`;
   }
 
@@ -81,7 +87,7 @@ export class DailyLog {
   }
 
   isWorkDay(): boolean {
-    return this.type === 'Regular' || this.type === 'Récupération';
+    return this.type === "Regular" || this.type === "Récupération";
   }
 
   update(data: Partial<DailyLog>): void {
@@ -116,25 +122,33 @@ export class DailyLog {
     return new DailyLog({
       userId,
       date,
-      type: 'Regular'
+      type: "Regular",
     });
   }
 
-  static createSickLeave(userId: string, date: string, comment?: string): DailyLog {
+  static createSickLeave(
+    userId: string,
+    date: string,
+    comment?: string,
+  ): DailyLog {
     return new DailyLog({
       userId,
       date,
-      type: 'Maladie',
-      comment
+      type: "Maladie",
+      comment,
     });
   }
 
-  static createRecovery(userId: string, date: string, comment?: string): DailyLog {
+  static createRecovery(
+    userId: string,
+    date: string,
+    comment?: string,
+  ): DailyLog {
     return new DailyLog({
       userId,
       date,
-      type: 'Récupération',
-      comment
+      type: "Récupération",
+      comment,
     });
   }
-} 
+}

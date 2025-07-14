@@ -57,7 +57,7 @@ Vou propor as correções necessárias:
         await updateSpecificUserVacations(request.userId, request.year, request.month, updatedVacations);
 -       addNotification(t('adminDashboardPage.requestProcessedAlert', { userName: request.userName, date: formatDateToYYYYMMDD(new Date(request.date + 'T00:00:00')), status: t(`vacationStatuses.${newStatus}`), commentText: request.comment || t('adminDashboardPage.noComment') }), 'success');
 +       addNotification(t('adminDashboard.requestProcessedAlert', { userName: request.userName, date: formatDateToYYYYMMDD(new Date(request.date + 'T00:00:00')), status: t(`vacationStatuses.${newStatus}`), commentText: request.comment || t('adminDashboard.noComment') }), 'success');
-        fetchPendingRequests(); 
+        fetchPendingRequests();
       } catch (error: unknown) {
 ```
 
@@ -80,7 +80,7 @@ Vou propor as correções necessárias:
 ```
 
 ```diff
-      const result = await saveGlobalUserSettings(settingsToSave); 
+      const result = await saveGlobalUserSettings(settingsToSave);
       if (result.success) {
 -         addNotification(t('adminDashboardPage.globalSettingsSavedAlert'), 'success');
 +         addNotification(t('adminDashboard.globalSettingsSavedAlert'), 'success');
@@ -99,7 +99,7 @@ Vou propor as correções necessárias:
           userName: localAllUsers.find(u => u.id === targetUserId)?.name || targetUserId,
           role: t(`roles.${newRole}`)
         }), 'success');
-        fetchAllUsers(); 
+        fetchAllUsers();
       } else {
 -       addNotification(t('adminDashboardPage.userRoleUpdatedError') + (result.message ? `: ${result.message}` : ''), 'error');
 +       addNotification(t('adminDashboard.userRoleUpdatedError') + (result.message ? `: ${result.message}` : ''), 'error');
@@ -122,7 +122,7 @@ Vou propor as correções necessárias:
 -         <p className="text-slate-600 print:text-sm">{t('adminDashboardPage.welcomeMessage', { name: currentUser.name })}</p>
 +         <p className="text-slate-600 print:text-sm">{t('adminDashboard.welcomeMessage', { name: currentUser.name })}</p>
         </SectionCard>
-  
+
         <SectionCard
 -         title={t('adminDashboardPage.globalConfigTitle')}
 +         title={t('adminDashboard.globalConfigTitle')}
@@ -183,7 +183,7 @@ Vou propor as correções necessárias:
 
 ```diff
                   >
-                     <Save className="w-5 h-5" /> 
+                     <Save className="w-5 h-5" />
 -                    <span>{isSavingGlobalSettings ? t('adminDashboardPage.savingGlobalSettingsButton', 'Saving...') : t('adminDashboardPage.saveGlobalSettingsButton')}</span>
 +                    <span>{isSavingGlobalSettings ? t('adminDashboard.savingGlobalSettingsButton') : t('adminDashboard.saveGlobalSettingsButton')}</span>
                   </button>
@@ -191,7 +191,7 @@ Vou propor as correções necessárias:
 ```
 
 ```diff
-  
+
         <SectionCard
 -         title={t('adminDashboardPage.userRoleManagementTitle')}
 +         title={t('adminDashboard.userRoleManagementTitle')}
@@ -229,7 +229,7 @@ Vou propor as correções necessárias:
 ```
 
 ```diff
-  
+
         <SectionCard
 -         title={t('adminDashboardPage.userVacationSummaryTitle')}
 +         title={t('adminDashboard.userVacationSummaryTitle')}
@@ -260,7 +260,7 @@ Vou propor as correções necessárias:
 ```
 
 ```diff
-  
+
         <SectionCard
 -         title={t('adminDashboardPage.pendingRequestsTitle')}
 +         title={t('adminDashboard.pendingRequestsTitle')}
@@ -294,7 +294,7 @@ O componente `PendingRequestsList` já está usando as chaves de tradução corr
 ---
 
 ```diff
-  
+
     return (
 -     <div className="space-y-8 print:space-y-4">
 +     <div className="space-y-8 print:space-y-4 pb-8">
@@ -464,7 +464,7 @@ Untracked files:
         supabase_swiss_regions.sql
 
 no changes added to commit (use "git add" and/or "git commit -a")
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
@@ -503,7 +503,7 @@ git commit -m "fix: Corrige layout e traduções da página de administração
 <tradução para mensagem de erro de aprovação em lote"
 [main faf3fd3] fix: Corrige layout e traduções da página de administração
  3 files changed, 126 insertions(+), 105 deletions(-)
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
@@ -511,7 +511,7 @@ chlins-mbp in heure_C on  main [⇡✘!?]
 
 Pronto! O commit foi realizado com sucesso. Aqui está um resumo do que foi incluído no commit:
 
-1. `AdminDashboardPage.tsx`: 
+1. `AdminDashboardPage.tsx`:
    - Ajustes no espaçamento entre cards
    - Padronização do espaçamento interno
    - Correção das chaves de tradução
@@ -529,7 +529,7 @@ O commit foi criado com uma mensagem clara e descritiva em português, seguindo 
 _**User**_
 
 ok.
-agora, vamos atualizar o arquivo @README.md  e em seguida, criar um roadmap com tudo que temos feito e o ainda falta fazer para ter um sistema profissional.
+agora, vamos atualizar o arquivo @README.md e em seguida, criar um roadmap com tudo que temos feito e o ainda falta fazer para ter um sistema profissional.
 
 ---
 
@@ -540,16 +540,16 @@ Vou ajudar você a atualizar o README.md e criar um roadmap detalhado. Primeiro,
 ---
 
 ```diff
-  
+
 - # Work Hours Tracker
-- 
+-
 - A web application designed to help users track their daily and monthly work hours, manage different types of work entries (like vacation, sick leave), and calculate summaries. It also includes features for vacation planning and an administration panel for managing users and global settings.
 + # Work Hours Tracker (Gestor de Horas)
-+ 
++
 + Uma aplicação web projetada para ajudar usuários a rastrear suas horas de trabalho diárias e mensais, gerenciar diferentes tipos de entradas (como férias, atestados) e calcular resumos. Também inclui recursos para planejamento de férias e um painel administrativo para gerenciar usuários e configurações globais.
-  
+
 - ## Features
-- 
+-
 - *   **User Authentication:** Secure login and registration powered by Supabase Auth.
 - *   **Dashboard:**
 -     *   **Daily Log:** Input morning and afternoon work segments with start/end times and entry types (Regular, Vacation, Holiday, Recovery, Sick Leave).
@@ -576,9 +576,9 @@ Vou ajudar você a atualizar o README.md e criar um roadmap detalhado. Primeiro,
 - *   **Responsive Design:** Adapts to various screen sizes.
 - *   **Notification System:** Provides feedback for user actions (success, error, info, warning).
 - *   **Error Handling:** Includes a global error boundary for better user experience on unexpected errors.
-- 
+-
 - ## Tech Stack
-- 
+-
 - *   **Frontend:**
 -     *   React 19 (using `esm.sh` for CDN-like imports in `index.html`)
 -     *   TypeScript
@@ -597,15 +597,15 @@ Vou ajudar você a atualizar o README.md e criar um roadmap detalhado. Primeiro,
 -     *   Vitest/Jest for unit and integration tests.
 -     *   React Testing Library for component testing.
 -     *   Cypress/Playwright for End-to-End (E2E) tests.
-- 
+-
 - ## Project Structure
 + ## Funcionalidades
-+ 
++
 + ### Autenticação e Perfil
 + * **Autenticação de Usuário:** Login e registro seguros usando Supabase Auth
 + * **Seleção de Idioma:** Suporte completo para Português, Inglês, Francês e Alemão
 + * **Perfil de Usuário:** Configurações personalizadas por usuário (nome, email, preferências)
-+ 
++
 + ### Dashboard Principal
 + * **Registro Diário:**
 +   * Input de períodos de trabalho (manhã/tarde) com horários de início/fim
@@ -621,7 +621,7 @@ Vou ajudar você a atualizar o README.md e criar um roadmap detalhado. Primeiro,
 +   * Horas planejadas mensais
 +   * Horas realizadas + ausências
 +   * Saldo (horas extra/a repor)
-+ 
++
 + ### Gestão de Férias
 + * **Calendário Interativo:**
 +   * Seleção visual de dias de férias
@@ -635,7 +635,7 @@ Vou ajudar você a atualizar o README.md e criar um roadmap detalhado. Primeiro,
 +   * Formulário de pedido de férias imprimível
 +   * Sistema de aprovação/rejeição
 +   * Comentários administrativos
-+ 
++
 + ### Painel Administrativo
 + * **Configurações Globais:**
 +   * Taxa de ocupação padrão
@@ -656,145 +656,163 @@ Vou ajudar você a atualizar o README.md e criar um roadmap detalhado. Primeiro,
 +   * Cadastro de novos funcionários
 +   * Atribuição de regiões/cantões
 +   * Configurações específicas por funcionário
-+ 
++
 + ### Interface e Usabilidade
 + * **Design Responsivo:** Adaptação para diferentes tamanhos de tela
 + * **Temas Visuais:** Layout moderno com cards bem organizados
 + * **Sistema de Notificações:** Feedback visual para ações do usuário
 + * **Tratamento de Erros:** Sistema robusto de tratamento de exceções
-+ 
++
 + ## Stack Tecnológica
-+ 
++
 + ### Frontend
 + * React 19 (via `esm.sh`)
 + * TypeScript
 + * Tailwind CSS
 + * Vite (desenvolvimento e build)
-+ 
++
 + ### Backend & Database
 + * Supabase:
 +   * Autenticação
 +   * PostgreSQL Database
 +   * Políticas de Segurança RLS
-+ 
++
 + ### Internacionalização
 + * i18next
 + * react-i18next
 + * i18next-browser-languagedetector
-+ 
++
 + ### Qualidade de Código
 + * ESLint
 + * Prettier
 + * TypeScript strict mode
-+ 
++
 + ## Estrutura do Projeto
-  
-  ```
-  /
-- ├── public/                     # Static assets (favicon, etc.)
-+ ├── public/                     # Ativos estáticos
+
+```
+
+/
+
+- ├── public/ # Static assets (favicon, etc.)
+
+* ├── public/ # Ativos estáticos
   ├── src/
-- │   ├── App.tsx                 # Main application component, routing logic
-- │   ├── AdminDashboardPage.tsx  # Main page for admin functionalities
-- │   ├── index.tsx               # React entry point
-- │   ├── i18n.ts                 # i18next configuration and translations
-- │   ├── types.ts                # TypeScript type definitions
-- │   ├── constants.ts            # Application-wide constants
-- │   ├── components/             # Reusable UI components
-- │   │   ├── AdminOverviewDashboard.tsx # Basic overview/chart placeholder for admin
-- │   │   ├── AppHeader.tsx
-- │   │   ├── AccessDeniedMessage.tsx
-- │   │   ├── CompactContractHoursInput.tsx
-- │   │   ├── ContractAndMonthlySummaryCard.tsx
-- │   │   ├── DailyLog.tsx
-- │   │   ├── DailyLogRow.tsx
-- │   │   ├── ErrorBoundary.tsx
-- │   │   ├── HolidayManagementPage.tsx
-- │   │   ├── InputWithIcon.tsx
-- │   │   ├── LanguageSwitcher.tsx
-- │   │   ├── LoadingScreen.tsx
-- │   │   ├── LoginPage.tsx
-- │   │   ├── MainAppLayout.tsx
-- │   │   ├── MonthYearSelector.tsx
-- │   │   ├── NotificationDisplay.tsx
-- │   │   ├── SectionCard.tsx
-- │   │   ├── TimeInput.tsx
-- │   │   ├── TypeSelector.tsx
-- │   │   ├── UserProfilePage.tsx
-- │   │   ├── VacationConfigPage.tsx
-- │   │   ├── icons.tsx             # SVG Icon components
-- │   │   └── vacation_config/      # Components specific to vacation configuration
-- │   │       ├── CalendarGrid.tsx
-- │   │       ├── MonthlyVacationList.tsx
-- │   │       └── VacationSummaryPanel.tsx
-- │   ├── contexts/               # React Context API for state management
-- │   │   ├── AuthContext.tsx
-- │   │   ├── CurrentUserDataContext.tsx
-- │   │   ├── GlobalDataContext.tsx
-- │   │   └── NotificationContext.tsx
-- │   ├── hooks/                  # Custom React Hooks
-- │   │   ├── useAuth.ts
-- │   │   ├── useCurrentUserData.ts
-- │   │   ├── useGlobalData.ts
-- │   │   └── useVacationCalculations.ts
-- │   ├── locales/                # Translation files
-- │   │   ├── en/translation.json
-- │   │   ├── fr/translation.json
-- │   │   ├── de/translation.json
-- │   │   └── pt/translation.json
-- │   ├── utils/                  # Utility functions
-- │   │   ├── localStorage.ts       (Partially used, mostly superseded by Supabase)
-- │   │   ├── printVacationRequest.ts
-- │   │   ├── stringUtils.ts
-- │   │   ├── supabaseClient.ts     # Supabase client initialization
-- │   │   ├── supabaseCrud.ts       # Supabase CRUD operations
-- │   │   └── timeUtils.ts
-- │   └── index.css               # Base Tailwind CSS styles
-- ├── index.html                  # Main HTML file, loads React via import map
-- ├── vite.config.ts              # Vite configuration
-- ├── tsconfig.json               # TypeScript project configuration
-- ├── tsconfig.node.json          # TypeScript Node-specific configuration
-- ├── package.json                # Project dependencies and scripts
-- ├── metadata.json               # Application metadata for the web container
-- ├── SCHEMA.sql                  # SQL schema for Supabase tables
-- └── README.md                   # This file
-+ │   ├── components/            # Componentes React
-+ │   │   ├── AdminDashboard/    # Componentes do painel admin
-+ │   │   ├── common/           # Componentes compartilhados
-+ │   │   └── vacation_config/  # Componentes de configuração de férias
-+ │   ├── contexts/             # Contextos React
-+ │   ├── hooks/                # Hooks personalizados
-+ │   ├── locales/              # Arquivos de tradução
-+ │   └── utils/                # Funções utilitárias
-+ ├── SCHEMA.sql                # Schema do banco de dados
-+ └── [Arquivos de configuração]
+
+- │ ├── App.tsx # Main application component, routing logic
+- │ ├── AdminDashboardPage.tsx # Main page for admin functionalities
+- │ ├── index.tsx # React entry point
+- │ ├── i18n.ts # i18next configuration and translations
+- │ ├── types.ts # TypeScript type definitions
+- │ ├── constants.ts # Application-wide constants
+- │ ├── components/ # Reusable UI components
+- │ │ ├── AdminOverviewDashboard.tsx # Basic overview/chart placeholder for admin
+- │ │ ├── AppHeader.tsx
+- │ │ ├── AccessDeniedMessage.tsx
+- │ │ ├── CompactContractHoursInput.tsx
+- │ │ ├── ContractAndMonthlySummaryCard.tsx
+- │ │ ├── DailyLog.tsx
+- │ │ ├── DailyLogRow.tsx
+- │ │ ├── ErrorBoundary.tsx
+- │ │ ├── HolidayManagementPage.tsx
+- │ │ ├── InputWithIcon.tsx
+- │ │ ├── LanguageSwitcher.tsx
+- │ │ ├── LoadingScreen.tsx
+- │ │ ├── LoginPage.tsx
+- │ │ ├── MainAppLayout.tsx
+- │ │ ├── MonthYearSelector.tsx
+- │ │ ├── NotificationDisplay.tsx
+- │ │ ├── SectionCard.tsx
+- │ │ ├── TimeInput.tsx
+- │ │ ├── TypeSelector.tsx
+- │ │ ├── UserProfilePage.tsx
+- │ │ ├── VacationConfigPage.tsx
+- │ │ ├── icons.tsx # SVG Icon components
+- │ │ └── vacation_config/ # Components specific to vacation configuration
+- │ │ ├── CalendarGrid.tsx
+- │ │ ├── MonthlyVacationList.tsx
+- │ │ └── VacationSummaryPanel.tsx
+- │ ├── contexts/ # React Context API for state management
+- │ │ ├── AuthContext.tsx
+- │ │ ├── CurrentUserDataContext.tsx
+- │ │ ├── GlobalDataContext.tsx
+- │ │ └── NotificationContext.tsx
+- │ ├── hooks/ # Custom React Hooks
+- │ │ ├── useAuth.ts
+- │ │ ├── useCurrentUserData.ts
+- │ │ ├── useGlobalData.ts
+- │ │ └── useVacationCalculations.ts
+- │ ├── locales/ # Translation files
+- │ │ ├── en/translation.json
+- │ │ ├── fr/translation.json
+- │ │ ├── de/translation.json
+- │ │ └── pt/translation.json
+- │ ├── utils/ # Utility functions
+- │ │ ├── localStorage.ts (Partially used, mostly superseded by Supabase)
+- │ │ ├── printVacationRequest.ts
+- │ │ ├── stringUtils.ts
+- │ │ ├── supabaseClient.ts # Supabase client initialization
+- │ │ ├── supabaseCrud.ts # Supabase CRUD operations
+- │ │ └── timeUtils.ts
+- │ └── index.css # Base Tailwind CSS styles
+- ├── index.html # Main HTML file, loads React via import map
+- ├── vite.config.ts # Vite configuration
+- ├── tsconfig.json # TypeScript project configuration
+- ├── tsconfig.node.json # TypeScript Node-specific configuration
+- ├── package.json # Project dependencies and scripts
+- ├── metadata.json # Application metadata for the web container
+- ├── SCHEMA.sql # SQL schema for Supabase tables
+- └── README.md # This file
+
+* │ ├── components/ # Componentes React
+* │ │ ├── AdminDashboard/ # Componentes do painel admin
+* │ │ ├── common/ # Componentes compartilhados
+* │ │ └── vacation_config/ # Componentes de configuração de férias
+* │ ├── contexts/ # Contextos React
+* │ ├── hooks/ # Hooks personalizados
+* │ ├── locales/ # Arquivos de tradução
+* │ └── utils/ # Funções utilitárias
+* ├── SCHEMA.sql # Schema do banco de dados
+* └── [Arquivos de configuração]
   ```
-  
+
+  ```
+
 - ## Getting Started
-+ ## Começando
-  
+
+* ## Começando
+
 - 1.  **Clone the repository:**
 -     ```bash
 -     git clone <repository-url>
 -     cd your-project-directory
 -     ```
-+ 1. **Clone o repositório:**
-+    ```bash
-+    git clone <repository-url>
-+    cd your-project-directory
-+    ```
-  
+
+* 1. **Clone o repositório:**
+* ```bash
+
+  ```
+* git clone <repository-url>
+* cd your-project-directory
+* ```
+
+  ```
+
 - 2.  **Install dependencies:**
 -     ```bash
 -     npm install
 -     # or
 -     yarn install
 -     ```
-+ 2. **Instale as dependências:**
-+    ```bash
-+    npm install
-+    ```
-  
+
+* 2. **Instale as dependências:**
+* ```bash
+
+  ```
+* npm install
+* ```
+
+  ```
+
 - 3.  **Supabase Setup:**
 -     *   Create a new project on [Supabase](https://supabase.com/).
 -     *   Go to your Supabase project's "SQL Editor".
@@ -807,15 +825,16 @@ Vou ajudar você a atualizar o README.md e criar um roadmap detalhado. Primeiro,
 -         const supabaseUrl = 'YOUR_SUPABASE_URL';
 -         const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
 -         ```
-+ 3. **Configure o Supabase:**
-+    * Crie um projeto no [Supabase](https://supabase.com/)
-+    * Execute o `SCHEMA.sql` no Editor SQL
-+    * Configure as variáveis de ambiente:
-+      ```typescript
-+      const supabaseUrl = 'YOUR_SUPABASE_URL';
-+      const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
-+      ```
-  
+
+* 3. **Configure o Supabase:**
+* - Crie um projeto no [Supabase](https://supabase.com/)
+* - Execute o `SCHEMA.sql` no Editor SQL
+* - Configure as variáveis de ambiente:
+*      ```typescript
+*      const supabaseUrl = 'YOUR_SUPABASE_URL';
+*      const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+*      ```
+
 - 4.  **Run the development server:**
 -     ```bash
 -     npm run dev
@@ -823,100 +842,108 @@ Vou ajudar você a atualizar o README.md e criar um roadmap detalhado. Primeiro,
 -     yarn dev
 -     ```
 -     This will start the Vite development server, typically on `http://localhost:5173`.
-- 
+-
 - 5.  **Open in browser:**
 -     Navigate to the local URL provided by Vite in your web browser.
-- 
+-
 - ## Database Schema
-- 
+-
 - The necessary Supabase database schema is defined in `SCHEMA.sql`. This file includes table definitions for:
-- *   `profiles`: Stores user-specific information linked to Supabase Auth users.
-- *   `global_settings`: Stores application-wide settings.
-- *   `global_holidays`: Stores global and custom holidays.
-- *   `user_weekly_contracts`: Stores weekly contractual hours for users.
-- *   `user_daily_logs`: Stores daily work log entries for users.
-- *   `user_vacations`: Stores vacation requests and their statuses for users.
-- 
+- - `profiles`: Stores user-specific information linked to Supabase Auth users.
+- - `global_settings`: Stores application-wide settings.
+- - `global_holidays`: Stores global and custom holidays.
+- - `user_weekly_contracts`: Stores weekly contractual hours for users.
+- - `user_daily_logs`: Stores daily work log entries for users.
+- - `user_vacations`: Stores vacation requests and their statuses for users.
+-
 - Ensure you run this schema in your Supabase SQL Editor before running the application.
-- 
+-
 - ## Internationalization (i18n)
-- 
-- *   The application uses `i18next` and `react-i18next` for handling translations.
-- *   Translation files are located in `src/locales/{language_code}/translation.json`.
-- *   Currently supported languages: English (en), French (fr), German (de), and Portuguese (pt).
-- *   Language detection is configured to use `localStorage` first, then the browser's language settings.
-- *   The `LanguageSwitcher` component in the header allows users to manually change the language.
-- 
+-
+- - The application uses `i18next` and `react-i18next` for handling translations.
+- - Translation files are located in `src/locales/{language_code}/translation.json`.
+- - Currently supported languages: English (en), French (fr), German (de), and Portuguese (pt).
+- - Language detection is configured to use `localStorage` first, then the browser's language settings.
+- - The `LanguageSwitcher` component in the header allows users to manually change the language.
+-
 - ## State Management
-- 
+-
 - The application employs React Context API for managing shared state:
-+ 4. **Inicie o servidor de desenvolvimento:**
-+    ```bash
-+    npm run dev
-+    ```
-+ 
-+ ## Gerenciamento de Estado
-+ 
-+ A aplicação utiliza React Context API para gerenciar estados compartilhados:
-  
-- *   **`AuthContext` (`hooks/useAuth.ts`):** Manages user authentication status, current user information, and logout functionality.
-- *   **`GlobalDataContext` (`hooks/useGlobalData.ts`):** Handles global application data such as `globalUserSettings`, `globalHolidays`, and `allUsers` (for admin). It also provides functions to save these global settings.
-- *   **`CurrentUserDataContext` (`hooks/useCurrentUserData.ts`):** Manages data specific to the currently logged-in user, including their `weeklyContract`, `dailyLogs`, `vacations`, and calculated `summaryData`.
-- *   **`NotificationContext` (`contexts/NotificationContext.tsx`):** Manages the display of application-wide notifications.
-- 
+
+* 4. **Inicie o servidor de desenvolvimento:**
+* ```bash
+
+  ```
+* npm run dev
+* ```
+
+  ```
+*
+* ## Gerenciamento de Estado
+*
+* A aplicação utiliza React Context API para gerenciar estados compartilhados:
+
+- - **`AuthContext` (`hooks/useAuth.ts`):** Manages user authentication status, current user information, and logout functionality.
+- - **`GlobalDataContext` (`hooks/useGlobalData.ts`):** Handles global application data such as `globalUserSettings`, `globalHolidays`, and `allUsers` (for admin). It also provides functions to save these global settings.
+- - **`CurrentUserDataContext` (`hooks/useCurrentUserData.ts`):** Manages data specific to the currently logged-in user, including their `weeklyContract`, `dailyLogs`, `vacations`, and calculated `summaryData`.
+- - **`NotificationContext` (`contexts/NotificationContext.tsx`):** Manages the display of application-wide notifications.
+-
 - These contexts provide a clean way to access and modify shared state across different components.
-- 
+-
 - ## Supabase Integration
-- 
-- *   **Client Initialization:** The Supabase client is initialized in `src/utils/supabaseClient.ts`.
-- *   **CRUD Operations:** All database interactions (Create, Read, Update, Delete) are centralized in `src/utils/supabaseCrud.ts`. This file contains functions for fetching and saving user data, settings, holidays, etc.
-- *   **Authentication:** Supabase Auth is used for user registration and login. User profile information (like name and role) is stored in a separate `profiles` table linked to the `auth.users` table.
-- *   **Realtime (Optional):** While not explicitly implemented for all features, Supabase's real-time capabilities could be leveraged in the future for features like live updates to pending requests for admins.
-- 
+-
+- - **Client Initialization:** The Supabase client is initialized in `src/utils/supabaseClient.ts`.
+- - **CRUD Operations:** All database interactions (Create, Read, Update, Delete) are centralized in `src/utils/supabaseCrud.ts`. This file contains functions for fetching and saving user data, settings, holidays, etc.
+- - **Authentication:** Supabase Auth is used for user registration and login. User profile information (like name and role) is stored in a separate `profiles` table linked to the `auth.users` table.
+- - **Realtime (Optional):** While not explicitly implemented for all features, Supabase's real-time capabilities could be leveraged in the future for features like live updates to pending requests for admins.
+-
 - ## Available Scripts
-- 
+-
 - In the project directory, you can run:
-- 
-- *   `npm run dev`: Runs the app in development mode with Vite.
-- *   `npm run build`: Builds the app for production to the `dist` folder.
-- *   `npm run lint`: Lints the project files using ESLint.
-- *   `npm run preview`: Serves the production build locally.
-- 
-- ---
-- 
+-
+- - `npm run dev`: Runs the app in development mode with Vite.
+- - `npm run build`: Builds the app for production to the `dist` folder.
+- - `npm run lint`: Lints the project files using ESLint.
+- - `npm run preview`: Serves the production build locally.
+-
+
+---
+
+-
 - This README provides a good starting point. You can expand it further as the project evolves!
-+ * **AuthContext:** Autenticação e informações do usuário
-+ * **GlobalDataContext:** Dados e configurações globais
-+ * **CurrentUserDataContext:** Dados específicos do usuário atual
-+ * **NotificationContext:** Sistema de notificações
-+ 
-+ ## Scripts Disponíveis
-+ 
-+ * `npm run dev`: Modo de desenvolvimento
-+ * `npm run build`: Build de produção
-+ * `npm run lint`: Análise de código
-+ * `npm run preview`: Preview da build de produção
-+ 
-+ ## Segurança
-+ 
-+ * Autenticação robusta via Supabase
-+ * Políticas RLS para controle de acesso
-+ * Validação de dados em todas as operações
-+ * Proteção contra XSS e injeção SQL
-+ 
-+ ## Contribuindo
-+ 
-+ 1. Fork o projeto
-+ 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-+ 3. Commit suas mudanças (`git commit -m 'Add: nova funcionalidade'`)
-+ 4. Push para a branch (`git push origin feature/AmazingFeature`)
-+ 5. Abra um Pull Request
-+ 
-+ ---
-+ 
-+ Para mais informações, consulte a documentação do Supabase e das bibliotecas utilizadas.
-  
-```
+
+* - **AuthContext:** Autenticação e informações do usuário
+* - **GlobalDataContext:** Dados e configurações globais
+* - **CurrentUserDataContext:** Dados específicos do usuário atual
+* - **NotificationContext:** Sistema de notificações
+*
+* ## Scripts Disponíveis
+*
+* - `npm run dev`: Modo de desenvolvimento
+* - `npm run build`: Build de produção
+* - `npm run lint`: Análise de código
+* - `npm run preview`: Preview da build de produção
+*
+* ## Segurança
+*
+* - Autenticação robusta via Supabase
+* - Políticas RLS para controle de acesso
+* - Validação de dados em todas as operações
+* - Proteção contra XSS e injeção SQL
+*
+* ## Contribuindo
+*
+* 1. Fork o projeto
+* 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+* 3. Commit suas mudanças (`git commit -m 'Add: nova funcionalidade'`)
+* 4. Push para a branch (`git push origin feature/AmazingFeature`)
+* 5. Abra um Pull Request
+*
+* ---
+*
+* Para mais informações, consulte a documentação do Supabase e das bibliotecas utilizadas.
+
+````
 
 ---
 
@@ -925,11 +952,11 @@ Agora vou criar um roadmap detalhado do que já foi feito e o que ainda precisa 
 ---
 
 ```diff
-- 
+-
 + # Roadmap do Projeto
-+ 
++
 + ## ✅ Já Implementado
-+ 
++
 + ### Fundação do Projeto
 + - [x] Setup inicial com React, TypeScript e Vite
 + - [x] Configuração do Tailwind CSS
@@ -937,7 +964,7 @@ Agora vou criar um roadmap detalhado do que já foi feito e o que ainda precisa 
 + - [x] Sistema de internacionalização (i18n)
 + - [x] Estrutura base de componentes
 + - [x] Sistema de autenticação
-+ 
++
 + ### Interface do Usuário
 + - [x] Layout responsivo
 + - [x] Componentes base reutilizáveis
@@ -945,7 +972,7 @@ Agora vou criar um roadmap detalhado do que já foi feito e o que ainda precisa 
 + - [x] Tratamento de erros global
 + - [x] Cards com layout padronizado
 + - [x] Seletor de idiomas
-+ 
++
 + ### Funcionalidades Principais
 + - [x] Login e registro de usuários
 + - [x] Registro de horas diárias
@@ -954,169 +981,169 @@ Agora vou criar um roadmap detalhado do que já foi feito e o que ainda precisa 
 + - [x] Aprovação/rejeição de solicitações
 + - [x] Gestão de feriados
 + - [x] Painel administrativo básico
-+ 
++
 + ### Melhorias Recentes
 + - [x] Correção do layout dos cards na página administrativa
 + - [x] Padronização visual entre páginas
 + - [x] Correção das traduções em português
 + - [x] Implementação da gestão de funcionários por região
 + - [x] Sistema de aprovação em lote de férias
-+ 
++
 + ## 🚧 Em Desenvolvimento
-+ 
++
 + ### Próximas Entregas (Curto Prazo)
 + - [ ] Implementação de testes unitários
 + - [ ] Implementação de testes de integração
 + - [ ] Documentação de código
 + - [ ] Melhorias de performance
 + - [ ] Sistema de logs de atividades
-+ 
++
 + ### Melhorias Técnicas
 + - [ ] Migração para React Query para gerenciamento de estado
 + - [ ] Implementação de Storybook para documentação de componentes
 + - [ ] Otimização de bundle size
 + - [ ] Cache de dados no cliente
 + - [ ] Service Workers para funcionalidade offline
-+ 
++
 + ### Funcionalidades Planejadas
 + - [ ] Dashboard com gráficos e estatísticas
 + - [ ] Exportação de relatórios em PDF
 + - [ ] Integração com calendário externo
 + - [ ] Sistema de lembretes e notificações
 + - [ ] Histórico de alterações
-+ 
++
 + ## 🎯 Roadmap Futuro
-+ 
++
 + ### Q3 2024
 + - [ ] Sistema de Relatórios
 +   - [ ] Relatórios personalizáveis
 +   - [ ] Exportação em múltiplos formatos
 +   - [ ] Agendamento de relatórios
 +   - [ ] Dashboards interativos
-+ 
++
 + ### Q4 2024
 + - [ ] Integrações Externas
 +   - [ ] API pública
 +   - [ ] Webhooks
 +   - [ ] Integração com sistemas de RH
 +   - [ ] Single Sign-On (SSO)
-+ 
++
 + ### Q1 2025
 + - [ ] Funcionalidades Avançadas
 +   - [ ] Planejamento de equipe
 +   - [ ] Análise preditiva de férias
 +   - [ ] Sistema de pontos e compensações
 +   - [ ] Gestão de projetos integrada
-+ 
++
 + ### Q2 2025
 + - [ ] Expansão do Produto
 +   - [ ] Versão mobile nativa
 +   - [ ] Marketplace de extensões
 +   - [ ] Sistema de templates
 +   - [ ] White-label
-+ 
++
 + ## 🔒 Segurança e Conformidade
-+ 
++
 + ### Prioridades Imediatas
 + - [ ] Auditoria de segurança
 + - [ ] Implementação de 2FA
 + - [ ] Política de senhas forte
 + - [ ] Logs de auditoria
-+ 
++
 + ### Conformidade
 + - [ ] LGPD/GDPR
 + - [ ] ISO 27001
 + - [ ] SOC 2
 + - [ ] Backup automático
-+ 
++
 + ## 📈 Escalabilidade
-+ 
++
 + ### Infraestrutura
 + - [ ] CDN para assets
 + - [ ] Otimização de banco de dados
 + - [ ] Cache distribuído
 + - [ ] Monitoramento avançado
-+ 
++
 + ### Performance
 + - [ ] Lazy loading de componentes
 + - [ ] Otimização de imagens
 + - [ ] Minificação avançada
 + - [ ] Análise de performance
-+ 
++
 + ## 🎨 UX/UI
-+ 
++
 + ### Melhorias Visuais
 + - [ ] Temas personalizáveis
 + - [ ] Modo escuro
 + - [ ] Animações e transições
 + - [ ] Ícones personalizados
-+ 
++
 + ### Acessibilidade
 + - [ ] Conformidade WCAG 2.1
 + - [ ] Suporte a leitores de tela
 + - [ ] Navegação por teclado
 + - [ ] Alto contraste
-+ 
++
 + ## 📱 Mobile
-+ 
++
 + ### Responsividade
 + - [ ] Otimização para tablets
 + - [ ] Interface adaptativa
 + - [ ] Gestos touch
 + - [ ] PWA
-+ 
++
 + ### App Nativo
 + - [ ] Versão iOS
 + - [ ] Versão Android
 + - [ ] Notificações push
 + - [ ] Sincronização offline
-+ 
++
 + ## 🔄 DevOps
-+ 
++
 + ### CI/CD
 + - [ ] Pipeline automatizado
 + - [ ] Testes automatizados
 + - [ ] Deploy automático
 + - [ ] Monitoramento
-+ 
++
 + ### Qualidade
 + - [ ] Cobertura de testes > 80%
 + - [ ] Análise estática de código
 + - [ ] Code review automatizado
 + - [ ] Documentação automática
-+ 
++
 + ## 📚 Documentação
-+ 
++
 + ### Técnica
 + - [ ] API docs
 + - [ ] Arquitetura
 + - [ ] Guia de contribuição
 + - [ ] Padrões de código
-+ 
++
 + ### Usuário
 + - [ ] Manual do usuário
 + - [ ] Vídeos tutoriais
 + - [ ] Base de conhecimento
 + - [ ] FAQ
-+ 
++
 + ## 🌍 Internacionalização
-+ 
++
 + ### Idiomas
 + - [ ] Espanhol
 + - [ ] Italiano
 + - [ ] Holandês
 + - [ ] Outros idiomas sob demanda
-+ 
++
 + ### Localização
 + - [ ] Formatos de data/hora
 + - [ ] Moedas
 + - [ ] Feriados locais
 + - [ ] Regulamentações locais
-+ 
++
 + ---
-+ 
-+ Este roadmap é um documento vivo e será atualizado regularmente conforme o projeto evolui e novas necessidades são identificadas. 
-```
++
++ Este roadmap é um documento vivo e será atualizado regularmente conforme o projeto evolui e novas necessidades são identificadas.
+````
 
 ---
 
@@ -1148,7 +1175,7 @@ git commit -m "docs: Atualiza README e adiciona ROADMAP
 [main 048639c] docs: Atualiza README e adiciona ROADMAP
  2 files changed, 339 insertions(+), 193 deletions(-)
  create mode 100644 ROADMAP.md
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
@@ -1227,14 +1254,14 @@ Vou pesquisar sobre MCPs (Model, Collection, Presenter/Provider) que poderiam se
 Analisando a estrutura atual do projeto e considerando as melhores práticas de arquitetura, sim, seria muito interessante implementar o padrão MCP (Model, Collection, Presenter) para melhorar a organização e manutenibilidade do código. Vou explicar como poderíamos implementar:
 
 1. **Models (Modelos)**
-Primeiro, vamos criar uma estrutura de modelos para representar nossas entidades principais:
+   Primeiro, vamos criar uma estrutura de modelos para representar nossas entidades principais:
 
 ---
 
 ```diff
-- 
+-
 + import { User } from '../types';
-+ 
++
 + export class Employee {
 +   id: string;
 +   name: string;
@@ -1246,7 +1273,7 @@ Primeiro, vamos criar uma estrutura de modelos para representar nossas entidades
 +   hire_date: string;
 +   position?: string;
 +   work_schedule?: any;
-+ 
++
 +   constructor(data: Partial<Employee>) {
 +     this.id = data.id || '';
 +     this.name = data.name || '';
@@ -1259,7 +1286,7 @@ Primeiro, vamos criar uma estrutura de modelos para representar nossas entidades
 +     this.position = data.position;
 +     this.work_schedule = data.work_schedule;
 +   }
-+ 
++
 +   toJSON() {
 +     return {
 +       id: this.id,
@@ -1274,7 +1301,7 @@ Primeiro, vamos criar uma estrutura de modelos para representar nossas entidades
 +       work_schedule: this.work_schedule
 +     };
 +   }
-+ 
++
 +   static fromUser(user: User): Employee {
 +     return new Employee({
 +       id: user.id,
@@ -1283,56 +1310,56 @@ Primeiro, vamos criar uma estrutura de modelos para representar nossas entidades
 +       role: user.role
 +     });
 +   }
-+ 
++
 +   isAdmin(): boolean {
 +     return this.role === 'admin';
 +   }
-+ 
++
 +   getFullName(): string {
 +     return this.name;
 +   }
-+ 
++
 +   getFormattedHireDate(locale: string = 'pt-BR'): string {
 +     return new Date(this.hire_date).toLocaleDateString(locale);
 +   }
-+ } 
++ }
 ```
 
 ---
 
 2. **Collections (Coleções)**
-Agora vamos criar uma coleção para gerenciar grupos de funcionários:
+   Agora vamos criar uma coleção para gerenciar grupos de funcionários:
 
 ---
 
 ```diff
-- 
+-
 + import { Employee } from '../models/Employee';
 + import { supabase } from '../utils/supabaseClient';
-+ 
++
 + export class EmployeeCollection {
 +   private employees: Employee[] = [];
-+ 
++
 +   constructor(initialEmployees: Employee[] = []) {
 +     this.employees = initialEmployees;
 +   }
-+ 
++
 +   async loadAll(): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
 +         .from('profiles')
 +         .select('*')
 +         .order('name');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.employees = (data || []).map(emp => new Employee(emp));
 +     } catch (error) {
 +       console.error('Erro ao carregar funcionários:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadByCantonId(cantonId: number): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -1340,56 +1367,56 @@ Agora vamos criar uma coleção para gerenciar grupos de funcionários:
 +         .select('*')
 +         .eq('canton_id', cantonId)
 +         .order('name');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.employees = (data || []).map(emp => new Employee(emp));
 +     } catch (error) {
 +       console.error('Erro ao carregar funcionários do cantão:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   getAll(): Employee[] {
 +     return this.employees;
 +   }
-+ 
++
 +   getById(id: string): Employee | undefined {
 +     return this.employees.find(emp => emp.id === id);
 +   }
-+ 
++
 +   getAdmins(): Employee[] {
 +     return this.employees.filter(emp => emp.isAdmin());
 +   }
-+ 
++
 +   getRegularUsers(): Employee[] {
 +     return this.employees.filter(emp => !emp.isAdmin());
 +   }
-+ 
++
 +   async add(employee: Employee): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('profiles')
 +         .insert(employee.toJSON());
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.employees.push(employee);
 +     } catch (error) {
 +       console.error('Erro ao adicionar funcionário:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async update(employee: Employee): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('profiles')
 +         .update(employee.toJSON())
 +         .eq('id', employee.id);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const index = this.employees.findIndex(emp => emp.id === employee.id);
 +       if (index !== -1) {
 +         this.employees[index] = employee;
@@ -1399,39 +1426,39 @@ Agora vamos criar uma coleção para gerenciar grupos de funcionários:
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async remove(employeeId: string): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('profiles')
 +         .delete()
 +         .eq('id', employeeId);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.employees = this.employees.filter(emp => emp.id !== employeeId);
 +     } catch (error) {
 +       console.error('Erro ao remover funcionário:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   filterBySearchTerm(searchTerm: string): Employee[] {
 +     const term = searchTerm.toLowerCase();
-+     return this.employees.filter(emp => 
++     return this.employees.filter(emp =>
 +       emp.name.toLowerCase().includes(term) ||
 +       emp.email.toLowerCase().includes(term) ||
 +       (emp.position && emp.position.toLowerCase().includes(term))
 +     );
 +   }
-+ 
++
 +   groupByRole(): { admins: Employee[], users: Employee[] } {
 +     return {
 +       admins: this.getAdmins(),
 +       users: this.getRegularUsers()
 +     };
 +   }
-+ 
++
 +   getStatistics() {
 +     return {
 +       total: this.employees.length,
@@ -1439,40 +1466,40 @@ Agora vamos criar uma coleção para gerenciar grupos de funcionários:
 +       users: this.getRegularUsers().length
 +     };
 +   }
-+ } 
++ }
 ```
 
 ---
 
 3. **Presenters (Apresentadores)**
-Agora vamos criar um presenter para gerenciar a lógica de apresentação dos funcionários:
+   Agora vamos criar um presenter para gerenciar a lógica de apresentação dos funcionários:
 
 ---
 
 ```diff
-- 
+-
 + import { Employee } from '../models/Employee';
 + import { EmployeeCollection } from '../collections/EmployeeCollection';
 + import { useTranslation } from 'react-i18next';
-+ 
++
 + export class EmployeePresenter {
 +   private collection: EmployeeCollection;
 +   private t: (key: string) => string;
-+ 
++
 +   constructor(collection: EmployeeCollection) {
 +     this.collection = collection;
 +     const { t } = useTranslation();
 +     this.t = t;
 +   }
-+ 
++
 +   async initialize(): Promise<void> {
 +     await this.collection.loadAll();
 +   }
-+ 
++
 +   getEmployeeListViewModel() {
 +     const employees = this.collection.getAll();
 +     const stats = this.collection.getStatistics();
-+ 
++
 +     return {
 +       employees: employees.map(emp => this.mapEmployeeToViewModel(emp)),
 +       statistics: {
@@ -1482,7 +1509,7 @@ Agora vamos criar um presenter para gerenciar a lógica de apresentação dos fu
 +       }
 +     };
 +   }
-+ 
++
 +   private mapEmployeeToViewModel(employee: Employee) {
 +     return {
 +       id: employee.id,
@@ -1496,12 +1523,12 @@ Agora vamos criar um presenter para gerenciar a lógica de apresentação dos fu
 +       municipalityId: employee.municipality_id
 +     };
 +   }
-+ 
++
 +   async handleRoleChange(employeeId: string, newRole: 'user' | 'admin'): Promise<boolean> {
 +     try {
 +       const employee = this.collection.getById(employeeId);
 +       if (!employee) return false;
-+ 
++
 +       employee.role = newRole;
 +       await this.collection.update(employee);
 +       return true;
@@ -1510,7 +1537,7 @@ Agora vamos criar um presenter para gerenciar a lógica de apresentação dos fu
 +       return false;
 +     }
 +   }
-+ 
++
 +   async createEmployee(data: Partial<Employee>): Promise<{ success: boolean, message?: string }> {
 +     try {
 +       const employee = new Employee(data);
@@ -1518,53 +1545,53 @@ Agora vamos criar um presenter para gerenciar a lógica de apresentação dos fu
 +       return { success: true };
 +     } catch (error) {
 +       console.error('Erro ao criar funcionário:', error);
-+       return { 
-+         success: false, 
++       return {
++         success: false,
 +         message: this.t('employeeManagement.employeeRegistration.error')
 +       };
 +     }
 +   }
-+ 
++
 +   async updateEmployee(employeeId: string, data: Partial<Employee>): Promise<{ success: boolean, message?: string }> {
 +     try {
 +       const employee = this.collection.getById(employeeId);
 +       if (!employee) {
-+         return { 
-+           success: false, 
-+           message: this.t('employeeManagement.employeeNotFound') 
++         return {
++           success: false,
++           message: this.t('employeeManagement.employeeNotFound')
 +         };
 +       }
-+ 
++
 +       Object.assign(employee, data);
 +       await this.collection.update(employee);
 +       return { success: true };
 +     } catch (error) {
 +       console.error('Erro ao atualizar funcionário:', error);
-+       return { 
-+         success: false, 
++       return {
++         success: false,
 +         message: this.t('employeeManagement.updateError')
 +       };
 +     }
 +   }
-+ 
++
 +   async removeEmployee(employeeId: string): Promise<{ success: boolean, message?: string }> {
 +     try {
 +       await this.collection.remove(employeeId);
 +       return { success: true };
 +     } catch (error) {
 +       console.error('Erro ao remover funcionário:', error);
-+       return { 
-+         success: false, 
++       return {
++         success: false,
 +         message: this.t('employeeManagement.removeError')
 +       };
 +     }
 +   }
-+ 
++
 +   filterEmployees(searchTerm: string) {
 +     const filtered = this.collection.filterBySearchTerm(searchTerm);
 +     return filtered.map(emp => this.mapEmployeeToViewModel(emp));
 +   }
-+ 
++
 +   getEmployeesByRole() {
 +     const { admins, users } = this.collection.groupByRole();
 +     return {
@@ -1572,38 +1599,38 @@ Agora vamos criar um presenter para gerenciar a lógica de apresentação dos fu
 +       users: users.map(emp => this.mapEmployeeToViewModel(emp))
 +     };
 +   }
-+ } 
++ }
 ```
 
 ---
 
 4. **Hook Personalizado**
-Por fim, vamos criar um hook para facilitar o uso do presenter nos componentes React:
+   Por fim, vamos criar um hook para facilitar o uso do presenter nos componentes React:
 
 ---
 
 ```diff
-- 
+-
 + import { useState, useEffect, useMemo } from 'react';
 + import { Employee } from '../models/Employee';
 + import { EmployeeCollection } from '../collections/EmployeeCollection';
 + import { EmployeePresenter } from '../presenters/EmployeePresenter';
 + import { useNotificationContext } from '../contexts/NotificationContext';
 + import { useTranslation } from 'react-i18next';
-+ 
++
 + export function useEmployeePresenter() {
 +   const { t } = useTranslation();
 +   const { addNotification } = useNotificationContext();
 +   const [isLoading, setIsLoading] = useState(true);
 +   const [error, setError] = useState<string | null>(null);
-+ 
++
 +   // Criar instâncias das classes MCP
 +   const collection = useMemo(() => new EmployeeCollection(), []);
 +   const presenter = useMemo(() => new EmployeePresenter(collection), [collection]);
-+ 
++
 +   // Estado para armazenar os dados processados
 +   const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getEmployeeListViewModel>>();
-+ 
++
 +   // Carregar dados iniciais
 +   useEffect(() => {
 +     async function loadData() {
@@ -1619,10 +1646,10 @@ Por fim, vamos criar um hook para facilitar o uso do presenter nos componentes R
 +         setIsLoading(false);
 +       }
 +     }
-+ 
++
 +     loadData();
 +   }, [presenter, t, addNotification]);
-+ 
++
 +   // Funções de manipulação expostas para os componentes
 +   const handleCreateEmployee = async (data: Partial<Employee>) => {
 +     const result = await presenter.createEmployee(data);
@@ -1634,7 +1661,7 @@ Por fim, vamos criar um hook para facilitar o uso do presenter nos componentes R
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleUpdateEmployee = async (employeeId: string, data: Partial<Employee>) => {
 +     const result = await presenter.updateEmployee(employeeId, data);
 +     if (result.success) {
@@ -1645,7 +1672,7 @@ Por fim, vamos criar um hook para facilitar o uso do presenter nos componentes R
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleRemoveEmployee = async (employeeId: string) => {
 +     const result = await presenter.removeEmployee(employeeId);
 +     if (result.success) {
@@ -1656,7 +1683,7 @@ Por fim, vamos criar um hook para facilitar o uso do presenter nos componentes R
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleRoleChange = async (employeeId: string, newRole: 'user' | 'admin') => {
 +     const success = await presenter.handleRoleChange(employeeId, newRole);
 +     if (success) {
@@ -1667,11 +1694,11 @@ Por fim, vamos criar um hook para facilitar o uso do presenter nos componentes R
 +     }
 +     return success;
 +   };
-+ 
++
 +   const handleSearch = (searchTerm: string) => {
 +     return presenter.filterEmployees(searchTerm);
 +   };
-+ 
++
 +   return {
 +     isLoading,
 +     error,
@@ -1683,7 +1710,7 @@ Por fim, vamos criar um hook para facilitar o uso do presenter nos componentes R
 +     searchEmployees: handleSearch,
 +     getEmployeesByRole: () => presenter.getEmployeesByRole()
 +   };
-+ } 
++ }
 ```
 
 ---
@@ -1710,6 +1737,7 @@ Agora vou explicar as vantagens de usar o padrão MCP neste projeto:
    - Criar hooks personalizados para uso nos componentes
 
 4. **Exemplo de Uso no Componente**:
+
 ```typescript
 function EmployeeManagementPage() {
   const {
@@ -1729,7 +1757,7 @@ function EmployeeManagementPage() {
   return (
     <div>
       <EmployeeStats statistics={data.statistics} />
-      <EmployeeList 
+      <EmployeeList
         employees={data.employees}
         onRoleChange={changeRole}
         onRemove={removeEmployee}
@@ -1765,9 +1793,9 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 ---
 
 ```diff
-- 
+-
 + import { VacationStatus } from '../types';
-+ 
++
 + export class Vacation {
 +   id: string;
 +   userId: string;
@@ -1776,7 +1804,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +   adminComment?: string;
 +   createdAt: string;
 +   updatedAt: string;
-+ 
++
 +   constructor(data: Partial<Vacation>) {
 +     this.id = data.id || `vacation-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 +     this.userId = data.userId || '';
@@ -1786,7 +1814,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +     this.createdAt = data.createdAt || new Date().toISOString();
 +     this.updatedAt = data.updatedAt || new Date().toISOString();
 +   }
-+ 
++
 +   toJSON() {
 +     return {
 +       id: this.id,
@@ -1798,54 +1826,54 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       updatedAt: this.updatedAt
 +     };
 +   }
-+ 
++
 +   isPending(): boolean {
 +     return this.status === VacationStatus.PENDING_APPROVAL;
 +   }
-+ 
++
 +   isApproved(): boolean {
 +     return this.status === VacationStatus.APPROVED;
 +   }
-+ 
++
 +   isRejected(): boolean {
 +     return this.status === VacationStatus.REJECTED;
 +   }
-+ 
++
 +   approve(comment?: string): void {
 +     this.status = VacationStatus.APPROVED;
 +     this.adminComment = comment;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   reject(comment?: string): void {
 +     this.status = VacationStatus.REJECTED;
 +     this.adminComment = comment;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   getFormattedDate(locale: string = 'pt-BR'): string {
 +     return new Date(this.date).toLocaleDateString(locale);
 +   }
-+ 
++
 +   isInMonth(year: number, month: number): boolean {
 +     const vacationDate = new Date(this.date);
 +     return vacationDate.getFullYear() === year && vacationDate.getMonth() === month;
 +   }
-+ 
++
 +   isInDateRange(startDate: Date, endDate: Date): boolean {
 +     const vacationDate = new Date(this.date);
 +     return vacationDate >= startDate && vacationDate <= endDate;
 +   }
-+ 
++
 +   getDayOfWeek(): number {
 +     return new Date(this.date).getDay();
 +   }
-+ 
++
 +   isWeekend(): boolean {
 +     const day = this.getDayOfWeek();
 +     return day === 0 || day === 6; // 0 = Domingo, 6 = Sábado
 +   }
-+ 
++
 +   static createFromDate(userId: string, date: string): Vacation {
 +     return new Vacation({
 +       userId,
@@ -1853,7 +1881,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       status: VacationStatus.PENDING_APPROVAL
 +     });
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -1863,18 +1891,18 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 ---
 
 ```diff
-- 
+-
 + import { Vacation } from '../models/Vacation';
 + import { supabase } from '../utils/supabaseClient';
 + import { VacationStatus } from '../types';
-+ 
++
 + export class VacationCollection {
 +   private vacations: Vacation[] = [];
-+ 
++
 +   constructor(initialVacations: Vacation[] = []) {
 +     this.vacations = initialVacations;
 +   }
-+ 
++
 +   async loadForUser(userId: string, year: number, month: number): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -1883,16 +1911,16 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +         .eq('userId', userId)
 +         .gte('date', `${year}-${String(month + 1).padStart(2, '0')}-01`)
 +         .lt('date', `${year}-${String(month + 2).padStart(2, '0')}-01`);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.vacations = (data || []).map(v => new Vacation(v));
 +     } catch (error) {
 +       console.error('Erro ao carregar férias:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadPendingRequests(): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -1900,56 +1928,56 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +         .select('*')
 +         .eq('status', VacationStatus.PENDING_APPROVAL)
 +         .order('date');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.vacations = (data || []).map(v => new Vacation(v));
 +     } catch (error) {
 +       console.error('Erro ao carregar solicitações pendentes:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   getAll(): Vacation[] {
 +     return this.vacations;
 +   }
-+ 
++
 +   getPending(): Vacation[] {
 +     return this.vacations.filter(v => v.isPending());
 +   }
-+ 
++
 +   getApproved(): Vacation[] {
 +     return this.vacations.filter(v => v.isApproved());
 +   }
-+ 
++
 +   getRejected(): Vacation[] {
 +     return this.vacations.filter(v => v.isRejected());
 +   }
-+ 
++
 +   async add(vacation: Vacation): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('user_vacations')
 +         .insert(vacation.toJSON());
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.vacations.push(vacation);
 +     } catch (error) {
 +       console.error('Erro ao adicionar férias:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async update(vacation: Vacation): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('user_vacations')
 +         .update(vacation.toJSON())
 +         .eq('id', vacation.id);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const index = this.vacations.findIndex(v => v.id === vacation.id);
 +       if (index !== -1) {
 +         this.vacations[index] = vacation;
@@ -1959,55 +1987,55 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async remove(vacationId: string): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('user_vacations')
 +         .delete()
 +         .eq('id', vacationId);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.vacations = this.vacations.filter(v => v.id !== vacationId);
 +     } catch (error) {
 +       console.error('Erro ao remover férias:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   getByDateRange(startDate: Date, endDate: Date): Vacation[] {
 +     return this.vacations.filter(v => v.isInDateRange(startDate, endDate));
 +   }
-+ 
++
 +   getByMonth(year: number, month: number): Vacation[] {
 +     return this.vacations.filter(v => v.isInMonth(year, month));
 +   }
-+ 
++
 +   getByStatus(status: VacationStatus): Vacation[] {
 +     return this.vacations.filter(v => v.status === status);
 +   }
-+ 
++
 +   getByUserId(userId: string): Vacation[] {
 +     return this.vacations.filter(v => v.userId === userId);
 +   }
-+ 
++
 +   async approveVacation(vacationId: string, comment?: string): Promise<void> {
 +     const vacation = this.vacations.find(v => v.id === vacationId);
 +     if (!vacation) throw new Error('Férias não encontradas');
-+ 
++
 +     vacation.approve(comment);
 +     await this.update(vacation);
 +   }
-+ 
++
 +   async rejectVacation(vacationId: string, comment?: string): Promise<void> {
 +     const vacation = this.vacations.find(v => v.id === vacationId);
 +     if (!vacation) throw new Error('Férias não encontradas');
-+ 
++
 +     vacation.reject(comment);
 +     await this.update(vacation);
 +   }
-+ 
++
 +   getStatistics() {
 +     return {
 +       total: this.vacations.length,
@@ -2016,15 +2044,15 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       rejected: this.getRejected().length
 +     };
 +   }
-+ 
++
 +   getDaysInMonth(year: number, month: number): number {
 +     return this.getByMonth(year, month).length;
 +   }
-+ 
++
 +   getWorkingDaysInMonth(year: number, month: number): number {
 +     return this.getByMonth(year, month).filter(v => !v.isWeekend()).length;
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -2034,40 +2062,40 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 ---
 
 ```diff
-- 
+-
 + import { Vacation } from '../models/Vacation';
 + import { VacationCollection } from '../collections/VacationCollection';
 + import { VacationStatus } from '../types';
 + import { useTranslation } from 'react-i18next';
-+ 
++
 + export class VacationPresenter {
 +   private collection: VacationCollection;
 +   private t: (key: string) => string;
 +   private userId?: string;
-+ 
++
 +   constructor(collection: VacationCollection) {
 +     this.collection = collection;
 +     const { t } = useTranslation();
 +     this.t = t;
 +   }
-+ 
++
 +   setUserId(userId: string) {
 +     this.userId = userId;
 +   }
-+ 
++
 +   async initialize(year: number, month: number): Promise<void> {
 +     if (!this.userId) throw new Error('UserId não definido');
 +     await this.collection.loadForUser(this.userId, year, month);
 +   }
-+ 
++
 +   async loadPendingRequests(): Promise<void> {
 +     await this.collection.loadPendingRequests();
 +   }
-+ 
++
 +   getVacationListViewModel() {
 +     const vacations = this.collection.getAll();
 +     const stats = this.collection.getStatistics();
-+ 
++
 +     return {
 +       vacations: vacations.map(v => this.mapVacationToViewModel(v)),
 +       statistics: {
@@ -2078,7 +2106,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       }
 +     };
 +   }
-+ 
++
 +   private mapVacationToViewModel(vacation: Vacation) {
 +     return {
 +       id: vacation.id,
@@ -2094,7 +2122,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       canDelete: !vacation.isPending()
 +     };
 +   }
-+ 
++
 +   private getStatusClass(status: VacationStatus): string {
 +     const classes = {
 +       [VacationStatus.PENDING_APPROVAL]: 'bg-yellow-100 text-yellow-800',
@@ -2103,14 +2131,14 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +     };
 +     return classes[status] || '';
 +   }
-+ 
++
 +   async requestVacation(date: string): Promise<{ success: boolean, message?: string }> {
 +     try {
 +       if (!this.userId) throw new Error('UserId não definido');
-+       
++
 +       const vacation = Vacation.createFromDate(this.userId, date);
 +       await this.collection.add(vacation);
-+       
++
 +       return { success: true };
 +     } catch (error) {
 +       console.error('Erro ao solicitar férias:', error);
@@ -2120,7 +2148,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       };
 +     }
 +   }
-+ 
++
 +   async approveVacation(vacationId: string, comment?: string): Promise<{ success: boolean, message?: string }> {
 +     try {
 +       await this.collection.approveVacation(vacationId, comment);
@@ -2133,7 +2161,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       };
 +     }
 +   }
-+ 
++
 +   async rejectVacation(vacationId: string, comment?: string): Promise<{ success: boolean, message?: string }> {
 +     try {
 +       await this.collection.rejectVacation(vacationId, comment);
@@ -2146,7 +2174,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       };
 +     }
 +   }
-+ 
++
 +   async cancelVacation(vacationId: string): Promise<{ success: boolean, message?: string }> {
 +     try {
 +       await this.collection.remove(vacationId);
@@ -2159,7 +2187,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       };
 +     }
 +   }
-+ 
++
 +   getMonthlyStatistics(year: number, month: number) {
 +     return {
 +       totalDays: this.collection.getDaysInMonth(year, month),
@@ -2168,7 +2196,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       approvedDays: this.collection.getByMonth(year, month).filter(v => v.isApproved()).length
 +     };
 +   }
-+ 
++
 +   getPendingRequestsViewModel() {
 +     const pending = this.collection.getPending();
 +     return pending.map(v => ({
@@ -2176,12 +2204,12 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       userId: v.userId
 +     }));
 +   }
-+ 
++
 +   getVacationsByDateRange(startDate: Date, endDate: Date) {
 +     const vacations = this.collection.getByDateRange(startDate, endDate);
 +     return vacations.map(v => this.mapVacationToViewModel(v));
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -2191,32 +2219,32 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 ---
 
 ```diff
-- 
+-
 + import { useState, useEffect, useMemo } from 'react';
 + import { VacationCollection } from '../collections/VacationCollection';
 + import { VacationPresenter } from '../presenters/VacationPresenter';
 + import { useNotificationContext } from '../contexts/NotificationContext';
 + import { useTranslation } from 'react-i18next';
 + import { useAuth } from './useAuth';
-+ 
++
 + export function useVacationPresenter(year?: number, month?: number) {
 +   const { t } = useTranslation();
 +   const { addNotification } = useNotificationContext();
 +   const { user } = useAuth();
 +   const [isLoading, setIsLoading] = useState(true);
 +   const [error, setError] = useState<string | null>(null);
-+ 
++
 +   // Criar instâncias das classes MCP
 +   const collection = useMemo(() => new VacationCollection(), []);
 +   const presenter = useMemo(() => new VacationPresenter(collection), [collection]);
-+ 
++
 +   // Estado para armazenar os dados processados
 +   const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getVacationListViewModel>>();
-+ 
++
 +   // Carregar dados iniciais
 +   useEffect(() => {
 +     if (!user?.id || year === undefined || month === undefined) return;
-+ 
++
 +     async function loadData() {
 +       try {
 +         setIsLoading(true);
@@ -2231,10 +2259,10 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +         setIsLoading(false);
 +       }
 +     }
-+ 
++
 +     loadData();
 +   }, [presenter, user?.id, year, month, t, addNotification]);
-+ 
++
 +   const handleRequestVacation = async (date: string) => {
 +     const result = await presenter.requestVacation(date);
 +     if (result.success) {
@@ -2245,7 +2273,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleApproveVacation = async (vacationId: string, comment?: string) => {
 +     const result = await presenter.approveVacation(vacationId, comment);
 +     if (result.success) {
@@ -2256,7 +2284,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleRejectVacation = async (vacationId: string, comment?: string) => {
 +     const result = await presenter.rejectVacation(vacationId, comment);
 +     if (result.success) {
@@ -2267,7 +2295,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleCancelVacation = async (vacationId: string) => {
 +     const result = await presenter.cancelVacation(vacationId);
 +     if (result.success) {
@@ -2278,7 +2306,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +     }
 +     return result;
 +   };
-+ 
++
 +   const loadPendingRequests = async () => {
 +     try {
 +       setIsLoading(true);
@@ -2290,7 +2318,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +       setIsLoading(false);
 +     }
 +   };
-+ 
++
 +   return {
 +     isLoading,
 +     error,
@@ -2304,7 +2332,7 @@ Sim, vamos implementar o padrão MCP para o módulo de Férias (Vacation), que �
 +     getPendingRequests: () => presenter.getPendingRequestsViewModel(),
 +     getVacationsByDateRange: (start: Date, end: Date) => presenter.getVacationsByDateRange(start, end)
 +   };
-+ } 
++ }
 ```
 
 ---
@@ -2342,7 +2370,7 @@ git commit -m "feat: Implementa padrão MCP para módulo de férias
  create mode 100644 src/hooks/useVacationPresenter.ts
  create mode 100644 src/models/Vacation.ts
  create mode 100644 src/presenters/VacationPresenter.ts
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
@@ -2373,6 +2401,7 @@ A implementação do padrão MCP para o módulo de férias foi concluída com su
    - Mais fácil de debugar
 
 5. **Exemplo de Uso em Componente**:
+
 ```typescript
 function VacationCalendar() {
   const {
@@ -2390,7 +2419,7 @@ function VacationCalendar() {
   return (
     <div>
       <MonthlyStats statistics={getMonthlyStatistics(2024, 3)} />
-      <Calendar 
+      <Calendar
         vacations={data.vacations}
         onRequestVacation={requestVacation}
         onCancelVacation={cancelVacation}
@@ -2419,9 +2448,9 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 ---
 
 ```diff
-- 
+-
 + export type HolidayType = 'OFFICIAL' | 'CUSTOM' | 'REGIONAL';
-+ 
++
 + export class Holiday {
 +   id: string;
 +   name: string;
@@ -2434,7 +2463,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +   repeatsAnnually: boolean;
 +   createdAt: string;
 +   updatedAt: string;
-+ 
++
 +   constructor(data: Partial<Holiday>) {
 +     this.id = data.id || `holiday-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 +     this.name = data.name || '';
@@ -2448,7 +2477,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     this.createdAt = data.createdAt || new Date().toISOString();
 +     this.updatedAt = data.updatedAt || new Date().toISOString();
 +   }
-+ 
++
 +   toJSON() {
 +     return {
 +       id: this.id,
@@ -2464,53 +2493,53 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       updatedAt: this.updatedAt
 +     };
 +   }
-+ 
++
 +   getFormattedDate(locale: string = 'pt-BR'): string {
 +     return new Date(this.date).toLocaleDateString(locale);
 +   }
-+ 
++
 +   getYear(): number {
 +     return new Date(this.date).getFullYear();
 +   }
-+ 
++
 +   getMonth(): number {
 +     return new Date(this.date).getMonth();
 +   }
-+ 
++
 +   isInYear(year: number): boolean {
 +     return this.getYear() === year;
 +   }
-+ 
++
 +   isInMonth(month: number): boolean {
 +     return this.getMonth() === month;
 +   }
-+ 
++
 +   isGlobal(): boolean {
 +     return !this.cantonId && !this.municipalityId;
 +   }
-+ 
++
 +   isRegional(): boolean {
 +     return !!this.cantonId || !!this.municipalityId;
 +   }
-+ 
++
 +   isCustom(): boolean {
 +     return !this.isOfficial;
 +   }
-+ 
++
 +   isInDateRange(startDate: Date, endDate: Date): boolean {
 +     const holidayDate = new Date(this.date);
 +     return holidayDate >= startDate && holidayDate <= endDate;
 +   }
-+ 
++
 +   clone(): Holiday {
 +     return new Holiday(this.toJSON());
 +   }
-+ 
++
 +   update(data: Partial<Holiday>): void {
 +     Object.assign(this, data);
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   static createOfficial(name: string, date: string): Holiday {
 +     return new Holiday({
 +       name,
@@ -2520,7 +2549,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       repeatsAnnually: true
 +     });
 +   }
-+ 
++
 +   static createCustom(name: string, date: string, cantonId?: number): Holiday {
 +     return new Holiday({
 +       name,
@@ -2531,7 +2560,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       repeatsAnnually: false
 +     });
 +   }
-+ 
++
 +   static createRegional(name: string, date: string, cantonId: number, municipalityId?: number): Holiday {
 +     return new Holiday({
 +       name,
@@ -2543,7 +2572,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       repeatsAnnually: true
 +     });
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -2553,17 +2582,17 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 ---
 
 ```diff
-- 
+-
 + import { Holiday } from '../models/Holiday';
 + import { supabase } from '../utils/supabaseClient';
-+ 
++
 + export class HolidayCollection {
 +   private holidays: Holiday[] = [];
-+ 
++
 +   constructor(initialHolidays: Holiday[] = []) {
 +     this.holidays = initialHolidays;
 +   }
-+ 
++
 +   async loadForYear(year: number, cantonId?: number): Promise<void> {
 +     try {
 +       let query = supabase
@@ -2571,86 +2600,86 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +         .select('*')
 +         .or(`date.gte.${year}-01-01,repeatsAnnually.eq.true`)
 +         .lt('date', `${year + 1}-01-01`);
-+ 
++
 +       if (cantonId) {
 +         query = query.or(`cantonId.eq.${cantonId},cantonId.is.null`);
 +       }
-+ 
++
 +       const { data, error } = await query;
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.holidays = (data || []).map(h => new Holiday(h));
 +     } catch (error) {
 +       console.error('Erro ao carregar feriados:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadAll(): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
 +         .from('global_holidays')
 +         .select('*')
 +         .order('date');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.holidays = (data || []).map(h => new Holiday(h));
 +     } catch (error) {
 +       console.error('Erro ao carregar todos os feriados:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   getAll(): Holiday[] {
 +     return this.holidays;
 +   }
-+ 
++
 +   getByYear(year: number): Holiday[] {
 +     return this.holidays.filter(h => h.isInYear(year));
 +   }
-+ 
++
 +   getByMonth(year: number, month: number): Holiday[] {
 +     return this.holidays.filter(h => h.isInYear(year) && h.isInMonth(month));
 +   }
-+ 
++
 +   getGlobalHolidays(): Holiday[] {
 +     return this.holidays.filter(h => h.isGlobal());
 +   }
-+ 
++
 +   getRegionalHolidays(): Holiday[] {
 +     return this.holidays.filter(h => h.isRegional());
 +   }
-+ 
++
 +   getCustomHolidays(): Holiday[] {
 +     return this.holidays.filter(h => h.isCustom());
 +   }
-+ 
++
 +   async add(holiday: Holiday): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('global_holidays')
 +         .insert(holiday.toJSON());
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.holidays.push(holiday);
 +     } catch (error) {
 +       console.error('Erro ao adicionar feriado:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async update(holiday: Holiday): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('global_holidays')
 +         .update(holiday.toJSON())
 +         .eq('id', holiday.id);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const index = this.holidays.findIndex(h => h.id === holiday.id);
 +       if (index !== -1) {
 +         this.holidays[index] = holiday;
@@ -2660,35 +2689,35 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async remove(holidayId: string): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('global_holidays')
 +         .delete()
 +         .eq('id', holidayId);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.holidays = this.holidays.filter(h => h.id !== holidayId);
 +     } catch (error) {
 +       console.error('Erro ao remover feriado:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   getByDateRange(startDate: Date, endDate: Date): Holiday[] {
 +     return this.holidays.filter(h => h.isInDateRange(startDate, endDate));
 +   }
-+ 
++
 +   getByCantonId(cantonId: number): Holiday[] {
 +     return this.holidays.filter(h => h.cantonId === cantonId || h.isGlobal());
 +   }
-+ 
++
 +   getByMunicipalityId(municipalityId: number): Holiday[] {
 +     return this.holidays.filter(h => h.municipalityId === municipalityId || h.isGlobal());
 +   }
-+ 
++
 +   getStatistics(year: number) {
 +     const yearHolidays = this.getByYear(year);
 +     return {
@@ -2699,7 +2728,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       global: yearHolidays.filter(h => h.isGlobal()).length
 +     };
 +   }
-+ 
++
 +   getMonthlyDistribution(year: number): Record<number, Holiday[]> {
 +     const distribution: Record<number, Holiday[]> = {};
 +     for (let month = 0; month < 12; month++) {
@@ -2707,7 +2736,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     }
 +     return distribution;
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -2717,40 +2746,40 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 ---
 
 ```diff
-- 
+-
 + import { Holiday } from '../models/Holiday';
 + import { HolidayCollection } from '../collections/HolidayCollection';
 + import { useTranslation } from 'react-i18next';
-+ 
++
 + export class HolidayPresenter {
 +   private collection: HolidayCollection;
 +   private t: (key: string) => string;
 +   private selectedYear: number;
 +   private selectedCantonId?: number;
-+ 
++
 +   constructor(collection: HolidayCollection) {
 +     this.collection = collection;
 +     const { t } = useTranslation();
 +     this.t = t;
 +     this.selectedYear = new Date().getFullYear();
 +   }
-+ 
++
 +   setYear(year: number) {
 +     this.selectedYear = year;
 +   }
-+ 
++
 +   setCanton(cantonId?: number) {
 +     this.selectedCantonId = cantonId;
 +   }
-+ 
++
 +   async initialize(): Promise<void> {
 +     await this.collection.loadForYear(this.selectedYear, this.selectedCantonId);
 +   }
-+ 
++
 +   getHolidayListViewModel() {
 +     const holidays = this.collection.getAll();
 +     const stats = this.collection.getStatistics(this.selectedYear);
-+ 
++
 +     return {
 +       holidays: holidays.map(h => this.mapHolidayToViewModel(h)),
 +       statistics: {
@@ -2763,7 +2792,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       monthlyDistribution: this.getMonthlyDistributionViewModel()
 +     };
 +   }
-+ 
++
 +   private mapHolidayToViewModel(holiday: Holiday) {
 +     return {
 +       id: holiday.id,
@@ -2781,7 +2810,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       typeClass: this.getTypeClass(holiday)
 +     };
 +   }
-+ 
++
 +   private getTypeClass(holiday: Holiday): string {
 +     if (holiday.isCustom()) {
 +       return 'bg-purple-100 text-purple-800';
@@ -2791,7 +2820,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     }
 +     return 'bg-green-100 text-green-800';
 +   }
-+ 
++
 +   private getMonthlyDistributionViewModel() {
 +     const distribution = this.collection.getMonthlyDistribution(this.selectedYear);
 +     return Object.entries(distribution).map(([month, holidays]) => ({
@@ -2800,7 +2829,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       holidays: holidays.map(h => this.mapHolidayToViewModel(h))
 +     }));
 +   }
-+ 
++
 +   async createHoliday(data: {
 +     name: string;
 +     date: string;
@@ -2812,7 +2841,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +   }): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       let holiday: Holiday;
-+ 
++
 +       switch (data.type) {
 +         case 'OFFICIAL':
 +           holiday = Holiday.createOfficial(data.name, data.date);
@@ -2829,14 +2858,14 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +         default:
 +           throw new Error('Invalid holiday type');
 +       }
-+ 
++
 +       if (data.description) {
 +         holiday.description = data.description;
 +       }
 +       if (data.repeatsAnnually !== undefined) {
 +         holiday.repeatsAnnually = data.repeatsAnnually;
 +       }
-+ 
++
 +       await this.collection.add(holiday);
 +       return { success: true };
 +     } catch (error) {
@@ -2847,7 +2876,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       };
 +     }
 +   }
-+ 
++
 +   async updateHoliday(holidayId: string, data: Partial<Holiday>): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       const holiday = this.collection.getAll().find(h => h.id === holidayId);
@@ -2857,7 +2886,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +           message: this.t('holidayManagement.holidayNotFound')
 +         };
 +       }
-+ 
++
 +       holiday.update(data);
 +       await this.collection.update(holiday);
 +       return { success: true };
@@ -2869,7 +2898,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       };
 +     }
 +   }
-+ 
++
 +   async removeHoliday(holidayId: string): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       await this.collection.remove(holidayId);
@@ -2882,13 +2911,13 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +       };
 +     }
 +   }
-+ 
++
 +   getHolidaysByMonth(month: number) {
 +     return this.collection
 +       .getByMonth(this.selectedYear, month)
 +       .map(h => this.mapHolidayToViewModel(h));
 +   }
-+ 
++
 +   getHolidaysByType(type: 'OFFICIAL' | 'CUSTOM' | 'REGIONAL') {
 +     let holidays: Holiday[];
 +     switch (type) {
@@ -2906,7 +2935,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     }
 +     return holidays.map(h => this.mapHolidayToViewModel(h));
 +   }
-+ 
++
 +   getHolidaysByRegion(cantonId: number, municipalityId?: number) {
 +     let holidays = this.collection.getByCantonId(cantonId);
 +     if (municipalityId) {
@@ -2914,7 +2943,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     }
 +     return holidays.map(h => this.mapHolidayToViewModel(h));
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -2924,32 +2953,32 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 ---
 
 ```diff
-- 
+-
 + import { useState, useEffect, useMemo } from 'react';
 + import { HolidayCollection } from '../collections/HolidayCollection';
 + import { HolidayPresenter } from '../presenters/HolidayPresenter';
 + import { useNotificationContext } from '../contexts/NotificationContext';
 + import { useTranslation } from 'react-i18next';
-+ 
++
 + export function useHolidayPresenter(year?: number, cantonId?: number) {
 +   const { t } = useTranslation();
 +   const { addNotification } = useNotificationContext();
 +   const [isLoading, setIsLoading] = useState(true);
 +   const [error, setError] = useState<string | null>(null);
-+ 
++
 +   // Criar instâncias das classes MCP
 +   const collection = useMemo(() => new HolidayCollection(), []);
 +   const presenter = useMemo(() => new HolidayPresenter(collection), [collection]);
-+ 
++
 +   // Estado para armazenar os dados processados
 +   const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getHolidayListViewModel>>();
-+ 
++
 +   // Configurar ano e cantão selecionados
 +   useEffect(() => {
 +     if (year) presenter.setYear(year);
 +     if (cantonId !== undefined) presenter.setCanton(cantonId);
 +   }, [presenter, year, cantonId]);
-+ 
++
 +   // Carregar dados iniciais
 +   useEffect(() => {
 +     async function loadData() {
@@ -2965,10 +2994,10 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +         setIsLoading(false);
 +       }
 +     }
-+ 
++
 +     loadData();
 +   }, [presenter, t, addNotification]);
-+ 
++
 +   const handleCreateHoliday = async (data: Parameters<typeof presenter.createHoliday>[0]) => {
 +     const result = await presenter.createHoliday(data);
 +     if (result.success) {
@@ -2979,7 +3008,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleUpdateHoliday = async (holidayId: string, data: Parameters<typeof presenter.updateHoliday>[1]) => {
 +     const result = await presenter.updateHoliday(holidayId, data);
 +     if (result.success) {
@@ -2990,7 +3019,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleRemoveHoliday = async (holidayId: string) => {
 +     const result = await presenter.removeHoliday(holidayId);
 +     if (result.success) {
@@ -3001,7 +3030,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     }
 +     return result;
 +   };
-+ 
++
 +   return {
 +     isLoading,
 +     error,
@@ -3013,7 +3042,7 @@ Vou implementar o padrão MCP para o módulo de Feriados (Holidays), que é outr
 +     getHolidaysByType: (type: 'OFFICIAL' | 'CUSTOM' | 'REGIONAL') => presenter.getHolidaysByType(type),
 +     getHolidaysByRegion: (cantonId: number, municipalityId?: number) => presenter.getHolidaysByRegion(cantonId, municipalityId)
 +   };
-+ } 
++ }
 ```
 
 ---
@@ -3053,7 +3082,7 @@ git commit -m "feat: Implementa padrão MCP para módulo de feriados
  create mode 100644 src/hooks/useHolidayPresenter.ts
  create mode 100644 src/models/Holiday.ts
  create mode 100644 src/presenters/HolidayPresenter.ts
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
@@ -3084,15 +3113,15 @@ function HolidayManagementPage() {
   return (
     <div className="space-y-6">
       <HolidayStats statistics={data.statistics} />
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <HolidayList 
+        <HolidayList
           holidays={data.holidays}
           onUpdate={updateHoliday}
           onRemove={removeHoliday}
         />
-        
-        <MonthlyDistribution 
+
+        <MonthlyDistribution
           distribution={data.monthlyDistribution}
           onSelectMonth={(month) => {
             const holidays = getHolidaysByMonth(month);
@@ -3219,14 +3248,14 @@ Vou propor a implementação do módulo de Registro de Horas (DailyLog) primeiro
 ---
 
 ```diff
-- 
+-
 + export type EntryType = 'Regular' | 'Vacance' | 'Ferié' | 'Récupération' | 'Maladie';
-+ 
++
 + export interface TimeSegment {
 +   start: string;
 +   end: string;
 + }
-+ 
++
 + export class DailyLog {
 +   id: string;
 +   userId: string;
@@ -3238,7 +3267,7 @@ Vou propor a implementação do módulo de Registro de Horas (DailyLog) primeiro
 +   comment?: string;
 +   createdAt: string;
 +   updatedAt: string;
-+ 
++
 +   constructor(data: Partial<DailyLog>) {
 +     this.id = data.id || `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 +     this.userId = data.userId || '';
@@ -3251,7 +3280,7 @@ Vou propor a implementação do módulo de Registro de Horas (DailyLog) primeiro
 +     this.createdAt = data.createdAt || new Date().toISOString();
 +     this.updatedAt = data.updatedAt || new Date().toISOString();
 +   }
-+ 
++
 +   toJSON() {
 +     return {
 +       id: this.id,
@@ -3266,46 +3295,46 @@ Vou propor a implementação do módulo de Registro de Horas (DailyLog) primeiro
 +       updatedAt: this.updatedAt
 +     };
 +   }
-+ 
++
 +   private calculateSegmentHours(segment?: TimeSegment): number {
 +     if (!segment || !segment.start || !segment.end) return 0;
-+ 
++
 +     const startParts = segment.start.split(':').map(Number);
 +     const endParts = segment.end.split(':').map(Number);
-+ 
++
 +     const startMinutes = startParts[0] * 60 + startParts[1];
 +     const endMinutes = endParts[0] * 60 + endParts[1];
-+ 
++
 +     return (endMinutes - startMinutes) / 60;
 +   }
-+ 
++
 +   calculateTotalHours(): number {
 +     const morningHours = this.calculateSegmentHours(this.morning);
 +     const afternoonHours = this.calculateSegmentHours(this.afternoon);
 +     this.totalHours = morningHours + afternoonHours;
 +     return this.totalHours;
 +   }
-+ 
++
 +   getFormattedDate(locale: string = 'pt-BR'): string {
 +     return new Date(this.date).toLocaleDateString(locale);
 +   }
-+ 
++
 +   getFormattedTime(segment?: TimeSegment): string {
 +     if (!segment) return '--:--';
 +     return `${segment.start} - ${segment.end}`;
 +   }
-+ 
++
 +   isComplete(): boolean {
 +     return !!(
 +       (this.morning?.start && this.morning?.end) ||
 +       (this.afternoon?.start && this.afternoon?.end)
 +     );
 +   }
-+ 
++
 +   isWorkDay(): boolean {
 +     return this.type === 'Regular' || this.type === 'Récupération';
 +   }
-+ 
++
 +   update(data: Partial<DailyLog>): void {
 +     Object.assign(this, data);
 +     this.updatedAt = new Date().toISOString();
@@ -3313,27 +3342,27 @@ Vou propor a implementação do módulo de Registro de Horas (DailyLog) primeiro
 +       this.calculateTotalHours();
 +     }
 +   }
-+ 
++
 +   setMorningTime(start: string, end: string): void {
 +     this.morning = { start, end };
 +     this.calculateTotalHours();
 +   }
-+ 
++
 +   setAfternoonTime(start: string, end: string): void {
 +     this.afternoon = { start, end };
 +     this.calculateTotalHours();
 +   }
-+ 
++
 +   clearMorningTime(): void {
 +     this.morning = undefined;
 +     this.calculateTotalHours();
 +   }
-+ 
++
 +   clearAfternoonTime(): void {
 +     this.afternoon = undefined;
 +     this.calculateTotalHours();
 +   }
-+ 
++
 +   static createRegular(userId: string, date: string): DailyLog {
 +     return new DailyLog({
 +       userId,
@@ -3341,7 +3370,7 @@ Vou propor a implementação do módulo de Registro de Horas (DailyLog) primeiro
 +       type: 'Regular'
 +     });
 +   }
-+ 
++
 +   static createSickLeave(userId: string, date: string, comment?: string): DailyLog {
 +     return new DailyLog({
 +       userId,
@@ -3350,7 +3379,7 @@ Vou propor a implementação do módulo de Registro de Horas (DailyLog) primeiro
 +       comment
 +     });
 +   }
-+ 
++
 +   static createRecovery(userId: string, date: string, comment?: string): DailyLog {
 +     return new DailyLog({
 +       userId,
@@ -3359,7 +3388,7 @@ Vou propor a implementação do módulo de Registro de Horas (DailyLog) primeiro
 +       comment
 +     });
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -3369,17 +3398,17 @@ Agora vou criar a Collection para gerenciar os registros diários:
 ---
 
 ```diff
-- 
+-
 + import { DailyLog, EntryType } from '../models/DailyLog';
 + import { supabase } from '../utils/supabaseClient';
-+ 
++
 + export class DailyLogCollection {
 +   private logs: DailyLog[] = [];
-+ 
++
 +   constructor(initialLogs: DailyLog[] = []) {
 +     this.logs = initialLogs;
 +   }
-+ 
++
 +   async loadForMonth(userId: string, year: number, month: number): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -3389,16 +3418,16 @@ Agora vou criar a Collection para gerenciar os registros diários:
 +         .gte('date', `${year}-${String(month + 1).padStart(2, '0')}-01`)
 +         .lt('date', `${year}-${String(month + 2).padStart(2, '0')}-01`)
 +         .order('date');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.logs = (data || []).map(log => new DailyLog(log));
 +     } catch (error) {
 +       console.error('Erro ao carregar registros diários:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadForDateRange(userId: string, startDate: string, endDate: string): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -3408,36 +3437,36 @@ Agora vou criar a Collection para gerenciar os registros diários:
 +         .gte('date', startDate)
 +         .lte('date', endDate)
 +         .order('date');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.logs = (data || []).map(log => new DailyLog(log));
 +     } catch (error) {
 +       console.error('Erro ao carregar registros diários:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   getAll(): DailyLog[] {
 +     return this.logs;
 +   }
-+ 
++
 +   getByDate(date: string): DailyLog | undefined {
 +     return this.logs.find(log => log.date === date);
 +   }
-+ 
++
 +   getByType(type: EntryType): DailyLog[] {
 +     return this.logs.filter(log => log.type === type);
 +   }
-+ 
++
 +   async add(log: DailyLog): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('user_daily_logs')
 +         .insert(log.toJSON());
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.logs.push(log);
 +       this.sortLogs();
 +     } catch (error) {
@@ -3445,16 +3474,16 @@ Agora vou criar a Collection para gerenciar os registros diários:
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async update(log: DailyLog): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('user_daily_logs')
 +         .update(log.toJSON())
 +         .eq('id', log.id);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const index = this.logs.findIndex(l => l.id === log.id);
 +       if (index !== -1) {
 +         this.logs[index] = log;
@@ -3464,59 +3493,59 @@ Agora vou criar a Collection para gerenciar os registros diários:
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async remove(logId: string): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('user_daily_logs')
 +         .delete()
 +         .eq('id', logId);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.logs = this.logs.filter(l => l.id !== logId);
 +     } catch (error) {
 +       console.error('Erro ao remover registro:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   private sortLogs(): void {
 +     this.logs.sort((a, b) => a.date.localeCompare(b.date));
 +   }
-+ 
++
 +   getTotalHours(): number {
 +     return this.logs.reduce((total, log) => total + log.totalHours, 0);
 +   }
-+ 
++
 +   getTotalWorkDays(): number {
 +     return this.logs.filter(log => log.isWorkDay()).length;
 +   }
-+ 
++
 +   getWorkHoursByType(): Record<EntryType, number> {
 +     return this.logs.reduce((acc, log) => {
 +       acc[log.type] = (acc[log.type] || 0) + log.totalHours;
 +       return acc;
 +     }, {} as Record<EntryType, number>);
 +   }
-+ 
++
 +   getDailyAverageHours(): number {
 +     const workDays = this.getTotalWorkDays();
 +     return workDays > 0 ? this.getTotalHours() / workDays : 0;
 +   }
-+ 
++
 +   getIncompleteEntries(): DailyLog[] {
 +     return this.logs.filter(log => !log.isComplete());
 +   }
-+ 
++
 +   async bulkUpdate(logs: DailyLog[]): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('user_daily_logs')
 +         .upsert(logs.map(log => log.toJSON()));
-+ 
++
 +       if (error) throw error;
-+ 
++
 +       // Atualizar a coleção local
 +       logs.forEach(log => {
 +         const index = this.logs.findIndex(l => l.id === log.id);
@@ -3526,14 +3555,14 @@ Agora vou criar a Collection para gerenciar os registros diários:
 +           this.logs.push(log);
 +         }
 +       });
-+ 
++
 +       this.sortLogs();
 +     } catch (error) {
 +       console.error('Erro ao atualizar registros em lote:', error);
 +       throw error;
 +     }
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -3543,18 +3572,18 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 ---
 
 ```diff
-- 
+-
 + import { DailyLog, EntryType, TimeSegment } from '../models/DailyLog';
 + import { DailyLogCollection } from '../collections/DailyLogCollection';
 + import { useTranslation } from 'react-i18next';
-+ 
++
 + export class DailyLogPresenter {
 +   private collection: DailyLogCollection;
 +   private t: (key: string) => string;
 +   private userId?: string;
 +   private selectedYear: number;
 +   private selectedMonth: number;
-+ 
++
 +   constructor(collection: DailyLogCollection) {
 +     this.collection = collection;
 +     const { t } = useTranslation();
@@ -3563,25 +3592,25 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +     this.selectedYear = now.getFullYear();
 +     this.selectedMonth = now.getMonth();
 +   }
-+ 
++
 +   setUserId(userId: string) {
 +     this.userId = userId;
 +   }
-+ 
++
 +   setDate(year: number, month: number) {
 +     this.selectedYear = year;
 +     this.selectedMonth = month;
 +   }
-+ 
++
 +   async initialize(): Promise<void> {
 +     if (!this.userId) throw new Error('UserId não definido');
 +     await this.collection.loadForMonth(this.userId, this.selectedYear, this.selectedMonth);
 +   }
-+ 
++
 +   getDailyLogViewModel() {
 +     const logs = this.collection.getAll();
 +     const hoursByType = this.collection.getWorkHoursByType();
-+ 
++
 +     return {
 +       logs: logs.map(log => this.mapDailyLogToViewModel(log)),
 +       summary: {
@@ -3597,7 +3626,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       }
 +     };
 +   }
-+ 
++
 +   private mapDailyLogToViewModel(log: DailyLog) {
 +     return {
 +       id: log.id,
@@ -3618,7 +3647,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       typeClass: this.getTypeClass(log.type)
 +     };
 +   }
-+ 
++
 +   private getTypeClass(type: EntryType): string {
 +     const classes = {
 +       'Regular': 'bg-blue-100 text-blue-800',
@@ -3629,11 +3658,11 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +     };
 +     return classes[type] || '';
 +   }
-+ 
++
 +   async createLog(date: string, type: EntryType = 'Regular'): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       if (!this.userId) throw new Error('UserId não definido');
-+ 
++
 +       let log: DailyLog;
 +       switch (type) {
 +         case 'Maladie':
@@ -3645,7 +3674,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +         default:
 +           log = DailyLog.createRegular(this.userId, date);
 +       }
-+ 
++
 +       await this.collection.add(log);
 +       return { success: true };
 +     } catch (error) {
@@ -3656,7 +3685,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   async updateLog(logId: string, data: {
 +     type?: EntryType;
 +     morning?: TimeSegment;
@@ -3671,7 +3700,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +           message: this.t('dailyLog.logNotFound')
 +         };
 +       }
-+ 
++
 +       if (data.morning) {
 +         log.setMorningTime(data.morning.start, data.morning.end);
 +       }
@@ -3684,7 +3713,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       if (data.comment !== undefined) {
 +         log.update({ comment: data.comment });
 +       }
-+ 
++
 +       await this.collection.update(log);
 +       return { success: true };
 +     } catch (error) {
@@ -3695,7 +3724,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   async removeLog(logId: string): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       await this.collection.remove(logId);
@@ -3708,7 +3737,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   async bulkUpdateLogs(updates: Array<{
 +     date: string;
 +     type?: EntryType;
@@ -3718,14 +3747,14 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +   }>): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       if (!this.userId) throw new Error('UserId não definido');
-+ 
++
 +       const logs: DailyLog[] = [];
 +       for (const update of updates) {
 +         let log = this.collection.getByDate(update.date);
 +         if (!log) {
 +           log = new DailyLog({ userId: this.userId, date: update.date });
 +         }
-+ 
++
 +         if (update.morning) {
 +           log.setMorningTime(update.morning.start, update.morning.end);
 +         }
@@ -3738,10 +3767,10 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +         if (update.comment !== undefined) {
 +           log.update({ comment: update.comment });
 +         }
-+ 
++
 +         logs.push(log);
 +       }
-+ 
++
 +       await this.collection.bulkUpdate(logs);
 +       return { success: true };
 +     } catch (error) {
@@ -3752,15 +3781,15 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   getLogsByType(type: EntryType) {
 +     return this.collection.getByType(type).map(log => this.mapDailyLogToViewModel(log));
 +   }
-+ 
++
 +   getIncompleteLogsViewModel() {
 +     return this.collection.getIncompleteEntries().map(log => this.mapDailyLogToViewModel(log));
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -3770,7 +3799,7 @@ Por fim, vou criar o hook personalizado:
 ---
 
 ```diff
-- 
+-
 + import { useState, useEffect, useMemo } from 'react';
 + import { DailyLogCollection } from '../collections/DailyLogCollection';
 + import { DailyLogPresenter } from '../presenters/DailyLogPresenter';
@@ -3778,21 +3807,21 @@ Por fim, vou criar o hook personalizado:
 + import { useTranslation } from 'react-i18next';
 + import { useAuth } from './useAuth';
 + import { EntryType, TimeSegment } from '../models/DailyLog';
-+ 
++
 + export function useDailyLogPresenter(year?: number, month?: number) {
 +   const { t } = useTranslation();
 +   const { addNotification } = useNotificationContext();
 +   const { user } = useAuth();
 +   const [isLoading, setIsLoading] = useState(true);
 +   const [error, setError] = useState<string | null>(null);
-+ 
++
 +   // Criar instâncias das classes MCP
 +   const collection = useMemo(() => new DailyLogCollection(), []);
 +   const presenter = useMemo(() => new DailyLogPresenter(collection), [collection]);
-+ 
++
 +   // Estado para armazenar os dados processados
 +   const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getDailyLogViewModel>>();
-+ 
++
 +   // Configurar usuário e data
 +   useEffect(() => {
 +     if (user?.id) {
@@ -3802,11 +3831,11 @@ Por fim, vou criar o hook personalizado:
 +       presenter.setDate(year, month);
 +     }
 +   }, [presenter, user?.id, year, month]);
-+ 
++
 +   // Carregar dados iniciais
 +   useEffect(() => {
 +     if (!user?.id || year === undefined || month === undefined) return;
-+ 
++
 +     async function loadData() {
 +       try {
 +         setIsLoading(true);
@@ -3820,10 +3849,10 @@ Por fim, vou criar o hook personalizado:
 +         setIsLoading(false);
 +       }
 +     }
-+ 
++
 +     loadData();
 +   }, [presenter, user?.id, year, month, t, addNotification]);
-+ 
++
 +   const handleCreateLog = async (date: string, type?: EntryType) => {
 +     const result = await presenter.createLog(date, type);
 +     if (result.success) {
@@ -3834,7 +3863,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleUpdateLog = async (logId: string, data: {
 +     type?: EntryType;
 +     morning?: TimeSegment;
@@ -3850,7 +3879,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleRemoveLog = async (logId: string) => {
 +     const result = await presenter.removeLog(logId);
 +     if (result.success) {
@@ -3861,7 +3890,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleBulkUpdate = async (updates: Array<{
 +     date: string;
 +     type?: EntryType;
@@ -3878,7 +3907,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   return {
 +     isLoading,
 +     error,
@@ -3890,7 +3919,7 @@ Por fim, vou criar o hook personalizado:
 +     getLogsByType: (type: EntryType) => presenter.getLogsByType(type),
 +     getIncompleteLogs: () => presenter.getIncompleteLogsViewModel()
 +   };
-+ } 
++ }
 ```
 
 ---
@@ -3930,7 +3959,7 @@ git commit -m "feat: Implementa padrão MCP para módulo de registros diários
  create mode 100644 src/hooks/useDailyLogPresenter.ts
  create mode 100644 src/models/DailyLog.ts
  create mode 100644 src/presenters/DailyLogPresenter.ts
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
@@ -4011,25 +4040,25 @@ Vou começar implementando o módulo GlobalSettings, que é o mais crítico:
 ---
 
 ```diff
-- 
+-
 + export interface WorkTimeDefaults {
 +   overallStartTime?: string;
 +   overallEndTime?: string;
 + }
-+ 
++
 + export interface VacationRules {
 +   minAdvanceNotice: number;
 +   maxConsecutiveDays: number;
 +   autoApprovalEnabled: boolean;
 +   maxConcurrentUsers?: number;
 + }
-+ 
++
 + export interface RegionalSettings {
 +   defaultCantonId?: number;
 +   useRegionalHolidays: boolean;
 +   allowMunicipalityHolidays: boolean;
 + }
-+ 
++
 + export class GlobalSettings {
 +   id: string;
 +   tauxPercent: number;
@@ -4039,7 +4068,7 @@ Vou começar implementando o módulo GlobalSettings, que é o mais crítico:
 +   regionalSettings: RegionalSettings;
 +   createdAt: string;
 +   updatedAt: string;
-+ 
++
 +   constructor(data: Partial<GlobalSettings>) {
 +     this.id = data.id || 'global-settings';
 +     this.tauxPercent = data.tauxPercent || 100;
@@ -4059,7 +4088,7 @@ Vou começar implementando o módulo GlobalSettings, que é o mais crítico:
 +     this.createdAt = data.createdAt || new Date().toISOString();
 +     this.updatedAt = data.updatedAt || new Date().toISOString();
 +   }
-+ 
++
 +   toJSON() {
 +     return {
 +       id: this.id,
@@ -4072,7 +4101,7 @@ Vou começar implementando o módulo GlobalSettings, que é o mais crítico:
 +       updatedAt: this.updatedAt
 +     };
 +   }
-+ 
++
 +   update(data: Partial<GlobalSettings>): void {
 +     if (data.tauxPercent !== undefined) {
 +       this.tauxPercent = this.validateTauxPercent(data.tauxPercent);
@@ -4091,37 +4120,37 @@ Vou começar implementando o módulo GlobalSettings, que é o mais crítico:
 +     }
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   private validateTauxPercent(value: number): number {
 +     if (value < 0) return 0;
 +     if (value > 100) return 100;
 +     return value;
 +   }
-+ 
++
 +   private validateAnnualVacationDays(value: number): number {
 +     if (value < 0) return 0;
 +     if (value > 365) return 365;
 +     return value;
 +   }
-+ 
++
 +   private validateWorkTimeDefaults(defaults: WorkTimeDefaults): WorkTimeDefaults {
 +     if (!defaults.overallStartTime && !defaults.overallEndTime) {
 +       return undefined;
 +     }
 +     return defaults;
 +   }
-+ 
++
 +   private validateVacationRules(rules: VacationRules): VacationRules {
 +     return {
 +       minAdvanceNotice: Math.max(0, rules.minAdvanceNotice),
 +       maxConsecutiveDays: Math.max(1, rules.maxConsecutiveDays),
 +       autoApprovalEnabled: rules.autoApprovalEnabled,
-+       maxConcurrentUsers: rules.maxConcurrentUsers !== undefined 
-+         ? Math.max(1, rules.maxConcurrentUsers) 
++       maxConcurrentUsers: rules.maxConcurrentUsers !== undefined
++         ? Math.max(1, rules.maxConcurrentUsers)
 +         : undefined
 +     };
 +   }
-+ 
++
 +   private validateRegionalSettings(settings: RegionalSettings): RegionalSettings {
 +     return {
 +       defaultCantonId: settings.defaultCantonId,
@@ -4129,39 +4158,39 @@ Vou começar implementando o módulo GlobalSettings, que é o mais crítico:
 +       allowMunicipalityHolidays: settings.allowMunicipalityHolidays
 +     };
 +   }
-+ 
++
 +   isWorkTimeConfigured(): boolean {
 +     return !!(this.workTimeDefaults?.overallStartTime && this.workTimeDefaults?.overallEndTime);
 +   }
-+ 
++
 +   isAutoApprovalEnabled(): boolean {
 +     return this.vacationRules.autoApprovalEnabled;
 +   }
-+ 
++
 +   isRegionalHolidaysEnabled(): boolean {
 +     return this.regionalSettings.useRegionalHolidays;
 +   }
-+ 
++
 +   isMunicipalityHolidaysEnabled(): boolean {
 +     return this.regionalSettings.allowMunicipalityHolidays;
 +   }
-+ 
++
 +   getDefaultWorkHours(): number {
 +     if (!this.isWorkTimeConfigured()) return 8; // Padrão de 8 horas
-+ 
++
 +     const start = this.workTimeDefaults.overallStartTime.split(':').map(Number);
 +     const end = this.workTimeDefaults.overallEndTime.split(':').map(Number);
-+     
++
 +     const startMinutes = start[0] * 60 + start[1];
 +     const endMinutes = end[0] * 60 + end[1];
-+     
++
 +     return (endMinutes - startMinutes) / 60;
 +   }
-+ 
++
 +   getAdjustedVacationDays(): number {
 +     return Math.round((this.annualVacationDays * this.tauxPercent) / 100);
 +   }
-+ 
++
 +   static createDefault(): GlobalSettings {
 +     return new GlobalSettings({
 +       tauxPercent: 100,
@@ -4181,7 +4210,7 @@ Vou começar implementando o módulo GlobalSettings, que é o mais crítico:
 +       }
 +     });
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -4191,24 +4220,24 @@ Agora vou criar a Collection para gerenciar as configurações globais:
 ---
 
 ```diff
-- 
+-
 + import { GlobalSettings } from '../models/GlobalSettings';
 + import { supabase } from '../utils/supabaseClient';
-+ 
++
 + export class GlobalSettingsCollection {
 +   private settings: GlobalSettings;
-+ 
++
 +   constructor(initialSettings?: GlobalSettings) {
 +     this.settings = initialSettings || GlobalSettings.createDefault();
 +   }
-+ 
++
 +   async load(): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
 +         .from('global_settings')
 +         .select('*')
 +         .single();
-+ 
++
 +       if (error) {
 +         if (error.code === 'PGRST116') { // Não encontrado
 +           // Criar configurações padrão se não existirem
@@ -4226,36 +4255,36 @@ Agora vou criar a Collection para gerenciar as configurações globais:
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async save(settings: GlobalSettings): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('global_settings')
 +         .upsert(settings.toJSON());
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.settings = settings;
 +     } catch (error) {
 +       console.error('Erro ao salvar configurações globais:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   get(): GlobalSettings {
 +     return this.settings;
 +   }
-+ 
++
 +   async update(data: Partial<GlobalSettings>): Promise<void> {
 +     this.settings.update(data);
 +     await this.save(this.settings);
 +   }
-+ 
++
 +   async reset(): Promise<void> {
 +     const defaultSettings = GlobalSettings.createDefault();
 +     await this.save(defaultSettings);
 +   }
-+ 
++
 +   // Métodos de validação específicos
 +   validateVacationRequest(startDate: Date, endDate: Date, userId: string): {
 +     isValid: boolean;
@@ -4270,7 +4299,7 @@ Agora vou criar a Collection para gerenciar as configurações globais:
 +         message: `Solicitações devem ser feitas com pelo menos ${this.settings.vacationRules.minAdvanceNotice} dias de antecedência.`
 +       };
 +     }
-+ 
++
 +     // Verificar dias consecutivos
 +     const vacationDays = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 +     if (vacationDays > this.settings.vacationRules.maxConsecutiveDays) {
@@ -4279,44 +4308,44 @@ Agora vou criar a Collection para gerenciar as configurações globais:
 +         message: `O período máximo de férias consecutivas é de ${this.settings.vacationRules.maxConsecutiveDays} dias.`
 +       };
 +     }
-+ 
++
 +     return { isValid: true };
 +   }
-+ 
++
 +   shouldAutoApprove(startDate: Date, endDate: Date): boolean {
 +     if (!this.settings.isAutoApprovalEnabled()) {
 +       return false;
 +     }
-+ 
++
 +     const today = new Date();
 +     const daysUntilStart = Math.floor((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 +     const vacationDays = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-+ 
++
 +     return (
 +       daysUntilStart >= this.settings.vacationRules.minAdvanceNotice &&
 +       vacationDays <= this.settings.vacationRules.maxConsecutiveDays
 +     );
 +   }
-+ 
++
 +   getWorkHoursForDate(date: Date): number {
 +     // Implementar lógica específica por dia da semana se necessário
 +     return this.settings.getDefaultWorkHours();
 +   }
-+ 
++
 +   shouldConsiderRegionalHolidays(cantonId?: number): boolean {
 +     return this.settings.isRegionalHolidaysEnabled() && (
 +       !cantonId || cantonId === this.settings.regionalSettings.defaultCantonId
 +     );
 +   }
-+ 
++
 +   shouldConsiderMunicipalityHolidays(): boolean {
 +     return this.settings.isMunicipalityHolidaysEnabled();
 +   }
-+ 
++
 +   getAdjustedVacationDays(): number {
 +     return this.settings.getAdjustedVacationDays();
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -4326,28 +4355,28 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 ---
 
 ```diff
-- 
+-
 + import { GlobalSettings, WorkTimeDefaults, VacationRules, RegionalSettings } from '../models/GlobalSettings';
 + import { GlobalSettingsCollection } from '../collections/GlobalSettingsCollection';
 + import { useTranslation } from 'react-i18next';
-+ 
++
 + export class GlobalSettingsPresenter {
 +   private collection: GlobalSettingsCollection;
 +   private t: (key: string) => string;
-+ 
++
 +   constructor(collection: GlobalSettingsCollection) {
 +     this.collection = collection;
 +     const { t } = useTranslation();
 +     this.t = t;
 +   }
-+ 
++
 +   async initialize(): Promise<void> {
 +     await this.collection.load();
 +   }
-+ 
++
 +   getSettingsViewModel() {
 +     const settings = this.collection.get();
-+ 
++
 +     return {
 +       general: {
 +         tauxPercent: {
@@ -4409,7 +4438,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       }
 +     };
 +   }
-+ 
++
 +   async updateWorkTime(data: WorkTimeDefaults): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       await this.collection.update({ workTimeDefaults: data });
@@ -4422,7 +4451,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   async updateVacationRules(data: VacationRules): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       await this.collection.update({ vacationRules: data });
@@ -4435,7 +4464,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   async updateRegionalSettings(data: RegionalSettings): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       await this.collection.update({ regionalSettings: data });
@@ -4448,7 +4477,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   async updateGeneralSettings(data: {
 +     tauxPercent?: number;
 +     annualVacationDays?: number;
@@ -4464,7 +4493,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   async resetToDefaults(): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       await this.collection.reset();
@@ -4477,7 +4506,7 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +       };
 +     }
 +   }
-+ 
++
 +   validateVacationRequest(startDate: Date, endDate: Date, userId: string): {
 +     isValid: boolean;
 +     message?: string;
@@ -4487,26 +4516,26 @@ Agora vou criar o Presenter para gerenciar a lógica de apresentação:
 +     if (!validation.isValid) {
 +       return validation;
 +     }
-+ 
++
 +     const autoApproved = this.collection.shouldAutoApprove(startDate, endDate);
 +     return {
 +       isValid: true,
 +       autoApproved
 +     };
 +   }
-+ 
++
 +   getWorkHoursForDate(date: Date): number {
 +     return this.collection.getWorkHoursForDate(date);
 +   }
-+ 
++
 +   shouldConsiderRegionalHolidays(cantonId?: number): boolean {
 +     return this.collection.shouldConsiderRegionalHolidays(cantonId);
 +   }
-+ 
++
 +   shouldConsiderMunicipalityHolidays(): boolean {
 +     return this.collection.shouldConsiderMunicipalityHolidays();
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -4516,27 +4545,27 @@ Por fim, vou criar o hook personalizado:
 ---
 
 ```diff
-- 
+-
 + import { useState, useEffect, useMemo } from 'react';
 + import { GlobalSettingsCollection } from '../collections/GlobalSettingsCollection';
 + import { GlobalSettingsPresenter } from '../presenters/GlobalSettingsPresenter';
 + import { useNotificationContext } from '../contexts/NotificationContext';
 + import { useTranslation } from 'react-i18next';
 + import { WorkTimeDefaults, VacationRules, RegionalSettings } from '../models/GlobalSettings';
-+ 
++
 + export function useGlobalSettingsPresenter() {
 +   const { t } = useTranslation();
 +   const { addNotification } = useNotificationContext();
 +   const [isLoading, setIsLoading] = useState(true);
 +   const [error, setError] = useState<string | null>(null);
-+ 
++
 +   // Criar instâncias das classes MCP
 +   const collection = useMemo(() => new GlobalSettingsCollection(), []);
 +   const presenter = useMemo(() => new GlobalSettingsPresenter(collection), [collection]);
-+ 
++
 +   // Estado para armazenar os dados processados
 +   const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getSettingsViewModel>>();
-+ 
++
 +   // Carregar dados iniciais
 +   useEffect(() => {
 +     async function loadData() {
@@ -4552,10 +4581,10 @@ Por fim, vou criar o hook personalizado:
 +         setIsLoading(false);
 +       }
 +     }
-+ 
++
 +     loadData();
 +   }, [presenter, t, addNotification]);
-+ 
++
 +   const handleUpdateWorkTime = async (data: WorkTimeDefaults) => {
 +     const result = await presenter.updateWorkTime(data);
 +     if (result.success) {
@@ -4566,7 +4595,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleUpdateVacationRules = async (data: VacationRules) => {
 +     const result = await presenter.updateVacationRules(data);
 +     if (result.success) {
@@ -4577,7 +4606,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleUpdateRegionalSettings = async (data: RegionalSettings) => {
 +     const result = await presenter.updateRegionalSettings(data);
 +     if (result.success) {
@@ -4588,7 +4617,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleUpdateGeneralSettings = async (data: {
 +     tauxPercent?: number;
 +     annualVacationDays?: number;
@@ -4602,7 +4631,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleResetToDefaults = async () => {
 +     const result = await presenter.resetToDefaults();
 +     if (result.success) {
@@ -4613,7 +4642,7 @@ Por fim, vou criar o hook personalizado:
 +     }
 +     return result;
 +   };
-+ 
++
 +   return {
 +     isLoading,
 +     error,
@@ -4632,7 +4661,7 @@ Por fim, vou criar o hook personalizado:
 +     shouldConsiderMunicipalityHolidays: () =>
 +       presenter.shouldConsiderMunicipalityHolidays()
 +   };
-+ } 
++ }
 ```
 
 ---
@@ -4672,7 +4701,7 @@ git commit -m "feat: Implementa padrão MCP para módulo de configurações glob
  create mode 100644 src/hooks/useGlobalSettingsPresenter.ts
  create mode 100644 src/models/GlobalSettings.ts
  create mode 100644 src/presenters/GlobalSettingsPresenter.ts
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
@@ -4733,19 +4762,19 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 ---
 
 ```diff
-- 
+-
 + export interface Coordinates {
 +   latitude: number;
 +   longitude: number;
 + }
-+ 
++
 + export interface RegionMetadata {
 +   population?: number;
 +   language?: string;
 +   timezone?: string;
 +   postalCodes?: string[];
 + }
-+ 
++
 + export class Region {
 +   id: number;
 +   name: string;
@@ -4757,7 +4786,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +   isActive: boolean;
 +   createdAt: string;
 +   updatedAt: string;
-+ 
++
 +   constructor(data: Partial<Region>) {
 +     this.id = data.id || 0;
 +     this.name = data.name || '';
@@ -4770,7 +4799,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     this.createdAt = data.createdAt || new Date().toISOString();
 +     this.updatedAt = data.updatedAt || new Date().toISOString();
 +   }
-+ 
++
 +   toJSON() {
 +     return {
 +       id: this.id,
@@ -4785,34 +4814,34 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       updatedAt: this.updatedAt
 +     };
 +   }
-+ 
++
 +   getDisplayName(): string {
 +     if (this.type === 'CANTON') {
 +       return `${this.name} (${this.code})`;
 +     }
 +     return this.name;
 +   }
-+ 
++
 +   isCanton(): boolean {
 +     return this.type === 'CANTON';
 +   }
-+ 
++
 +   isMunicipality(): boolean {
 +     return this.type === 'MUNICIPALITY';
 +   }
-+ 
++
 +   hasCoordinates(): boolean {
 +     return !!(this.coordinates?.latitude && this.coordinates?.longitude);
 +   }
-+ 
++
 +   getMainLanguage(): string | undefined {
 +     return this.metadata?.language;
 +   }
-+ 
++
 +   getPostalCodes(): string[] {
 +     return this.metadata?.postalCodes || [];
 +   }
-+ 
++
 +   update(data: Partial<Region>): void {
 +     if (data.name !== undefined) this.name = data.name;
 +     if (data.code !== undefined) this.code = data.code;
@@ -4826,17 +4855,17 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     if (data.isActive !== undefined) this.isActive = data.isActive;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   deactivate(): void {
 +     this.isActive = false;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   activate(): void {
 +     this.isActive = true;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   static createCanton(name: string, code: string, metadata?: RegionMetadata): Region {
 +     return new Region({
 +       name,
@@ -4845,7 +4874,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       metadata
 +     });
 +   }
-+ 
++
 +   static createMunicipality(name: string, cantonId: number, metadata?: RegionMetadata): Region {
 +     return new Region({
 +       name,
@@ -4855,7 +4884,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       metadata
 +     });
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -4865,36 +4894,36 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 ---
 
 ```diff
-- 
+-
 + import { Region, RegionMetadata } from '../models/Region';
 + import { supabase } from '../utils/supabaseClient';
-+ 
++
 + export class RegionCollection {
 +   private regions: Region[] = [];
 +   private cantons: Region[] = [];
 +   private municipalities: Map<number, Region[]> = new Map(); // Map<CantonId, Municipality[]>
-+ 
++
 +   constructor(initialRegions: Region[] = []) {
 +     this.setRegions(initialRegions);
 +   }
-+ 
++
 +   private setRegions(regions: Region[]) {
 +     this.regions = regions;
 +     this.cantons = regions.filter(r => r.isCanton());
-+     
++
 +     // Agrupar municípios por cantão
 +     this.municipalities.clear();
 +     regions
 +       .filter(r => r.isMunicipality())
 +       .forEach(municipality => {
 +         if (!municipality.parentId) return;
-+         
++
 +         const municipalities = this.municipalities.get(municipality.parentId) || [];
 +         municipalities.push(municipality);
 +         this.municipalities.set(municipality.parentId, municipalities);
 +       });
 +   }
-+ 
++
 +   async loadAll(): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -4902,16 +4931,16 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +         .select('*')
 +         .order('type', { ascending: true })
 +         .order('name', { ascending: true });
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.setRegions((data || []).map(r => new Region(r)));
 +     } catch (error) {
 +       console.error('Erro ao carregar regiões:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadCantons(): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -4919,9 +4948,9 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +         .select('*')
 +         .eq('type', 'CANTON')
 +         .order('name');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.cantons = (data || []).map(r => new Region(r));
 +       this.regions = [...this.cantons, ...this.getMunicipalities()];
 +     } catch (error) {
@@ -4929,7 +4958,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadMunicipalitiesForCanton(cantonId: number): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -4938,9 +4967,9 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +         .eq('type', 'MUNICIPALITY')
 +         .eq('parentId', cantonId)
 +         .order('name');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const municipalities = (data || []).map(r => new Region(r));
 +       this.municipalities.set(cantonId, municipalities);
 +       this.regions = [...this.cantons, ...this.getMunicipalities()];
@@ -4949,30 +4978,30 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       throw error;
 +     }
 +   }
-+ 
++
 +   getAll(): Region[] {
 +     return this.regions;
 +   }
-+ 
++
 +   getCantons(): Region[] {
 +     return this.cantons;
 +   }
-+ 
++
 +   getMunicipalities(cantonId?: number): Region[] {
 +     if (cantonId) {
 +       return this.municipalities.get(cantonId) || [];
 +     }
 +     return Array.from(this.municipalities.values()).flat();
 +   }
-+ 
++
 +   getById(id: number): Region | undefined {
 +     return this.regions.find(r => r.id === id);
 +   }
-+ 
++
 +   getByCode(code: string): Region | undefined {
 +     return this.regions.find(r => r.code === code);
 +   }
-+ 
++
 +   async add(region: Region): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -4980,9 +5009,9 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +         .insert(region.toJSON())
 +         .select()
 +         .single();
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const newRegion = new Region(data);
 +       if (newRegion.isCanton()) {
 +         this.cantons.push(newRegion);
@@ -4997,20 +5026,20 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async update(region: Region): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('regions')
 +         .update(region.toJSON())
 +         .eq('id', region.id);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const index = this.regions.findIndex(r => r.id === region.id);
 +       if (index !== -1) {
 +         this.regions[index] = region;
-+         
++
 +         if (region.isCanton()) {
 +           const cantonIndex = this.cantons.findIndex(c => c.id === region.id);
 +           if (cantonIndex !== -1) {
@@ -5030,21 +5059,21 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async remove(regionId: number): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('regions')
 +         .delete()
 +         .eq('id', regionId);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const region = this.regions.find(r => r.id === regionId);
 +       if (!region) return;
-+ 
++
 +       this.regions = this.regions.filter(r => r.id !== regionId);
-+       
++
 +       if (region.isCanton()) {
 +         this.cantons = this.cantons.filter(c => c.id !== regionId);
 +         this.municipalities.delete(regionId);
@@ -5060,51 +5089,51 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async updateMetadata(regionId: number, metadata: RegionMetadata): Promise<void> {
 +     const region = this.getById(regionId);
 +     if (!region) throw new Error('Região não encontrada');
-+ 
++
 +     region.update({ metadata });
 +     await this.update(region);
 +   }
-+ 
++
 +   getActiveRegions(): Region[] {
 +     return this.regions.filter(r => r.isActive);
 +   }
-+ 
++
 +   getActiveCantons(): Region[] {
 +     return this.cantons.filter(r => r.isActive);
 +   }
-+ 
++
 +   getActiveMunicipalities(cantonId?: number): Region[] {
 +     return this.getMunicipalities(cantonId).filter(r => r.isActive);
 +   }
-+ 
++
 +   searchByName(query: string): Region[] {
 +     const normalizedQuery = query.toLowerCase();
-+     return this.regions.filter(r => 
++     return this.regions.filter(r =>
 +       r.name.toLowerCase().includes(normalizedQuery) ||
 +       r.code.toLowerCase().includes(normalizedQuery)
 +     );
 +   }
-+ 
++
 +   getRegionHierarchy(regionId: number): { canton?: Region; municipality?: Region } {
 +     const region = this.getById(regionId);
 +     if (!region) return {};
-+ 
++
 +     if (region.isCanton()) {
 +       return { canton: region };
 +     }
-+ 
++
 +     if (region.isMunicipality() && region.parentId) {
 +       const canton = this.getById(region.parentId);
 +       return { canton, municipality: region };
 +     }
-+ 
++
 +     return {};
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -5114,38 +5143,38 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 ---
 
 ```diff
-- 
+-
 + import { Region, RegionMetadata } from '../models/Region';
 + import { RegionCollection } from '../collections/RegionCollection';
 + import { useTranslation } from 'react-i18next';
-+ 
++
 + export class RegionPresenter {
 +   private collection: RegionCollection;
 +   private t: (key: string) => string;
-+ 
++
 +   constructor(collection: RegionCollection) {
 +     this.collection = collection;
 +     const { t } = useTranslation();
 +     this.t = t;
 +   }
-+ 
++
 +   async initialize(): Promise<void> {
 +     await this.collection.loadAll();
 +   }
-+ 
++
 +   async loadCantons(): Promise<void> {
 +     await this.collection.loadCantons();
 +   }
-+ 
++
 +   async loadMunicipalitiesForCanton(cantonId: number): Promise<void> {
 +     await this.collection.loadMunicipalitiesForCanton(cantonId);
 +   }
-+ 
++
 +   getRegionsViewModel() {
 +     const regions = this.collection.getAll();
 +     const cantons = this.collection.getCantons();
 +     const municipalities = this.collection.getMunicipalities();
-+ 
++
 +     return {
 +       regions: regions.map(r => this.mapRegionToViewModel(r)),
 +       cantons: cantons.map(c => this.mapRegionToViewModel(c)),
@@ -5158,28 +5187,28 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       }
 +     };
 +   }
-+ 
++
 +   getCantonsViewModel() {
 +     return this.collection.getCantons().map(canton => ({
 +       ...this.mapRegionToViewModel(canton),
 +       municipalitiesCount: this.collection.getMunicipalities(canton.id).length
 +     }));
 +   }
-+ 
++
 +   getMunicipalitiesViewModel(cantonId: number) {
 +     const canton = this.collection.getById(cantonId);
 +     if (!canton) return { canton: undefined, municipalities: [] };
-+ 
++
 +     return {
 +       canton: this.mapRegionToViewModel(canton),
 +       municipalities: this.collection.getMunicipalities(cantonId)
 +         .map(m => this.mapRegionToViewModel(m))
 +     };
 +   }
-+ 
++
 +   private mapRegionToViewModel(region: Region) {
 +     const hierarchy = this.collection.getRegionHierarchy(region.id);
-+ 
++
 +     return {
 +       id: region.id,
 +       name: region.name,
@@ -5191,7 +5220,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       isActive: region.isActive,
 +       metadata: {
 +         population: region.metadata?.population,
-+         language: region.metadata?.language 
++         language: region.metadata?.language
 +           ? this.t(`languages.${region.metadata.language}`)
 +           : undefined,
 +         timezone: region.metadata?.timezone,
@@ -5203,7 +5232,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       isMunicipality: region.isMunicipality()
 +     };
 +   }
-+ 
++
 +   async createCanton(data: {
 +     name: string;
 +     code: string;
@@ -5221,7 +5250,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       };
 +     }
 +   }
-+ 
++
 +   async createMunicipality(data: {
 +     name: string;
 +     cantonId: number;
@@ -5239,7 +5268,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       };
 +     }
 +   }
-+ 
++
 +   async updateRegion(regionId: number, data: Partial<Region>): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       const region = this.collection.getById(regionId);
@@ -5249,7 +5278,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +           message: this.t('regions.regionNotFound')
 +         };
 +       }
-+ 
++
 +       region.update(data);
 +       await this.collection.update(region);
 +       return { success: true };
@@ -5261,7 +5290,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       };
 +     }
 +   }
-+ 
++
 +   async removeRegion(regionId: number): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       await this.collection.remove(regionId);
@@ -5274,7 +5303,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       };
 +     }
 +   }
-+ 
++
 +   async updateMetadata(regionId: number, metadata: RegionMetadata): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       await this.collection.updateMetadata(regionId, metadata);
@@ -5287,7 +5316,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       };
 +     }
 +   }
-+ 
++
 +   async toggleRegionStatus(regionId: number): Promise<{ success: boolean; message?: string }> {
 +     try {
 +       const region = this.collection.getById(regionId);
@@ -5297,13 +5326,13 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +           message: this.t('regions.regionNotFound')
 +         };
 +       }
-+ 
++
 +       if (region.isActive) {
 +         region.deactivate();
 +       } else {
 +         region.activate();
 +       }
-+ 
++
 +       await this.collection.update(region);
 +       return { success: true };
 +     } catch (error) {
@@ -5314,15 +5343,15 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       };
 +     }
 +   }
-+ 
++
 +   searchRegions(query: string) {
 +     return this.collection.searchByName(query).map(r => this.mapRegionToViewModel(r));
 +   }
-+ 
++
 +   getActiveRegions() {
 +     return this.collection.getActiveRegions().map(r => this.mapRegionToViewModel(r));
 +   }
-+ 
++
 +   getRegionHierarchy(regionId: number) {
 +     const hierarchy = this.collection.getRegionHierarchy(regionId);
 +     return {
@@ -5330,7 +5359,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       municipality: hierarchy.municipality ? this.mapRegionToViewModel(hierarchy.municipality) : undefined
 +     };
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -5340,27 +5369,27 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 ---
 
 ```diff
-- 
+-
 + import { useState, useEffect, useMemo } from 'react';
 + import { RegionCollection } from '../collections/RegionCollection';
 + import { RegionPresenter } from '../presenters/RegionPresenter';
 + import { useNotificationContext } from '../contexts/NotificationContext';
 + import { useTranslation } from 'react-i18next';
 + import { Region, RegionMetadata } from '../models/Region';
-+ 
++
 + export function useRegionPresenter() {
 +   const { t } = useTranslation();
 +   const { addNotification } = useNotificationContext();
 +   const [isLoading, setIsLoading] = useState(true);
 +   const [error, setError] = useState<string | null>(null);
-+ 
++
 +   // Criar instâncias das classes MCP
 +   const collection = useMemo(() => new RegionCollection(), []);
 +   const presenter = useMemo(() => new RegionPresenter(collection), [collection]);
-+ 
++
 +   // Estado para armazenar os dados processados
 +   const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getRegionsViewModel>>();
-+ 
++
 +   // Carregar dados iniciais
 +   useEffect(() => {
 +     async function loadData() {
@@ -5376,10 +5405,10 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +         setIsLoading(false);
 +       }
 +     }
-+ 
++
 +     loadData();
 +   }, [presenter, t, addNotification]);
-+ 
++
 +   const handleCreateCanton = async (data: {
 +     name: string;
 +     code: string;
@@ -5394,7 +5423,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleCreateMunicipality = async (data: {
 +     name: string;
 +     cantonId: number;
@@ -5409,7 +5438,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleUpdateRegion = async (regionId: number, data: Partial<Region>) => {
 +     const result = await presenter.updateRegion(regionId, data);
 +     if (result.success) {
@@ -5420,7 +5449,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleRemoveRegion = async (regionId: number) => {
 +     const result = await presenter.removeRegion(regionId);
 +     if (result.success) {
@@ -5431,7 +5460,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleUpdateMetadata = async (regionId: number, metadata: RegionMetadata) => {
 +     const result = await presenter.updateMetadata(regionId, metadata);
 +     if (result.success) {
@@ -5442,7 +5471,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     }
 +     return result;
 +   };
-+ 
++
 +   const handleToggleStatus = async (regionId: number) => {
 +     const result = await presenter.toggleRegionStatus(regionId);
 +     if (result.success) {
@@ -5453,7 +5482,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     }
 +     return result;
 +   };
-+ 
++
 +   const loadMunicipalitiesForCanton = async (cantonId: number) => {
 +     try {
 +       setIsLoading(true);
@@ -5465,7 +5494,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +       setIsLoading(false);
 +     }
 +   };
-+ 
++
 +   return {
 +     isLoading,
 +     error,
@@ -5483,7 +5512,7 @@ Vou implementar o módulo Region (Regiões) por ser o mais crítico para o funci
 +     getCantonsViewModel: () => presenter.getCantonsViewModel(),
 +     getMunicipalitiesViewModel: (cantonId: number) => presenter.getMunicipalitiesViewModel(cantonId)
 +   };
-+ } 
++ }
 ```
 
 ---
@@ -5523,7 +5552,7 @@ git commit -m "feat: Implementa padrão MCP para módulo de regiões
  create mode 100644 src/hooks/useRegionPresenter.ts
  create mode 100644 src/models/Region.ts
  create mode 100644 src/presenters/RegionPresenter.ts
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
@@ -5585,9 +5614,9 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 ---
 
 ```diff
-- 
+-
 + export type UserRole = 'user' | 'admin';
-+ 
++
 + export interface UserPreferences {
 +   language?: string;
 +   theme?: 'light' | 'dark';
@@ -5602,7 +5631,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +     startOfWeek?: 0 | 1; // 0 = Domingo, 1 = Segunda
 +   };
 + }
-+ 
++
 + export interface WorkSchedule {
 +   monday?: { start?: string; end?: string };
 +   tuesday?: { start?: string; end?: string };
@@ -5612,7 +5641,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +   saturday?: { start?: string; end?: string };
 +   sunday?: { start?: string; end?: string };
 + }
-+ 
++
 + export interface UserProfile {
 +   employeeId?: string;
 +   position?: string;
@@ -5624,7 +5653,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +   manager?: string; // ID do gestor
 +   tauxPercent?: number;
 + }
-+ 
++
 + export class User {
 +   id: string;
 +   email: string;
@@ -5636,7 +5665,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +   lastLogin?: string;
 +   createdAt: string;
 +   updatedAt: string;
-+ 
++
 +   constructor(data: Partial<User>) {
 +     this.id = data.id || '';
 +     this.email = data.email || '';
@@ -5672,7 +5701,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +     this.createdAt = data.createdAt || new Date().toISOString();
 +     this.updatedAt = data.updatedAt || new Date().toISOString();
 +   }
-+ 
++
 +   toJSON() {
 +     return {
 +       id: this.id,
@@ -5687,23 +5716,23 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +       updatedAt: this.updatedAt
 +     };
 +   }
-+ 
++
 +   isAdmin(): boolean {
 +     return this.role === 'admin';
 +   }
-+ 
++
 +   hasRegion(): boolean {
 +     return !!(this.profile.cantonId || this.profile.municipalityId);
 +   }
-+ 
++
 +   hasManager(): boolean {
 +     return !!this.profile.manager;
 +   }
-+ 
++
 +   hasCustomSchedule(): boolean {
 +     return !!this.profile.workSchedule;
 +   }
-+ 
++
 +   getWorkScheduleForDay(dayOfWeek: number): { start?: string; end?: string } {
 +     const days = [
 +       'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
@@ -5711,7 +5740,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +     const day = days[dayOfWeek];
 +     return this.profile.workSchedule?.[day] || {};
 +   }
-+ 
++
 +   update(data: Partial<User>): void {
 +     if (data.name !== undefined) this.name = data.name;
 +     if (data.role !== undefined) this.role = data.role;
@@ -5738,7 +5767,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +     if (data.isActive !== undefined) this.isActive = data.isActive;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   updateProfile(profile: Partial<UserProfile>): void {
 +     this.profile = {
 +       ...this.profile,
@@ -5746,7 +5775,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +     };
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   updatePreferences(preferences: Partial<UserPreferences>): void {
 +     this.preferences = {
 +       ...this.preferences,
@@ -5762,7 +5791,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +     };
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   updateWorkSchedule(schedule: Partial<WorkSchedule>): void {
 +     this.profile.workSchedule = {
 +       ...this.profile.workSchedule,
@@ -5770,27 +5799,27 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +     };
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   clearWorkSchedule(): void {
 +     this.profile.workSchedule = undefined;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   deactivate(): void {
 +     this.isActive = false;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   activate(): void {
 +     this.isActive = true;
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   updateLastLogin(): void {
 +     this.lastLogin = new Date().toISOString();
 +     this.updatedAt = new Date().toISOString();
 +   }
-+ 
++
 +   static createNew(data: {
 +     email: string;
 +     name: string;
@@ -5806,7 +5835,7 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +       preferences: data.preferences
 +     });
 +   }
-+ } 
++ }
 ```
 
 ---
@@ -5816,56 +5845,56 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 ---
 
 ```diff
-- 
+-
 + import { User, UserProfile, UserPreferences, WorkSchedule } from '../models/User';
 + import { supabase } from '../utils/supabaseClient';
-+ 
++
 + export class UserCollection {
 +   private users: User[] = [];
 +   private currentUser?: User;
-+ 
++
 +   constructor(initialUsers: User[] = []) {
 +     this.users = initialUsers;
 +   }
-+ 
++
 +   async loadAll(): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
 +         .from('profiles')
 +         .select('*')
 +         .order('name');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.users = (data || []).map(u => new User(u));
 +     } catch (error) {
 +       console.error('Erro ao carregar usuários:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadByRegion(cantonId?: number, municipalityId?: number): Promise<void> {
 +     try {
 +       let query = supabase.from('profiles').select('*');
-+ 
++
 +       if (cantonId) {
 +         query = query.eq('cantonId', cantonId);
 +       }
 +       if (municipalityId) {
 +         query = query.eq('municipalityId', municipalityId);
 +       }
-+ 
++
 +       const { data, error } = await query.order('name');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.users = (data || []).map(u => new User(u));
 +     } catch (error) {
 +       console.error('Erro ao carregar usuários por região:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadByManager(managerId: string): Promise<void> {
 +     try {
 +       const { data, error } = await supabase
@@ -5873,56 +5902,56 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +         .select('*')
 +         .eq('manager', managerId)
 +         .order('name');
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.users = (data || []).map(u => new User(u));
 +     } catch (error) {
 +       console.error('Erro ao carregar usuários por gestor:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async loadCurrentUser(): Promise<void> {
 +     try {
 +       const { data: { user } } = await supabase.auth.getUser();
 +       if (!user) throw new Error('Usuário não autenticado');
-+ 
++
 +       const { data, error } = await supabase
 +         .from('profiles')
 +         .select('*')
 +         .eq('id', user.id)
 +         .single();
-+ 
++
 +       if (error) throw error;
-+       
++
 +       this.currentUser = new User(data);
 +     } catch (error) {
 +       console.error('Erro ao carregar usuário atual:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   getAll(): User[] {
 +     return this.users;
 +   }
-+ 
++
 +   getCurrentUser(): User | undefined {
 +     return this.currentUser;
 +   }
-+ 
++
 +   getById(id: string): User | undefined {
 +     return this.users.find(u => u.id === id);
 +   }
-+ 
++
 +   getByEmail(email: string): User | undefined {
 +     return this.users.find(u => u.email === email);
 +   }
-+ 
++
 +   getByEmployeeId(employeeId: string): User | undefined {
 +     return this.users.find(u => u.profile.employeeId === employeeId);
 +   }
-+ 
++
 +   async add(user: User): Promise<void> {
 +     try {
 +       // Criar usuário no Auth
@@ -5936,41 +5965,41 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +           }
 +         }
 +       });
-+ 
++
 +       if (authError) throw authError;
 +       if (!authData.user) throw new Error('Erro ao criar usuário');
-+ 
++
 +       // Atualizar ID do usuário com o retornado pelo Auth
 +       user.id = authData.user.id;
-+ 
++
 +       // Criar perfil
 +       const { error: profileError } = await supabase
 +         .from('profiles')
 +         .insert(user.toJSON());
-+ 
++
 +       if (profileError) throw profileError;
-+       
++
 +       this.users.push(user);
 +     } catch (error) {
 +       console.error('Erro ao adicionar usuário:', error);
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async update(user: User): Promise<void> {
 +     try {
 +       const { error } = await supabase
 +         .from('profiles')
 +         .update(user.toJSON())
 +         .eq('id', user.id);
-+ 
++
 +       if (error) throw error;
-+       
++
 +       const index = this.users.findIndex(u => u.id === user.id);
 +       if (index !== -1) {
 +         this.users[index] = user;
 +       }
-+ 
++
 +       // Atualizar currentUser se necessário
 +       if (this.currentUser?.id === user.id) {
 +         this.currentUser = user;
@@ -5980,60 +6009,60 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +       throw error;
 +     }
 +   }
-+ 
++
 +   async updateProfile(userId: string, profile: Partial<UserProfile>): Promise<void> {
 +     const user = this.getById(userId);
 +     if (!user) throw new Error('Usuário não encontrado');
-+ 
++
 +     user.updateProfile(profile);
 +     await this.update(user);
 +   }
-+ 
++
 +   async updatePreferences(userId: string, preferences: Partial<UserPreferences>): Promise<void> {
 +     const user = this.getById(userId);
 +     if (!user) throw new Error('Usuário não encontrado');
-+ 
++
 +     user.updatePreferences(preferences);
 +     await this.update(user);
 +   }
-+ 
++
 +   async updateWorkSchedule(userId: string, schedule: Partial<WorkSchedule>): Promise<void> {
 +     const user = this.getById(userId);
 +     if (!user) throw new Error('Usuário não encontrado');
-+ 
++
 +     user.updateWorkSchedule(schedule);
 +     await this.update(user);
 +   }
-+ 
++
 +   async toggleStatus(userId: string): Promise<void> {
 +     const user = this.getById(userId);
 +     if (!user) throw new Error('Usuário não encontrado');
-+ 
++
 +     if (user.isActive) {
 +       user.deactivate();
 +     } else {
 +       user.activate();
 +     }
-+ 
++
 +     await this.update(user);
 +   }
-+ 
++
 +   async updateLastLogin(userId: string): Promise<void> {
 +     const user = this.getById(userId);
 +     if (!user) throw new Error('Usuário não encontrado');
-+ 
++
 +     user.updateLastLogin();
 +     await this.update(user);
 +   }
-+ 
++
 +   getActiveUsers(): User[] {
 +     return this.users.filter(u => u.isActive);
 +   }
-+ 
++
 +   getAdmins(): User[] {
 +     return this.users.filter(u => u.isAdmin());
 +   }
-+ 
++
 +   getUsersByRegion(cantonId?: number, municipalityId?: number): User[] {
 +     return this.users.filter(u => {
 +       if (municipalityId) {
@@ -6045,14 +6074,14 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +       return true;
 +     });
 +   }
-+ 
++
 +   getUsersByManager(managerId: string): User[] {
 +     return this.users.filter(u => u.profile.manager === managerId);
 +   }
-+ 
++
 +   searchUsers(query: string): User[] {
 +     const normalizedQuery = query.toLowerCase();
-+     return this.users.filter(u => 
++     return this.users.filter(u =>
 +       u.name.toLowerCase().includes(normalizedQuery) ||
 +       u.email.toLowerCase().includes(normalizedQuery) ||
 +       u.profile.employeeId?.toLowerCase().includes(normalizedQuery) ||
@@ -6060,12 +6089,10 @@ Vou implementar o módulo User (Usuários) que é fundamental para o sistema. Va
 +       u.profile.department?.toLowerCase().includes(normalizedQuery)
 +     );
 +   }
-+ } 
++ }
 ```
 
 ---
-
-
 
 ---
 
@@ -6077,7 +6104,4 @@ continue
 
 _**Assistant**_
 
-
-
 ---
-

@@ -1,18 +1,22 @@
-import { supabase } from '../../utils/supabaseClient';
-import { Database } from '../types/supabase';
+import { supabase } from "../../utils/supabaseClient";
+import { Database } from "../types/supabase";
 
-type DbVacationRequest = Database['public']['Tables']['vacation_requests']['Row'];
-type DbVacationRequestInsert = Database['public']['Tables']['vacation_requests']['Insert'];
-type DbVacationRequestUpdate = Database['public']['Tables']['vacation_requests']['Update'];
+type DbVacationRequest =
+  Database["public"]["Tables"]["vacation_requests"]["Row"];
+type DbVacationRequestInsert =
+  Database["public"]["Tables"]["vacation_requests"]["Insert"];
+type DbVacationRequestUpdate =
+  Database["public"]["Tables"]["vacation_requests"]["Update"];
 
 export class VacationRequestCollection {
-  private static TABLE_NAME = 'vacation_requests';
+  private static TABLE_NAME = "vacation_requests";
 
   static async findPendingRequests(): Promise<DbVacationRequest[]> {
     try {
       const { data, error } = await supabase
-        .from('pending_vacation_requests')
-        .select(`
+        .from("pending_vacation_requests")
+        .select(
+          `
           id,
           user_id,
           profiles (
@@ -21,18 +25,19 @@ export class VacationRequestCollection {
           date,
           comment,
           created_at
-        `)
-        .order('date')
+        `,
+        )
+        .order("date")
         .returns<(DbVacationRequest & { profiles: { name: string } })[]>();
 
       if (error) throw error;
 
-      return (data || []).map(request => ({
+      return (data || []).map((request) => ({
         ...request,
-        userName: request.profiles.name
+        userName: request.profiles.name,
       }));
     } catch (error) {
-      console.error('Erro ao buscar solicitações pendentes:', error);
+      console.error("Erro ao buscar solicitações pendentes:", error);
       throw error;
     }
   }
@@ -41,20 +46,22 @@ export class VacationRequestCollection {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .select('*')
-        .eq('user_id', userId)
-        .order('date')
+        .select("*")
+        .eq("user_id", userId)
+        .order("date")
         .returns<DbVacationRequest[]>();
 
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar solicitações do usuário:', error);
+      console.error("Erro ao buscar solicitações do usuário:", error);
       throw error;
     }
   }
 
-  static async create(request: DbVacationRequestInsert): Promise<DbVacationRequest> {
+  static async create(
+    request: DbVacationRequestInsert,
+  ): Promise<DbVacationRequest> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
@@ -66,15 +73,15 @@ export class VacationRequestCollection {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao criar solicitação:', error);
+      console.error("Erro ao criar solicitação:", error);
       throw error;
     }
   }
 
   static async updateStatus(
     id: string,
-    status: 'approved' | 'rejected',
-    adminComment?: string
+    status: "approved" | "rejected",
+    adminComment?: string,
   ): Promise<DbVacationRequest> {
     try {
       const { data, error } = await supabase
@@ -82,9 +89,9 @@ export class VacationRequestCollection {
         .update({
           status,
           admin_comment: adminComment,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single()
         .returns<DbVacationRequest>();
@@ -92,7 +99,7 @@ export class VacationRequestCollection {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao atualizar status da solicitação:', error);
+      console.error("Erro ao atualizar status da solicitação:", error);
       throw error;
     }
   }
@@ -102,12 +109,12 @@ export class VacationRequestCollection {
       const { error } = await supabase
         .from(this.TABLE_NAME)
         .delete()
-        .eq('id', id);
+        .eq("id", id);
 
       if (error) throw error;
     } catch (error) {
-      console.error('Erro ao deletar solicitação:', error);
+      console.error("Erro ao deletar solicitação:", error);
       throw error;
     }
   }
-} 
+}

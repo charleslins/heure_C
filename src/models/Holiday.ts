@@ -1,4 +1,4 @@
-export type HolidayType = 'OFFICIAL' | 'CUSTOM' | 'REGIONAL';
+export type HolidayType = "OFFICIAL" | "CUSTOM" | "REGIONAL";
 
 export class Holiday {
   id: string;
@@ -14,10 +14,12 @@ export class Holiday {
   updatedAt: string;
 
   constructor(data: Partial<Holiday>) {
-    this.id = data.id || `holiday-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    this.name = data.name || '';
-    this.date = data.date || '';
-    this.type = data.type || 'OFFICIAL';
+    this.id =
+      data.id ||
+      `holiday-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    this.name = data.name || "";
+    this.date = data.date || "";
+    this.type = data.type || "OFFICIAL";
     this.isOfficial = data.isOfficial ?? true;
     this.cantonId = data.cantonId;
     this.municipalityId = data.municipalityId;
@@ -39,11 +41,11 @@ export class Holiday {
       description: this.description,
       repeatsAnnually: this.repeatsAnnually,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
     };
   }
 
-  getFormattedDate(locale: string = 'pt-BR'): string {
+  getFormattedDate(locale: string = "pt-BR"): string {
     return new Date(this.date).toLocaleDateString(locale);
   }
 
@@ -93,9 +95,9 @@ export class Holiday {
     return new Holiday({
       name,
       date,
-      type: 'OFFICIAL',
+      type: "OFFICIAL",
       isOfficial: true,
-      repeatsAnnually: true
+      repeatsAnnually: true,
     });
   }
 
@@ -103,22 +105,27 @@ export class Holiday {
     return new Holiday({
       name,
       date,
-      type: 'CUSTOM',
+      type: "CUSTOM",
       isOfficial: false,
       cantonId,
-      repeatsAnnually: false
+      repeatsAnnually: false,
     });
   }
 
-  static createRegional(name: string, date: string, cantonId: number, municipalityId?: number): Holiday {
+  static createRegional(
+    name: string,
+    date: string,
+    cantonId: number,
+    municipalityId?: number,
+  ): Holiday {
     return new Holiday({
       name,
       date,
-      type: 'REGIONAL',
+      type: "REGIONAL",
       isOfficial: true,
       cantonId,
       municipalityId,
-      repeatsAnnually: true
+      repeatsAnnually: true,
     });
   }
-} 
+}

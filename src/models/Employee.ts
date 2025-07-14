@@ -1,10 +1,10 @@
-import { User } from '../types';
+import { User } from "@/types";
 
 export class Employee {
   id: string;
   name: string;
   email: string;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
   canton_id?: number;
   municipality_id?: number;
   employee_id?: string;
@@ -13,14 +13,14 @@ export class Employee {
   work_schedule?: any;
 
   constructor(data: Partial<Employee>) {
-    this.id = data.id || '';
-    this.name = data.name || '';
-    this.email = data.email || '';
-    this.role = data.role || 'user';
+    this.id = data.id || "";
+    this.name = data.name || "";
+    this.email = data.email || "";
+    this.role = data.role || "user";
     this.canton_id = data.canton_id;
     this.municipality_id = data.municipality_id;
     this.employee_id = data.employee_id;
-    this.hire_date = data.hire_date || new Date().toISOString().split('T')[0];
+    this.hire_date = data.hire_date || new Date().toISOString().split("T")[0];
     this.position = data.position;
     this.work_schedule = data.work_schedule;
   }
@@ -36,7 +36,7 @@ export class Employee {
       employee_id: this.employee_id,
       hire_date: this.hire_date,
       position: this.position,
-      work_schedule: this.work_schedule
+      work_schedule: this.work_schedule,
     };
   }
 
@@ -45,19 +45,19 @@ export class Employee {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role
+      role: user.role,
     });
   }
 
   isAdmin(): boolean {
-    return this.role === 'admin';
+    return this.role === "admin";
   }
 
   getFullName(): string {
     return this.name;
   }
 
-  getFormattedHireDate(locale: string = 'pt-BR'): string {
+  getFormattedHireDate(locale: string = "pt-BR"): string {
     return new Date(this.hire_date).toLocaleDateString(locale);
   }
-} 
+}

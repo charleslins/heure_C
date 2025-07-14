@@ -22,33 +22,33 @@ npm run build  # Build de produção
 ### Em Queries do Supabase
 
 ```typescript
-import { Database } from '../types/supabase';
+import { Database } from "../types/supabase";
 
 // Exemplo de query tipada
 const { data: users } = await supabase
-  .from('users')
-  .select('*')
-  .returns<Database['public']['Tables']['users']['Row'][]>();
+  .from("users")
+  .select("*")
+  .returns<Database["public"]["Tables"]["users"]["Row"][]>();
 
 // Exemplo de inserção tipada
 const { data: newUser } = await supabase
-  .from('users')
+  .from("users")
   .insert({
-    first_name: 'João',
-    last_name: 'Silva',
-    email: 'joao@example.com',
-    role_id: '123'
+    first_name: "João",
+    last_name: "Silva",
+    email: "joao@example.com",
+    role_id: "123",
   })
   .select()
-  .returns<Database['public']['Tables']['users']['Row']>();
+  .returns<Database["public"]["Tables"]["users"]["Row"]>();
 ```
 
 ### Em Componentes React
 
 ```typescript
-import { Database } from '../types/supabase';
+import { Database } from "../types/supabase";
 
-type User = Database['public']['Tables']['users']['Row'];
+type User = Database["public"]["Tables"]["users"]["Row"];
 
 interface UserListProps {
   users: User[];
@@ -97,6 +97,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
 ## Troubleshooting
 
 ### Tipos Desatualizados
+
 ```bash
 # Regenerar tipos
 npm run generate-types
@@ -106,11 +107,13 @@ rm -rf node_modules/.cache/typescript
 ```
 
 ### Erros de Validação
+
 1. Verifique se os tipos estão atualizados
 2. Confirme se a query está correta
 3. Verifique se o schema do banco corresponde
 
 ### Problemas de Conexão
+
 1. Verifique o token do MCP
 2. Confirme o project-ref
 3. Verifique a conexão com o Supabase
@@ -119,4 +122,4 @@ rm -rf node_modules/.cache/typescript
 
 - [Documentação do Supabase](https://supabase.com/docs)
 - [Guia do TypeScript](https://www.typescriptlang.org/docs/)
-- [MCP Reference](https://supabase.com/docs/reference/mcp) 
+- [MCP Reference](https://supabase.com/docs/reference/mcp)

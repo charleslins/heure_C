@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
-import { RegionCollection } from '../collections/RegionCollection';
-import { RegionPresenter } from '../presenters/RegionPresenter';
-import { useNotificationContext } from '../contexts/NotificationContext';
-import { useTranslation } from 'react-i18next';
-import { Region, RegionMetadata } from '../models/Region';
+import { useState, useEffect, useMemo } from "react";
+import { RegionCollection } from "../collections/RegionCollection";
+import { RegionPresenter } from "../presenters/RegionPresenter";
+import { useNotificationContext } from "../contexts/NotificationContext";
+import { useTranslation } from "react-i18next";
+import { Region, RegionMetadata } from "../models/Region";
 
 export function useRegionPresenter() {
   const { t } = useTranslation();
@@ -13,10 +13,14 @@ export function useRegionPresenter() {
 
   // Criar instâncias das classes MCP
   const collection = useMemo(() => new RegionCollection(), []);
-  const presenter = useMemo(() => new RegionPresenter(collection), [collection]);
+  const presenter = useMemo(
+    () => new RegionPresenter(collection),
+    [collection],
+  );
 
   // Estado para armazenar os dados processados
-  const [viewModel, setViewModel] = useState<ReturnType<typeof presenter.getRegionsViewModel>>();
+  const [viewModel, setViewModel] =
+    useState<ReturnType<typeof presenter.getRegionsViewModel>>();
 
   // Carregar dados iniciais
   useEffect(() => {
@@ -27,8 +31,8 @@ export function useRegionPresenter() {
         await presenter.initialize();
         setViewModel(presenter.getRegionsViewModel());
       } catch (err) {
-        setError(t('regions.loadingError'));
-        addNotification(t('regions.loadingError'), 'error');
+        setError(t("regions.loadingError"));
+        addNotification(t("regions.loadingError"), "error");
       } finally {
         setIsLoading(false);
       }
@@ -44,10 +48,13 @@ export function useRegionPresenter() {
   }) => {
     const result = await presenter.createCanton(data);
     if (result.success) {
-      addNotification(t('regions.cantonCreateSuccess'), 'success');
+      addNotification(t("regions.cantonCreateSuccess"), "success");
       setViewModel(presenter.getRegionsViewModel());
     } else {
-      addNotification(result.message || t('regions.cantonCreateError'), 'error');
+      addNotification(
+        result.message || t("regions.cantonCreateError"),
+        "error",
+      );
     }
     return result;
   };
@@ -59,21 +66,27 @@ export function useRegionPresenter() {
   }) => {
     const result = await presenter.createMunicipality(data);
     if (result.success) {
-      addNotification(t('regions.municipalityCreateSuccess'), 'success');
+      addNotification(t("regions.municipalityCreateSuccess"), "success");
       setViewModel(presenter.getRegionsViewModel());
     } else {
-      addNotification(result.message || t('regions.municipalityCreateError'), 'error');
+      addNotification(
+        result.message || t("regions.municipalityCreateError"),
+        "error",
+      );
     }
     return result;
   };
 
-  const handleUpdateRegion = async (regionId: number, data: Partial<Region>) => {
+  const handleUpdateRegion = async (
+    regionId: number,
+    data: Partial<Region>,
+  ) => {
     const result = await presenter.updateRegion(regionId, data);
     if (result.success) {
-      addNotification(t('regions.updateSuccess'), 'success');
+      addNotification(t("regions.updateSuccess"), "success");
       setViewModel(presenter.getRegionsViewModel());
     } else {
-      addNotification(result.message || t('regions.updateError'), 'error');
+      addNotification(result.message || t("regions.updateError"), "error");
     }
     return result;
   };
@@ -81,21 +94,27 @@ export function useRegionPresenter() {
   const handleRemoveRegion = async (regionId: number) => {
     const result = await presenter.removeRegion(regionId);
     if (result.success) {
-      addNotification(t('regions.removeSuccess'), 'success');
+      addNotification(t("regions.removeSuccess"), "success");
       setViewModel(presenter.getRegionsViewModel());
     } else {
-      addNotification(result.message || t('regions.removeError'), 'error');
+      addNotification(result.message || t("regions.removeError"), "error");
     }
     return result;
   };
 
-  const handleUpdateMetadata = async (regionId: number, metadata: RegionMetadata) => {
+  const handleUpdateMetadata = async (
+    regionId: number,
+    metadata: RegionMetadata,
+  ) => {
     const result = await presenter.updateMetadata(regionId, metadata);
     if (result.success) {
-      addNotification(t('regions.metadataUpdateSuccess'), 'success');
+      addNotification(t("regions.metadataUpdateSuccess"), "success");
       setViewModel(presenter.getRegionsViewModel());
     } else {
-      addNotification(result.message || t('regions.metadataUpdateError'), 'error');
+      addNotification(
+        result.message || t("regions.metadataUpdateError"),
+        "error",
+      );
     }
     return result;
   };
@@ -103,10 +122,13 @@ export function useRegionPresenter() {
   const handleToggleStatus = async (regionId: number) => {
     const result = await presenter.toggleRegionStatus(regionId);
     if (result.success) {
-      addNotification(t('regions.statusUpdateSuccess'), 'success');
+      addNotification(t("regions.statusUpdateSuccess"), "success");
       setViewModel(presenter.getRegionsViewModel());
     } else {
-      addNotification(result.message || t('regions.statusUpdateError'), 'error');
+      addNotification(
+        result.message || t("regions.statusUpdateError"),
+        "error",
+      );
     }
     return result;
   };
@@ -117,7 +139,7 @@ export function useRegionPresenter() {
       await presenter.loadMunicipalitiesForCanton(cantonId);
       setViewModel(presenter.getRegionsViewModel());
     } catch (err) {
-      addNotification(t('regions.loadMunicipalitiesError'), 'error');
+      addNotification(t("regions.loadMunicipalitiesError"), "error");
     } finally {
       setIsLoading(false);
     }
@@ -136,8 +158,10 @@ export function useRegionPresenter() {
     loadMunicipalitiesForCanton,
     searchRegions: (query: string) => presenter.searchRegions(query),
     getActiveRegions: () => presenter.getActiveRegions(),
-    getRegionHierarchy: (regionId: number) => presenter.getRegionHierarchy(regionId),
+    getRegionHierarchy: (regionId: number) =>
+      presenter.getRegionHierarchy(regionId),
     getCantonsViewModel: () => presenter.getCantonsViewModel(),
-    getMunicipalitiesViewModel: (cantonId: number) => presenter.getMunicipalitiesViewModel(cantonId)
+    getMunicipalitiesViewModel: (cantonId: number) =>
+      presenter.getMunicipalitiesViewModel(cantonId),
   };
-} 
+}

@@ -27,11 +27,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@utils/*": ["utils/*"],
-      "@components/*": ["components/*"],
-      "@contexts/*": ["contexts/*"],
-      "@hooks/*": ["hooks/*"]
+      "@components/*": ["src/components/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@types/*": ["src/types/*"]
     }
   },
-  "include": ["src", "vite.config.ts", "tailwind.config.js", "postcss.config.js", "components", "hooks", "contexts", "utils", "types.ts", "constants.ts", "i18n.ts", "App.tsx", "index.tsx", "AdminDashboardPage.tsx"]
+  "include": ["src"]
 }

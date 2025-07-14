@@ -1,4 +1,4 @@
-import { VacationStatus } from '../types';
+import { VacationStatus } from "@/types";
 
 export class Vacation {
   id: string;
@@ -10,9 +10,11 @@ export class Vacation {
   updatedAt: string;
 
   constructor(data: Partial<Vacation>) {
-    this.id = data.id || `vacation-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    this.userId = data.userId || '';
-    this.date = data.date || '';
+    this.id =
+      data.id ||
+      `vacation-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    this.userId = data.userId || "";
+    this.date = data.date || "";
     this.status = data.status || VacationStatus.PENDING_APPROVAL;
     this.adminComment = data.adminComment;
     this.createdAt = data.createdAt || new Date().toISOString();
@@ -27,7 +29,7 @@ export class Vacation {
       status: this.status,
       adminComment: this.adminComment,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
     };
   }
 
@@ -55,13 +57,15 @@ export class Vacation {
     this.updatedAt = new Date().toISOString();
   }
 
-  getFormattedDate(locale: string = 'pt-BR'): string {
+  getFormattedDate(locale: string = "pt-BR"): string {
     return new Date(this.date).toLocaleDateString(locale);
   }
 
   isInMonth(year: number, month: number): boolean {
     const vacationDate = new Date(this.date);
-    return vacationDate.getFullYear() === year && vacationDate.getMonth() === month;
+    return (
+      vacationDate.getFullYear() === year && vacationDate.getMonth() === month
+    );
   }
 
   isInDateRange(startDate: Date, endDate: Date): boolean {
@@ -82,7 +86,7 @@ export class Vacation {
     return new Vacation({
       userId,
       date,
-      status: VacationStatus.PENDING_APPROVAL
+      status: VacationStatus.PENDING_APPROVAL,
     });
   }
-} 
+}

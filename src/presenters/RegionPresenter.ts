@@ -1,6 +1,6 @@
-import { Region, RegionMetadata } from '../models/Region';
-import { RegionCollection } from '../collections/RegionCollection';
-import { useTranslation } from 'react-i18next';
+import { Region, RegionMetadata } from "../models/Region";
+import { RegionCollection } from "../collections/RegionCollection";
+import { useTranslation } from "react-i18next";
 
 export class RegionPresenter {
   private collection: RegionCollection;
@@ -30,22 +30,22 @@ export class RegionPresenter {
     const municipalities = this.collection.getMunicipalities();
 
     return {
-      regions: regions.map(r => this.mapRegionToViewModel(r)),
-      cantons: cantons.map(c => this.mapRegionToViewModel(c)),
-      municipalities: municipalities.map(m => this.mapRegionToViewModel(m)),
+      regions: regions.map((r) => this.mapRegionToViewModel(r)),
+      cantons: cantons.map((c) => this.mapRegionToViewModel(c)),
+      municipalities: municipalities.map((m) => this.mapRegionToViewModel(m)),
       statistics: {
         totalRegions: regions.length,
         totalCantons: cantons.length,
         totalMunicipalities: municipalities.length,
-        activeRegions: this.collection.getActiveRegions().length
-      }
+        activeRegions: this.collection.getActiveRegions().length,
+      },
     };
   }
 
   getCantonsViewModel() {
-    return this.collection.getCantons().map(canton => ({
+    return this.collection.getCantons().map((canton) => ({
       ...this.mapRegionToViewModel(canton),
-      municipalitiesCount: this.collection.getMunicipalities(canton.id).length
+      municipalitiesCount: this.collection.getMunicipalities(canton.id).length,
     }));
   }
 
@@ -55,8 +55,9 @@ export class RegionPresenter {
 
     return {
       canton: this.mapRegionToViewModel(canton),
-      municipalities: this.collection.getMunicipalities(cantonId)
-        .map(m => this.mapRegionToViewModel(m))
+      municipalities: this.collection
+        .getMunicipalities(cantonId)
+        .map((m) => this.mapRegionToViewModel(m)),
     };
   }
 
@@ -74,16 +75,16 @@ export class RegionPresenter {
       isActive: region.isActive,
       metadata: {
         population: region.metadata?.population,
-        language: region.metadata?.language 
+        language: region.metadata?.language
           ? this.t(`languages.${region.metadata.language}`)
           : undefined,
         timezone: region.metadata?.timezone,
-        postalCodes: region.metadata?.postalCodes
+        postalCodes: region.metadata?.postalCodes,
       },
       hasCoordinates: region.hasCoordinates(),
       coordinates: region.coordinates,
       isCanton: region.isCanton(),
-      isMunicipality: region.isMunicipality()
+      isMunicipality: region.isMunicipality(),
     };
   }
 
@@ -97,10 +98,10 @@ export class RegionPresenter {
       await this.collection.add(canton);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao criar cantão:', error);
+      console.error("Erro ao criar cantão:", error);
       return {
         success: false,
-        message: this.t('regions.cantonCreateError')
+        message: this.t("regions.cantonCreateError"),
       };
     }
   }
@@ -111,25 +112,32 @@ export class RegionPresenter {
     metadata?: RegionMetadata;
   }): Promise<{ success: boolean; message?: string }> {
     try {
-      const municipality = Region.createMunicipality(data.name, data.cantonId, data.metadata);
+      const municipality = Region.createMunicipality(
+        data.name,
+        data.cantonId,
+        data.metadata,
+      );
       await this.collection.add(municipality);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao criar município:', error);
+      console.error("Erro ao criar município:", error);
       return {
         success: false,
-        message: this.t('regions.municipalityCreateError')
+        message: this.t("regions.municipalityCreateError"),
       };
     }
   }
 
-  async updateRegion(regionId: number, data: Partial<Region>): Promise<{ success: boolean; message?: string }> {
+  async updateRegion(
+    regionId: number,
+    data: Partial<Region>,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       const region = this.collection.getById(regionId);
       if (!region) {
         return {
           success: false,
-          message: this.t('regions.regionNotFound')
+          message: this.t("regions.regionNotFound"),
         };
       }
 
@@ -137,47 +145,54 @@ export class RegionPresenter {
       await this.collection.update(region);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao atualizar região:', error);
+      console.error("Erro ao atualizar região:", error);
       return {
         success: false,
-        message: this.t('regions.updateError')
+        message: this.t("regions.updateError"),
       };
     }
   }
 
-  async removeRegion(regionId: number): Promise<{ success: boolean; message?: string }> {
+  async removeRegion(
+    regionId: number,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.remove(regionId);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao remover região:', error);
+      console.error("Erro ao remover região:", error);
       return {
         success: false,
-        message: this.t('regions.removeError')
+        message: this.t("regions.removeError"),
       };
     }
   }
 
-  async updateMetadata(regionId: number, metadata: RegionMetadata): Promise<{ success: boolean; message?: string }> {
+  async updateMetadata(
+    regionId: number,
+    metadata: RegionMetadata,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.updateMetadata(regionId, metadata);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao atualizar metadados:', error);
+      console.error("Erro ao atualizar metadados:", error);
       return {
         success: false,
-        message: this.t('regions.metadataUpdateError')
+        message: this.t("regions.metadataUpdateError"),
       };
     }
   }
 
-  async toggleRegionStatus(regionId: number): Promise<{ success: boolean; message?: string }> {
+  async toggleRegionStatus(
+    regionId: number,
+  ): Promise<{ success: boolean; message?: string }> {
     try {
       const region = this.collection.getById(regionId);
       if (!region) {
         return {
           success: false,
-          message: this.t('regions.regionNotFound')
+          message: this.t("regions.regionNotFound"),
         };
       }
 
@@ -190,27 +205,35 @@ export class RegionPresenter {
       await this.collection.update(region);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao alterar status da região:', error);
+      console.error("Erro ao alterar status da região:", error);
       return {
         success: false,
-        message: this.t('regions.statusUpdateError')
+        message: this.t("regions.statusUpdateError"),
       };
     }
   }
 
   searchRegions(query: string) {
-    return this.collection.searchByName(query).map(r => this.mapRegionToViewModel(r));
+    return this.collection
+      .searchByName(query)
+      .map((r) => this.mapRegionToViewModel(r));
   }
 
   getActiveRegions() {
-    return this.collection.getActiveRegions().map(r => this.mapRegionToViewModel(r));
+    return this.collection
+      .getActiveRegions()
+      .map((r) => this.mapRegionToViewModel(r));
   }
 
   getRegionHierarchy(regionId: number) {
     const hierarchy = this.collection.getRegionHierarchy(regionId);
     return {
-      canton: hierarchy.canton ? this.mapRegionToViewModel(hierarchy.canton) : undefined,
-      municipality: hierarchy.municipality ? this.mapRegionToViewModel(hierarchy.municipality) : undefined
+      canton: hierarchy.canton
+        ? this.mapRegionToViewModel(hierarchy.canton)
+        : undefined,
+      municipality: hierarchy.municipality
+        ? this.mapRegionToViewModel(hierarchy.municipality)
+        : undefined,
     };
   }
-} 
+}

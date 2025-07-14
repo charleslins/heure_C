@@ -74,13 +74,13 @@ Baseado na análise do código, vou propor ajustes para alinhar o layout das pá
 + import PendingRequestsList from './AdminDashboard/PendingRequestsList';
 + import GlobalSettingsForm from './AdminDashboard/GlobalSettingsForm';
 + import UserVacationSummaryTable from './AdminDashboard/UserVacationSummaryTable';
-  
+
   const AdminTabbedPage: React.FC = () => {
     const { t } = useTranslation();
 -   const { currentUser } = useAuthContext();
 -   const [activeTab, setActiveTab] = useState('dashboard');
 +   const [activeTab, setActiveTab] = useState('overview');
-  
+
     const tabs = [
       {
 -       id: 'dashboard',
@@ -106,7 +106,7 @@ Baseado na análise do código, vou propor ajustes para alinhar o layout das pá
 -       icon: Users
 -     }
 -   ];
-- 
+-
 -   const renderActiveComponent = () => {
 -     switch (activeTab) {
 -       case 'dashboard':
@@ -131,9 +131,9 @@ Baseado na análise do código, vou propor ajustes para alinhar o layout das pá
 +       component: GlobalSettingsForm
 +     }
 +   ];
-+ 
++
 +   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || AdminOverviewDashboard;
-  
+
     return (
 -     <div className="min-h-screen bg-gray-50">
 -       {/* Header com título */}
@@ -157,7 +157,7 @@ Baseado na análise do código, vou propor ajustes para alinhar o layout das pá
 +           <ClipboardList className="w-7 h-7" />
 +           <span>{t('nav.adminPanel')}</span>
 +         </div>
-  
+
 -       {/* Navegação por abas */}
 -       <div className="bg-white border-b border-gray-200">
 -         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -198,7 +198,7 @@ Baseado na análise do código, vou propor ajustes para alinhar o layout das pá
 -         </div>
 -       </div>
 +         </div>
-  
+
 -       {/* Conteúdo da aba ativa */}
 -       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 -         {renderActiveComponent()}
@@ -219,7 +219,7 @@ Agora vou ajustar o componente `PendingRequestsList.tsx` para seguir o mesmo pad
 ```diff
   import React from 'react';
 - import { VacationStatus } from '../../types';
-- 
+-
 - interface PendingRequest {
 -   userId: string;
 -   userName: string;
@@ -231,17 +231,17 @@ Agora vou ajustar o componente `PendingRequestsList.tsx` para seguir o mesmo pad
 + import { VacationStatus, PendingRequest } from '../../types';
 + import { useTranslation } from 'react-i18next';
 + import { Clock } from 'lucide-react';
-  
+
   interface PendingRequestsListProps {
 ```
 
 ```diff
-  
+
   const PendingRequestsList: React.FC<PendingRequestsListProps> = ({ pendingRequests, onApprove, onApproveAll, isLoading }) => {
 -   if (isLoading) return <div>Carregando solicitações...</div>;
 -   if (!pendingRequests.length) return <div>Nenhuma solicitação pendente.</div>;
 +   const { t } = useTranslation();
-+ 
++
 +   if (isLoading) {
 +     return (
 +       <div className="flex items-center justify-center p-8">
@@ -250,7 +250,7 @@ Agora vou ajustar o componente `PendingRequestsList.tsx` para seguir o mesmo pad
 +       </div>
 +     );
 +   }
-+ 
++
 +   if (!pendingRequests.length) {
 +     return (
 +       <div className="flex flex-col items-center justify-center p-8 text-slate-600">
@@ -259,7 +259,7 @@ Agora vou ajustar o componente `PendingRequestsList.tsx` para seguir o mesmo pad
 +       </div>
 +     );
 +   }
-  
+
     // Agrupar por usuário
 ```
 
@@ -305,10 +305,10 @@ Agora vou ajustar o componente `PendingRequestsList.tsx` para seguir o mesmo pad
                 </thead>
                 <tbody className="bg-white divide-y divide-slate-200">
                   {userData.requests.map(req => (
--                   <tr key={`${req.userId}-${req.date}`}> 
+-                   <tr key={`${req.userId}-${req.date}`}>
 -                     <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-700 align-top">
 -                       {new Date(req.date + 'T00:00:00').toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric'})}
-+                   <tr key={`${req.userId}-${req.date}`} className="hover:bg-slate-50 transition-colors"> 
++                   <tr key={`${req.userId}-${req.date}`} className="hover:bg-slate-50 transition-colors">
 +                     <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-700">
 +                       {new Date(req.date + 'T00:00:00').toLocaleDateString('pt-BR', {
 +                         day: '2-digit',
@@ -362,11 +362,11 @@ Agora vou ajustar o componente `GlobalSettingsForm.tsx`:
 + import React, { useState } from 'react';
 + import { useTranslation } from 'react-i18next';
 + import { Settings, Save } from 'lucide-react';
-  
+
   interface GlobalSettingsFormProps {
     // Defina as props necessárias futuramente
   }
-  
+
 - const GlobalSettingsForm: React.FC<GlobalSettingsFormProps> = (props) => {
 + const GlobalSettingsForm: React.FC<GlobalSettingsFormProps> = () => {
 +   const { t } = useTranslation();
@@ -376,7 +376,7 @@ Agora vou ajustar o componente `GlobalSettingsForm.tsx`:
 +     maxConsecutiveDays: 30,
 +     autoApprovalEnabled: false
 +   });
-+ 
++
 +   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 +     const { name, value, type, checked } = e.target;
 +     setSettings(prev => ({
@@ -384,12 +384,12 @@ Agora vou ajustar o componente `GlobalSettingsForm.tsx`:
 +       [name]: type === 'checkbox' ? checked : Number(value)
 +     }));
 +   };
-+ 
++
 +   const handleSubmit = (e: React.FormEvent) => {
 +     e.preventDefault();
 +     // Implementar lógica de salvamento
 +   };
-+ 
++
     return (
 -     <section>
 -       <h2>Configurações Globais</h2>
@@ -401,7 +401,7 @@ Agora vou ajustar o componente `GlobalSettingsForm.tsx`:
 +         <Settings className="w-6 h-6" />
 +         <span>{t('adminDashboard.globalSettings')}</span>
 +       </div>
-+ 
++
 +       <form onSubmit={handleSubmit} className="space-y-6">
 +         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 +           {/* Dias de férias anuais padrão */}
@@ -422,7 +422,7 @@ Agora vou ajustar o componente `GlobalSettingsForm.tsx`:
 +               {t('adminDashboard.defaultAnnualVacationDaysHelp')}
 +             </p>
 +           </div>
-+ 
++
 +           {/* Aviso mínimo */}
 +           <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
 +             <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -441,7 +441,7 @@ Agora vou ajustar o componente `GlobalSettingsForm.tsx`:
 +               {t('adminDashboard.minAdvanceNoticeHelp')}
 +             </p>
 +           </div>
-+ 
++
 +           {/* Dias consecutivos máximos */}
 +           <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
 +             <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -460,7 +460,7 @@ Agora vou ajustar o componente `GlobalSettingsForm.tsx`:
 +               {t('adminDashboard.maxConsecutiveDaysHelp')}
 +             </p>
 +           </div>
-+ 
++
 +           {/* Aprovação automática */}
 +           <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
 +             <label className="flex items-center space-x-3 text-sm font-medium text-slate-700">
@@ -478,7 +478,7 @@ Agora vou ajustar o componente `GlobalSettingsForm.tsx`:
 +             </p>
 +           </div>
 +         </div>
-+ 
++
 +         {/* Botão de salvar */}
 +         <div className="flex justify-end">
 +           <button
@@ -505,15 +505,15 @@ Por fim, vou ajustar o componente `UserVacationSummaryTable.tsx`:
   import React from 'react';
 + import { useTranslation } from 'react-i18next';
 + import { BarChart3, Calendar } from 'lucide-react';
-  
+
   interface UserVacationSummaryTableProps {
     // Defina as props necessárias futuramente
   }
-  
+
 - const UserVacationSummaryTable: React.FC<UserVacationSummaryTableProps> = (props) => {
 + const UserVacationSummaryTable: React.FC<UserVacationSummaryTableProps> = () => {
 +   const { t } = useTranslation();
-+ 
++
 +   // Dados de exemplo - substituir por dados reais
 +   const summaryData = [
 +     {
@@ -535,7 +535,7 @@ Por fim, vou ajustar o componente `UserVacationSummaryTable.tsx`:
 +       remainingDays: 10
 +     }
 +   ];
-+ 
++
     return (
 -     <section>
 -       <h2>Resumo de Férias dos Usuários</h2>
@@ -547,7 +547,7 @@ Por fim, vou ajustar o componente `UserVacationSummaryTable.tsx`:
 +         <Calendar className="w-6 h-6" />
 +         <span>{t('adminDashboard.vacationSummary')}</span>
 +       </div>
-+ 
++
 +       {/* Cards de estatísticas */}
 +       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 +         <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
@@ -563,7 +563,7 @@ Por fim, vou ajustar o componente `UserVacationSummaryTable.tsx`:
 +             </div>
 +           </div>
 +         </div>
-+ 
++
 +         <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
 +           <div className="flex items-center gap-3">
 +             <div className="bg-green-100 rounded-lg p-2">
@@ -577,7 +577,7 @@ Por fim, vou ajustar o componente `UserVacationSummaryTable.tsx`:
 +             </div>
 +           </div>
 +         </div>
-+ 
++
 +         <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
 +           <div className="flex items-center gap-3">
 +             <div className="bg-yellow-100 rounded-lg p-2">
@@ -591,7 +591,7 @@ Por fim, vou ajustar o componente `UserVacationSummaryTable.tsx`:
 +             </div>
 +           </div>
 +         </div>
-+ 
++
 +         <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
 +           <div className="flex items-center gap-3">
 +             <div className="bg-blue-100 rounded-lg p-2">
@@ -606,7 +606,7 @@ Por fim, vou ajustar o componente `UserVacationSummaryTable.tsx`:
 +           </div>
 +         </div>
 +       </div>
-+ 
++
 +       {/* Tabela de resumo */}
 +       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
 +         <table className="min-w-full divide-y divide-slate-200">
@@ -710,24 +710,24 @@ Desculpe pelo inconveniente. Por favor, tente atualizar a página.
 
 Detalhes do erro
 TypeError: Cannot read properties of undefined (reading 'name')
-    at AdminOverviewDashboard (http://localhost:5175/components/AdminOverviewDashboard.tsx:23:35)
-    at div (<anonymous>)
-    at div (<anonymous>)
-    at div (<anonymous>)
-    at AdminTabbedPage (http://localhost:5175/components/AdminTabbedPage.tsx:27:17)
-    at main (<anonymous>)
-    at div (<anonymous>)
-    at div (<anonymous>)
-    at MainAppLayout (http://localhost:5175/components/MainAppLayout.tsx:29:3)
-    at MainAppLayoutWrapper (http://localhost:5175/App.tsx:102:27)
-    at CurrentUserDataProvider (http://localhost:5175/contexts/CurrentUserDataContext.tsx:24:36)
-    at AppContent (http://localhost:5175/App.tsx:31:23)
-    at NotificationProvider (http://localhost:5175/contexts/NotificationContext.tsx:20:40)
-    at GlobalDataProvider (http://localhost:5175/contexts/GlobalDataContext.tsx:22:31)
-    at AuthProvider (http://localhost:5175/contexts/AuthContext.tsx:22:25)
-    at App (<anonymous>)
-    at I18nextProvider (http://localhost:5175/node_modules/.vite/deps/react-i18next.js?v=65e03a64:744:5)
-    at ErrorBoundary (http://localhost:5175/components/ErrorBoundary.tsx:5:1)
+at AdminOverviewDashboard (http://localhost:5175/components/AdminOverviewDashboard.tsx:23:35)
+at div (<anonymous>)
+at div (<anonymous>)
+at div (<anonymous>)
+at AdminTabbedPage (http://localhost:5175/components/AdminTabbedPage.tsx:27:17)
+at main (<anonymous>)
+at div (<anonymous>)
+at div (<anonymous>)
+at MainAppLayout (http://localhost:5175/components/MainAppLayout.tsx:29:3)
+at MainAppLayoutWrapper (http://localhost:5175/App.tsx:102:27)
+at CurrentUserDataProvider (http://localhost:5175/contexts/CurrentUserDataContext.tsx:24:36)
+at AppContent (http://localhost:5175/App.tsx:31:23)
+at NotificationProvider (http://localhost:5175/contexts/NotificationContext.tsx:20:40)
+at GlobalDataProvider (http://localhost:5175/contexts/GlobalDataContext.tsx:22:31)
+at AuthProvider (http://localhost:5175/contexts/AuthContext.tsx:22:25)
+at App (<anonymous>)
+at I18nextProvider (http://localhost:5175/node_modules/.vite/deps/react-i18next.js?v=65e03a64:744:5)
+at ErrorBoundary (http://localhost:5175/components/ErrorBoundary.tsx:5:1)
 
 ---
 
@@ -789,7 +789,7 @@ Agora posso ver que o erro está ocorrendo porque o componente `AdminOverviewDas
     const { t } = useTranslation();
 +   const { currentUser } = useAuthContext();
     const [activeTab, setActiveTab] = useState('overview');
-  
+
 ```
 
 ```diff
@@ -803,10 +803,10 @@ Agora posso ver que o erro está ocorrendo porque o componente `AdminOverviewDas
 
 ```diff
     ];
-  
+
 -   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || AdminOverviewDashboard;
 +   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || tabs[0].component;
-  
+
     return (
 ```
 
@@ -817,7 +817,7 @@ Agora também preciso atualizar os outros componentes para receber suas props ne
 ---
 
 ```diff
-  
+
   interface PendingRequestsListProps {
 -   pendingRequests: PendingRequest[];
 -   onApprove: (request: PendingRequest, status: VacationStatus) => void;
@@ -828,16 +828,16 @@ Agora também preciso atualizar os outros componentes para receber suas props ne
 +   onApproveAll?: (userId: string, userName: string) => void;
 +   isLoading?: boolean;
   }
-  
+
 - const PendingRequestsList: React.FC<PendingRequestsListProps> = ({ pendingRequests, onApprove, onApproveAll, isLoading }) => {
-+ const PendingRequestsList: React.FC<PendingRequestsListProps> = ({ 
-+   pendingRequests = [], 
-+   onApprove = () => {}, 
-+   onApproveAll = () => {}, 
-+   isLoading = false 
++ const PendingRequestsList: React.FC<PendingRequestsListProps> = ({
++   pendingRequests = [],
++   onApprove = () => {},
++   onApproveAll = () => {},
++   isLoading = false
 + }) => {
     const { t } = useTranslation();
-  
+
 ```
 
 ---
@@ -863,7 +863,7 @@ Agora vou atualizar o componente `AdminTabbedPage.tsx` para passar as props corr
     const [activeTab, setActiveTab] = useState('overview');
 +   const [isLoadingPendingRequests, setIsLoadingPendingRequests] = useState(false);
 +   const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);
-+ 
++
 +   const handleApproveRequest = useCallback(async (request: PendingRequest, status: VacationStatus) => {
 +     try {
 +       const { error } = await supabase
@@ -871,17 +871,17 @@ Agora vou atualizar o componente `AdminTabbedPage.tsx` para passar as props corr
 +         .update({ status })
 +         .eq('user_id', request.userId)
 +         .eq('date', request.date);
-+ 
++
 +       if (error) throw error;
-+ 
-+       setPendingRequests(prev => 
++
++       setPendingRequests(prev =>
 +         prev.filter(r => !(r.userId === request.userId && r.date === request.date))
 +       );
 +     } catch (error) {
 +       console.error('Error updating vacation request:', error);
 +     }
 +   }, []);
-+ 
++
 +   const handleApproveAll = useCallback(async (userId: string, userName: string) => {
 +     try {
 +       const { error } = await supabase
@@ -889,15 +889,15 @@ Agora vou atualizar o componente `AdminTabbedPage.tsx` para passar as props corr
 +         .update({ status: VacationStatus.APPROVED })
 +         .eq('user_id', userId)
 +         .eq('status', VacationStatus.PENDING_APPROVAL);
-+ 
++
 +       if (error) throw error;
-+ 
++
 +       setPendingRequests(prev => prev.filter(r => r.userId !== userId));
 +     } catch (error) {
 +       console.error('Error approving all requests:', error);
 +     }
 +   }, []);
-  
+
     const tabs = [
 ```
 
@@ -933,10 +933,10 @@ Agora vou adicionar o carregamento inicial das solicitações pendentes quando a
 ```diff
     const [isLoadingPendingRequests, setIsLoadingPendingRequests] = useState(false);
     const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);
-+ 
++
 +   const loadPendingRequests = useCallback(async () => {
 +     if (activeTab !== 'pending') return;
-+     
++
 +     setIsLoadingPendingRequests(true);
 +     try {
 +       const { data, error } = await supabase
@@ -950,16 +950,16 @@ Agora vou adicionar o carregamento inicial das solicitações pendentes quando a
 +           )
 +         `)
 +         .eq('status', VacationStatus.PENDING_APPROVAL);
-+ 
++
 +       if (error) throw error;
-+ 
++
 +       const formattedRequests = data.map(req => ({
 +         userId: req.user_id,
 +         userName: req.profiles.name,
 +         date: req.date,
 +         comment: req.comment
 +       }));
-+ 
++
 +       setPendingRequests(formattedRequests);
 +     } catch (error) {
 +       console.error('Error loading pending requests:', error);
@@ -967,11 +967,11 @@ Agora vou adicionar o carregamento inicial das solicitações pendentes quando a
 +       setIsLoadingPendingRequests(false);
 +     }
 +   }, [activeTab]);
-+ 
++
 +   useEffect(() => {
 +     loadPendingRequests();
 +   }, [loadPendingRequests]);
-  
+
     const handleApproveRequest = useCallback(async (request: PendingRequest, status: VacationStatus) => {
 ```
 
@@ -998,14 +998,14 @@ Agora vou atualizar o arquivo de tipos para incluir a definição de `PendingReq
 ```diff
     removeNotification: (id: string) => void;
   }
-+ 
++
 + export interface PendingRequest {
 +   userId: string;
 +   userName: string;
 +   date: string;
 +   comment?: string;
 + }
-  
+
 ```
 
 ---
@@ -1047,7 +1047,7 @@ Ah, me desculpe por ter removido a aba de administração de feriados. Vou corri
   import GlobalSettingsForm from './AdminDashboard/GlobalSettingsForm';
   import UserVacationSummaryTable from './AdminDashboard/UserVacationSummaryTable';
 + import HolidayManagementPage from './HolidayManagementPage';
-  
+
   const AdminTabbedPage: React.FC = () => {
 ```
 
@@ -1113,7 +1113,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 
 ```diff
     const [newHolidayDate, setNewHolidayDate] = useState<string>(''); // YYYY-MM-DD
-  
+
 -   const lightInputBaseClasses = "w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
 +   const lightInputBaseClasses = "w-full p-2 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
     const lightInputClasses = `${lightInputBaseClasses} bg-white text-slate-700 placeholder-slate-400`;
@@ -1128,8 +1128,8 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 -         titleIcon={PageIcon}
 -         titleIconProps={{ className: "w-7 h-7 text-indigo-600" }}
 -         titleTextClassName="text-2xl font-semibold text-slate-800"
--         headerAreaClassName="p-0 pb-6 border-none" 
--         contentAreaClassName="p-0" 
+-         headerAreaClassName="p-0 pb-6 border-none"
+-         contentAreaClassName="p-0"
 -       >
 -         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 -           <div className="lg:col-span-1 space-y-6">
@@ -1142,23 +1142,23 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 -               <div className="space-y-4">
 -                 <div>
 -                   <label htmlFor="country-select" className="block text-sm font-medium text-slate-600 mb-1">{t('holidayManagementPage.countryLabel')}</label>
--                   <select 
--                       id="country-select" 
--                       value={selectedCountry} 
+-                   <select
+-                       id="country-select"
+-                       value={selectedCountry}
 -                       className={`${lightSelectClasses} cursor-not-allowed opacity-70`}
--                       disabled 
+-                       disabled
 -                   >
 -                     {countryOptions.map(opt => <option key={opt.value} value={opt.value}>{t(opt.labelKey, opt.value)}</option>)}
 -                   </select>
 -                    <p className="mt-1 text-xs text-slate-500">
--                       {t('adminDashboardPage.peakConcurrencyChart.featureNote')} 
+-                       {t('adminDashboardPage.peakConcurrencyChart.featureNote')}
 -                   </p>
 -                 </div>
 -                 <div>
 -                   <label htmlFor="year-select" className="block text-sm font-medium text-slate-600 mb-1">{t('holidayManagementPage.yearLabel')}</label>
--                   <select 
--                       id="year-select" 
--                       value={selectedYear} 
+-                   <select
+-                       id="year-select"
+-                       value={selectedYear}
 -                       onChange={(e) => setSelectedYear(parseInt(e.target.value,10))}
 -                       className={lightSelectClasses}
 -                   >
@@ -1167,7 +1167,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 -                 </div>
 -               </div>
 -             </SectionCard>
-- 
+-
 -             <SectionCard
 -               title={t('holidayManagementPage.addHolidayCardTitle')}
 -               titleTextClassName="text-lg font-medium text-slate-700"
@@ -1177,26 +1177,26 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 -               <div className="space-y-3">
 -                 <div>
 -                   <label htmlFor="holiday-name" className="block text-sm font-medium text-slate-600 mb-1">{t('holidayManagementPage.nameLabel')}</label>
--                   <input 
--                       type="text" 
--                       id="holiday-name" 
--                       value={newHolidayName} 
--                       onChange={(e) => setNewHolidayName(e.target.value)} 
+-                   <input
+-                       type="text"
+-                       id="holiday-name"
+-                       value={newHolidayName}
+-                       onChange={(e) => setNewHolidayName(e.target.value)}
 -                       className={lightInputClasses}
 -                       placeholder={t('holidayManagementPage.namePlaceholder')}
 -                   />
 -                 </div>
 -                 <div>
 -                   <label htmlFor="holiday-date" className="block text-sm font-medium text-slate-600 mb-1">{t('holidayManagementPage.dateLabel')}</label>
--                   <input 
--                       type="date" 
--                       id="holiday-date" 
--                       value={newHolidayDate} 
--                       onChange={(e) => setNewHolidayDate(e.target.value)} 
+-                   <input
+-                       type="date"
+-                       id="holiday-date"
+-                       value={newHolidayDate}
+-                       onChange={(e) => setNewHolidayDate(e.target.value)}
 -                       className={lightInputClasses}
 -                   />
 -                 </div>
--                 <button 
+-                 <button
 -                   onClick={handleAddHoliday}
 -                   className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 text-sm"
 -                 >
@@ -1205,7 +1205,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 -                 </button>
 -               </div>
 -             </SectionCard>
-- 
+-
 -             <SectionCard
 -                 title={t('holidayManagementPage.summaryCardTitle', { year: selectedYear })}
 -                 titleTextClassName="text-lg font-medium text-slate-700"
@@ -1221,7 +1221,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +         <PageIcon className="w-7 h-7" />
 +         <span>{t('holidayManagementPage.title')}</span>
 +       </div>
-+ 
++
 +       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 +         <div className="lg:col-span-1 space-y-6">
 +           <div className="bg-white rounded-2xl shadow p-6">
@@ -1233,11 +1233,11 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +                 <label htmlFor="country-select" className="block text-sm font-medium text-slate-600 mb-1">
 +                   {t('holidayManagementPage.countryLabel')}
 +                 </label>
-+                 <select 
-+                   id="country-select" 
-+                   value={selectedCountry} 
++                 <select
++                   id="country-select"
++                   value={selectedCountry}
 +                   className={`${lightSelectClasses} cursor-not-allowed opacity-70`}
-+                   disabled 
++                   disabled
 +                 >
 +                   {countryOptions.map(opt => (
 +                     <option key={opt.value} value={opt.value}>
@@ -1246,16 +1246,16 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +                   ))}
 +                 </select>
 +                 <p className="mt-1 text-xs text-slate-500">
-+                   {t('adminDashboardPage.peakConcurrencyChart.featureNote')} 
++                   {t('adminDashboardPage.peakConcurrencyChart.featureNote')}
 +                 </p>
 +               </div>
 +               <div>
 +                 <label htmlFor="year-select" className="block text-sm font-medium text-slate-600 mb-1">
 +                   {t('holidayManagementPage.yearLabel')}
 +                 </label>
-+                 <select 
-+                   id="year-select" 
-+                   value={selectedYear} 
++                 <select
++                   id="year-select"
++                   value={selectedYear}
 +                   onChange={(e) => setSelectedYear(parseInt(e.target.value,10))}
 +                   className={lightSelectClasses}
 +                 >
@@ -1266,7 +1266,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +               </div>
 +             </div>
 +           </div>
-+ 
++
 +           <div className="bg-white rounded-2xl shadow p-6">
 +             <div className="flex items-center gap-2 mb-4 text-indigo-700 font-semibold text-lg">
 +               <span>{t('holidayManagementPage.addHolidayCardTitle')}</span>
@@ -1276,11 +1276,11 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +                 <label htmlFor="holiday-name" className="block text-sm font-medium text-slate-600 mb-1">
 +                   {t('holidayManagementPage.nameLabel')}
 +                 </label>
-+                 <input 
-+                   type="text" 
-+                   id="holiday-name" 
-+                   value={newHolidayName} 
-+                   onChange={(e) => setNewHolidayName(e.target.value)} 
++                 <input
++                   type="text"
++                   id="holiday-name"
++                   value={newHolidayName}
++                   onChange={(e) => setNewHolidayName(e.target.value)}
 +                   className={lightInputClasses}
 +                   placeholder={t('holidayManagementPage.namePlaceholder')}
 +                 />
@@ -1289,15 +1289,15 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +                 <label htmlFor="holiday-date" className="block text-sm font-medium text-slate-600 mb-1">
 +                   {t('holidayManagementPage.dateLabel')}
 +                 </label>
-+                 <input 
-+                   type="date" 
-+                   id="holiday-date" 
-+                   value={newHolidayDate} 
-+                   onChange={(e) => setNewHolidayDate(e.target.value)} 
++                 <input
++                   type="date"
++                   id="holiday-date"
++                   value={newHolidayDate}
++                   onChange={(e) => setNewHolidayDate(e.target.value)}
 +                   className={lightInputClasses}
 +                 />
 +               </div>
-+               <button 
++               <button
 +                 onClick={handleAddHoliday}
 +                 className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2 text-sm shadow-sm"
 +               >
@@ -1306,7 +1306,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +               </button>
 +             </div>
 +           </div>
-+ 
++
 +           <div className="bg-white rounded-2xl shadow p-6">
 +             <div className="flex items-center gap-2 mb-4 text-indigo-700 font-semibold text-lg">
 +               <span>{t('holidayManagementPage.summaryCardTitle', { year: selectedYear })}</span>
@@ -1337,7 +1337,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +             </div>
 +           </div>
 +         </div>
-  
+
 -           <div className="lg:col-span-2">
 -             <SectionCard
 -                 title={t('holidayManagementPage.holidaysForYearTitle', { year: selectedYear, country: t(countryOptions.find(c => c.value === selectedCountry)?.labelKey || 'holidayManagementPage.countryGlobal', selectedCountry) })}
@@ -1360,7 +1360,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 -                             </span>
 -                             </div>
 -                         </div>
--                         <button 
+-                         <button
 -                             onClick={() => handleRemoveHoliday(holiday.id)}
 -                             className="p-2 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors"
 -                             title={t('adminDashboardPage.rejectButton')}
@@ -1413,7 +1413,7 @@ Vou apenas fazer alguns pequenos ajustes para garantir que ele siga exatamente o
 +                         </span>
 +                       </div>
 +                     </div>
-+                     <button 
++                     <button
 +                       onClick={() => handleRemoveHoliday(holiday.id)}
 +                       className="p-2 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors"
 +                       title={t('common.delete')}
@@ -1754,7 +1754,7 @@ Agora vou atualizar o componente `AdminTabbedPage` para usar a estrutura correta
 -           <span>{t('nav.adminPanel')}</span>
 +           <span>{t('adminDashboard.title')}</span>
           </div>
-  
+
 ```
 
 ---
@@ -1838,7 +1838,7 @@ Entendi. Vou fazer duas correções:
 ```
 
 ```diff
-  
+
     const tabs = [
 -     {
 -       id: 'overview',
@@ -1885,7 +1885,7 @@ Entendi. Vou fazer duas correções:
 +           <Users className="w-7 h-7" />
 +           <span>Painel Admin</span>
           </div>
-  
+
 ```
 
 ---
@@ -1898,6 +1898,7 @@ Agora fiz as seguintes alterações:
 4. Simplifiquei o título para apenas "Painel Admin"
 
 As abas agora são:
+
 - Solicitações Pendentes
 - Gerir Feriados
 - Resumo de Férias
@@ -2001,7 +2002,7 @@ Agora vou atualizar o componente `UserVacationSummaryTable` para usar as traduç
 -         <span>{t('adminDashboard.vacationSummary')}</span>
 +         <span>{t('adminDashboard.userVacationSummaryTitle')}</span>
         </div>
-  
+
 ```
 
 ---
@@ -2048,7 +2049,7 @@ Agora vou atualizar o componente `AdminTabbedPage` para usar as traduções corr
 -           <span>Painel Admin</span>
 +           <span>{t('adminDashboard.title')}</span>
           </div>
-  
+
 ```
 
 ---
@@ -2063,7 +2064,7 @@ Agora vou atualizar o componente `GlobalSettingsForm` para usar as traduções c
 -         <span>{t('adminDashboard.globalSettings')}</span>
 +         <span>{t('adminDashboard.globalConfigTitle')}</span>
         </div>
-  
+
 ```
 
 ```diff
@@ -2133,15 +2134,15 @@ Agora vou atualizar o componente `UserVacationSummaryTable` para usar apenas as 
 
 ```diff
   import { BarChart3, Calendar } from 'lucide-react';
-  
+
 - interface UserVacationSummaryTableProps {
 -   // Defina as props necessárias futuramente
 - }
-- 
+-
 - const UserVacationSummaryTable: React.FC<UserVacationSummaryTableProps> = () => {
 + const UserVacationSummaryTable: React.FC = () => {
     const { t } = useTranslation();
-  
+
 ```
 
 ```diff
@@ -2150,7 +2151,7 @@ Agora vou atualizar o componente `UserVacationSummaryTable` para usar apenas as 
 -         <span>{t('adminDashboard.userVacationSummaryTitle')}</span>
 +         <span>Resumo de Férias</span>
         </div>
-  
+
 ```
 
 ```diff
@@ -2268,11 +2269,11 @@ Me desculpe pela ineficácia das tentativas anteriores. Você está certo - o pr
   import React, { useState } from 'react';
 - import { useTranslation } from 'react-i18next';
   import { Settings, Save } from 'lucide-react';
-  
+
 - interface GlobalSettingsFormProps {
 -   // Defina as props necessárias futuramente
 - }
-- 
+-
 - const GlobalSettingsForm: React.FC<GlobalSettingsFormProps> = () => {
 -   const { t } = useTranslation();
 + const GlobalSettingsForm: React.FC = () => {
@@ -2286,7 +2287,7 @@ Me desculpe pela ineficácia das tentativas anteriores. Você está certo - o pr
 -         <span>{t('adminDashboard.globalConfigTitle')}</span>
 +         <span>Configurações Globais</span>
         </div>
-  
+
 ```
 
 ```diff
@@ -2375,7 +2376,7 @@ Me desculpe pela ineficácia das tentativas anteriores. Você está certo - o pr
 ```
 
 ```diff
-  
+
   const AdminTabbedPage: React.FC = () => {
 -   const { t } = useTranslation();
     const { currentUser } = useAuthContext();
@@ -2420,7 +2421,7 @@ Me desculpe pela ineficácia das tentativas anteriores. Você está certo - o pr
 -           <span>{t('adminDashboard.title')}</span>
 +           <span>Painel Admin</span>
           </div>
-  
+
 ```
 
 ---
@@ -2428,6 +2429,7 @@ Me desculpe pela ineficácia das tentativas anteriores. Você está certo - o pr
 Removi completamente o sistema de traduções e coloquei os textos diretamente em português em todos os componentes. Isso deve resolver definitivamente o problema das chaves de tradução aparecendo na interface.
 
 Agora você deve ver:
+
 1. "Painel Admin" no título
 2. "Solicitações Pendentes", "Gerir Feriados", "Resumo de Férias" e "Configurações" nas abas
 3. "Configurações Globais" e todos os textos dos campos do formulário em português
@@ -2474,13 +2476,14 @@ elgit commit -m "fix: substituição temporária das chaves de tradução por te
 [main 729a2c6] fix: substituição temporária das chaves de tradução por textos diretos em português no painel
  administrativo
  4 files changed, 435 insertions(+), 97 deletions(-)
-chlins-mbp in heure_C on  main [⇡✘!?] 
+chlins-mbp in heure_C on  main [⇡✘!?]
 ❯
 ```
 
 ---
 
 O commit foi realizado com sucesso. A mensagem indica que:
+
 1. É uma correção (fix)
 2. Substituímos temporariamente as chaves de tradução por textos diretos em português
 3. A mudança afeta o painel administrativo
@@ -2552,7 +2555,7 @@ Primeiro, vou atualizar o tipo `Holiday` para incluir as novas informações:
 ---
 
 ```diff
-  
+
   export interface Holiday {
 -   id?: string; // UUID - Made optional as Supabase will generate it for new holidays
 -   date: string; // 'YYYY-MM-DD'
@@ -2567,7 +2570,7 @@ Primeiro, vou atualizar o tipo `Holiday` para incluir as novas informações:
 +   description?: string;
 +   repeatsAnnually?: boolean;
   }
-  
+
 ```
 
 ---
@@ -2577,16 +2580,16 @@ Agora vou criar um novo componente para o seletor de cantão e município:
 ---
 
 ```diff
-- 
+-
 + import React, { useState, useEffect } from 'react';
 + import { supabase } from '../../utils/supabaseClient';
-+ 
++
 + interface Region {
 +   id: number;
 +   name: string;
 +   code?: string;
 + }
-+ 
++
 + interface RegionSelectorProps {
 +   selectedCantonId?: number;
 +   selectedMunicipalityId?: number;
@@ -2594,7 +2597,7 @@ Agora vou criar um novo componente para o seletor de cantão e município:
 +   onMunicipalityChange: (municipalityId: number | null) => void;
 +   className?: string;
 + }
-+ 
++
 + const RegionSelector: React.FC<RegionSelectorProps> = ({
 +   selectedCantonId,
 +   selectedMunicipalityId,
@@ -2605,7 +2608,7 @@ Agora vou criar um novo componente para o seletor de cantão e município:
 +   const [cantons, setCantons] = useState<Region[]>([]);
 +   const [municipalities, setMunicipalities] = useState<Region[]>([]);
 +   const [isLoading, setIsLoading] = useState(true);
-+ 
++
 +   useEffect(() => {
 +     const loadCantons = async () => {
 +       try {
@@ -2613,31 +2616,31 @@ Agora vou criar um novo componente para o seletor de cantão e município:
 +           .from('cantons')
 +           .select('*')
 +           .order('name');
-+         
++
 +         if (error) throw error;
 +         setCantons(data || []);
 +       } catch (error) {
 +         console.error('Erro ao carregar cantões:', error);
 +       }
 +     };
-+ 
++
 +     loadCantons();
 +   }, []);
-+ 
++
 +   useEffect(() => {
 +     const loadMunicipalities = async () => {
 +       if (!selectedCantonId) {
 +         setMunicipalities([]);
 +         return;
 +       }
-+ 
++
 +       try {
 +         const { data, error } = await supabase
 +           .from('municipalities')
 +           .select('*')
 +           .eq('canton_id', selectedCantonId)
 +           .order('name');
-+         
++
 +         if (error) throw error;
 +         setMunicipalities(data || []);
 +       } catch (error) {
@@ -2646,21 +2649,21 @@ Agora vou criar um novo componente para o seletor de cantão e município:
 +         setIsLoading(false);
 +       }
 +     };
-+ 
++
 +     loadMunicipalities();
 +   }, [selectedCantonId]);
-+ 
++
 +   const handleCantonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 +     const value = e.target.value ? parseInt(e.target.value) : null;
 +     onCantonChange(value);
 +     onMunicipalityChange(null); // Reset município quando cantão muda
 +   };
-+ 
++
 +   const handleMunicipalityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 +     const value = e.target.value ? parseInt(e.target.value) : null;
 +     onMunicipalityChange(value);
 +   };
-+ 
++
 +   return (
 +     <div className={`space-y-4 ${className}`}>
 +       <div>
@@ -2680,7 +2683,7 @@ Agora vou criar um novo componente para o seletor de cantão e município:
 +           ))}
 +         </select>
 +       </div>
-+ 
++
 +       <div>
 +         <label className="block text-sm font-medium text-slate-600 mb-1">
 +           Município
@@ -2704,8 +2707,8 @@ Agora vou criar um novo componente para o seletor de cantão e município:
 +     </div>
 +   );
 + };
-+ 
-+ export default RegionSelector; 
++
++ export default RegionSelector;
 ```
 
 ---
@@ -2717,45 +2720,45 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 ```diff
   import { useTranslation } from 'react-i18next';
   import { Holiday } from '../types';
-- import { PlusCircleIcon, TrashIcon, CalendarDaysIcon as PageIcon } from './icons'; 
+- import { PlusCircleIcon, TrashIcon, CalendarDaysIcon as PageIcon } from './icons';
 + import { PlusCircleIcon, TrashIcon, CalendarDaysIcon as PageIcon, Download, Upload } from 'lucide-react';
   import SectionCard from './common/SectionCard';
   import { useGlobalDataContext } from '../contexts/GlobalDataContext';
   import { useNotificationContext } from '../contexts/NotificationContext';
-- 
+-
 + import RegionSelector from './AdminDashboard/RegionSelector';
-  
+
   interface HolidayManagementPageProps {
 ```
 
 ```diff
-  
+
   type CountryOption = "Global" | "Suisse" | "France" | "Deutschland" | "Brasil";
-- 
-  
+-
+
   const HolidayManagementPage: React.FC<HolidayManagementPageProps> = () => {
 ```
 
 ```diff
-  
+
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
 -   const [selectedCountry] = useState<CountryOption>("Global");
 +   const [selectedCantonId, setSelectedCantonId] = useState<number | null>(null);
 +   const [selectedMunicipalityId, setSelectedMunicipalityId] = useState<number | null>(null);
     const [holidaysForDisplay, setHolidaysForDisplay] = useState<Holiday[]>([]);
-    
+
     const [newHolidayName, setNewHolidayName] = useState<string>('');
 -   const [newHolidayDate, setNewHolidayDate] = useState<string>(''); // YYYY-MM-DD
 +   const [newHolidayDate, setNewHolidayDate] = useState<string>('');
 +   const [newHolidayType, setNewHolidayType] = useState<Holiday['type']>('CUSTOM');
 +   const [newHolidayDescription, setNewHolidayDescription] = useState<string>('');
 +   const [newHolidayRepeatsAnnually, setNewHolidayRepeatsAnnually] = useState<boolean>(false);
-  
+
     const lightInputBaseClasses = "w-full p-2 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
     const lightInputClasses = `${lightInputBaseClasses} bg-white text-slate-700 placeholder-slate-400`;
     const lightSelectClasses = `${lightInputBaseClasses} bg-white text-slate-700 appearance-none`;
-- 
-  
+-
+
     useEffect(() => {
       const filtered = globalHolidays.filter(h => {
         const holidayYear = parseInt(h.date.substring(0, 4), 10);
@@ -2769,7 +2772,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
       setHolidaysForDisplay(filtered);
 -   }, [globalHolidays, selectedYear, selectedCountry]);
 +   }, [globalHolidays, selectedYear, selectedCantonId, selectedMunicipalityId]);
-  
+
     const handleAddHoliday = async () => {
       if (!newHolidayName || !newHolidayDate) {
 -       addNotification(t('holidayManagementPage.alertFillNameDate'), 'error');
@@ -2779,13 +2782,13 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 -     const newHolidayYear = parseInt(newHolidayDate.substring(0,4), 10);
 -     if (newHolidayYear !== selectedYear){
 -         addNotification(t('holidayManagementPage.alertYearMismatch', { year: selectedYear }), 'error');
-+ 
++
 +     const newHolidayYear = parseInt(newHolidayDate.substring(0, 4), 10);
 +     if (newHolidayYear !== selectedYear) {
 +       addNotification(`O feriado deve ser para o ano selecionado (${selectedYear}).`, 'error');
         return;
       }
-+ 
++
       if (globalHolidays.some(h => h.date === newHolidayDate)) {
 -         addNotification(t('holidayManagementPage.alertDateExists'), 'error');
 +       addNotification('Já existe um feriado cadastrado para esta data.', 'error');
@@ -2796,7 +2799,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 ```diff
         name: newHolidayName,
         date: newHolidayDate,
--       isOfficial: selectedCountry !== "Global", 
+-       isOfficial: selectedCountry !== "Global",
 +       isOfficial: newHolidayType !== 'CUSTOM',
 +       type: newHolidayType,
 +       cantonId: selectedCantonId || undefined,
@@ -2804,7 +2807,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 +       description: newHolidayDescription || undefined,
 +       repeatsAnnually: newHolidayRepeatsAnnually
       };
-+ 
++
       const updatedHolidays = [...globalHolidays, newHolidayEntry];
       const result = await saveGlobalHolidays(updatedHolidays);
       if (result.success) {
@@ -2830,7 +2833,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 +       addNotification(result.message || 'Erro ao remover feriado.', 'error');
 +     }
 +   };
-+ 
++
 +   const handleExportHolidays = () => {
 +     const holidaysToExport = holidaysForDisplay.map(h => ({
 +       ...h,
@@ -2846,11 +2849,11 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 +     document.body.removeChild(a);
 +     URL.revokeObjectURL(url);
 +   };
-+ 
++
 +   const handleImportHolidays = (event: React.ChangeEvent<HTMLInputElement>) => {
 +     const file = event.target.files?.[0];
 +     if (!file) return;
-+ 
++
 +     const reader = new FileReader();
 +     reader.onload = async (e) => {
 +       try {
@@ -2872,7 +2875,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 +     };
 +     reader.readAsText(file);
     };
-  
+
 ```
 
 ```diff
@@ -2904,7 +2907,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 +           </label>
 +         </div>
         </div>
-  
+
 ```
 
 ```diff
@@ -2914,11 +2917,11 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 -                 <label htmlFor="country-select" className="block text-sm font-medium text-slate-600 mb-1">
 -                   {t('holidayManagementPage.countryLabel')}
 -                 </label>
--                 <select 
--                   id="country-select" 
--                   value={selectedCountry} 
+-                 <select
+-                   id="country-select"
+-                   value={selectedCountry}
 -                   className={`${lightSelectClasses} cursor-not-allowed opacity-70`}
--                   disabled 
+-                   disabled
 -                 >
 -                   {countryOptions.map(opt => (
 -                     <option key={opt.value} value={opt.value}>
@@ -2927,7 +2930,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 -                   ))}
 -                 </select>
 -                 <p className="mt-1 text-xs text-slate-500">
--                   {t('adminDashboardPage.peakConcurrencyChart.featureNote')} 
+-                   {t('adminDashboardPage.peakConcurrencyChart.featureNote')}
 -                 </p>
 -               </div>
                 <div>
@@ -2946,7 +2949,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 ```diff
                   </select>
                 </div>
-+ 
++
 +               <RegionSelector
 +                 selectedCantonId={selectedCantonId}
 +                 selectedMunicipalityId={selectedMunicipalityId}
@@ -2966,7 +2969,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
                   </label>
                   <input
                     type="text"
--                   id="holiday-name" 
+-                   id="holiday-name"
                     value={newHolidayName}
                     onChange={(e) => setNewHolidayName(e.target.value)}
 ```
@@ -2974,7 +2977,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 ```diff
                   />
                 </div>
-+ 
++
                 <div>
 -                 <label htmlFor="holiday-date" className="block text-sm font-medium text-slate-600 mb-1">
 +                 <label className="block text-sm font-medium text-slate-600 mb-1">
@@ -2982,13 +2985,13 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
                   </label>
                   <input
                     type="date"
--                   id="holiday-date" 
+-                   id="holiday-date"
                     value={newHolidayDate}
                     onChange={(e) => setNewHolidayDate(e.target.value)}
                     className={lightInputClasses}
                   />
                 </div>
-+ 
++
 +               <div>
 +                 <label className="block text-sm font-medium text-slate-600 mb-1">
 +                   {t('holidayManagementPage.typeLabel')}
@@ -3004,7 +3007,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 +                   <option value="CUSTOM">Personalizado</option>
 +                 </select>
 +               </div>
-+ 
++
 +               <div>
 +                 <label className="block text-sm font-medium text-slate-600 mb-1">
 +                   {t('holidayManagementPage.descriptionLabel')}
@@ -3017,7 +3020,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 +                   placeholder={t('holidayManagementPage.descriptionPlaceholder')}
 +                 />
 +               </div>
-+ 
++
 +               <div className="flex items-center gap-2">
 +                 <input
 +                   type="checkbox"
@@ -3030,7 +3033,7 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 +                   {t('holidayManagementPage.repeatsAnnually')}
 +                 </label>
 +               </div>
-+ 
++
                 <button
                   onClick={handleAddHoliday}
 ```
@@ -3078,7 +3081,4 @@ Agora vou atualizar o componente `HolidayManagementPage` para incluir a nova fun
 
 ---
 
-
-
 ---
-
