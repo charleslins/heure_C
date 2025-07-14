@@ -66,7 +66,7 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({
     }
   };
 
-  const inputClasses = `${textInputClasses()} w-12 h-10 text-center appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`;
+  const inputClasses = `${textInputClasses} w-12 h-10 text-center appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`;
 
   return (
     <SectionCard

@@ -59,7 +59,7 @@ export class VacationPresenter {
   }
 
   private getStatusClass(status: VacationStatus): string {
-    const classes = {
+    const classes: Record<VacationStatus, string> = {
       [VacationStatus.PENDING_APPROVAL]: "bg-yellow-100 text-yellow-800",
       [VacationStatus.APPROVED]: "bg-green-100 text-green-800",
       [VacationStatus.REJECTED]: "bg-red-100 text-red-800",
@@ -68,7 +68,7 @@ export class VacationPresenter {
   }
 
   async requestVacation(
-    date: string,
+    date: string
   ): Promise<{ success: boolean; message?: string }> {
     try {
       if (!this.userId) throw new Error("UserId não definido");
@@ -88,7 +88,7 @@ export class VacationPresenter {
 
   async approveVacation(
     vacationId: string,
-    comment?: string,
+    comment?: string
   ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.approveVacation(vacationId, comment);
@@ -104,7 +104,7 @@ export class VacationPresenter {
 
   async rejectVacation(
     vacationId: string,
-    comment?: string,
+    comment?: string
   ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.rejectVacation(vacationId, comment);
@@ -119,7 +119,7 @@ export class VacationPresenter {
   }
 
   async cancelVacation(
-    vacationId: string,
+    vacationId: string
   ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.remove(vacationId);

@@ -26,16 +26,13 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
   icon,
   label,
 }) => {
-  const inputWithIconClasses = `pl-10 ${textInputClasses()}`;
+  const inputWithIconClasses = `pl-10 ${textInputClasses}`;
   const iconBaseClasses =
     "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400";
 
   return (
     <div>
-      <label
-        htmlFor={id}
-        className={`${labelClasses()} sr-only`}
-      >
+      <label htmlFor={id} className={`${labelClasses()} sr-only`}>
         {label}
       </label>
       <div className="relative">

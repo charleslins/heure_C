@@ -19,7 +19,6 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
     name: user?.name || "",
     email: user?.email || "",
     role: user?.role || "user",
-    active: user?.active ?? true,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +66,7 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
         label={t("common.name")}
         name="name"
         type="text"
-        value={formData.name}
+        value={formData.name || ""}
         onChange={handleChange}
         required
         placeholder={t("common.name")}
@@ -79,7 +78,7 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
         label={t("common.email")}
         type="email"
         name="email"
-        value={formData.email}
+        value={formData.email || ""}
         onChange={handleChange}
         required
         placeholder={t("common.email")}

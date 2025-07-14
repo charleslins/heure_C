@@ -49,21 +49,5 @@ export class UserPresenter {
     return UserCollection.delete(id);
   }
 
-  static async activateUser(id: string): Promise<DbProfile> {
-    const user = await UserCollection.findById(id);
-    if (!user) {
-      throw new Error("Usuário não encontrado");
-    }
 
-    return UserCollection.update(id, { active: true });
-  }
-
-  static async deactivateUser(id: string): Promise<DbProfile> {
-    const user = await UserCollection.findById(id);
-    if (!user) {
-      throw new Error("Usuário não encontrado");
-    }
-
-    return UserCollection.update(id, { active: false });
-  }
 }

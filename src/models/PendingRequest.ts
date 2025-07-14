@@ -1,11 +1,12 @@
 import { Database } from "../types/supabase";
 
+// Usando vacation_requests como base, já que pending_requests não existe
 export type DbPendingRequest =
-  Database["public"]["Tables"]["pending_requests"]["Row"];
+  Database["public"]["Tables"]["vacation_requests"]["Row"];
 export type DbPendingRequestInsert =
-  Database["public"]["Tables"]["pending_requests"]["Insert"];
+  Database["public"]["Tables"]["vacation_requests"]["Insert"];
 export type DbPendingRequestUpdate =
-  Database["public"]["Tables"]["pending_requests"]["Update"];
+  Database["public"]["Tables"]["vacation_requests"]["Update"];
 
 export interface PendingRequestWithUser {
   id: string;

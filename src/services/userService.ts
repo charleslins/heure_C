@@ -1,5 +1,9 @@
 import { supabase } from "../supabase/client";
-import { DbUser, DbUserInsert, DbUserUpdate } from "../types/supabase";
+import { Database } from "../types/supabase";
+
+type DbUser = Database["public"]["Tables"]["users"]["Row"];
+type DbUserInsert = Database["public"]["Tables"]["users"]["Insert"];
+type DbUserUpdate = Database["public"]["Tables"]["users"]["Update"];
 
 export class UserService {
   static async getUser(userId: string): Promise<DbUser | null> {
@@ -28,7 +32,7 @@ export class UserService {
 
   static async updateUser(
     userId: string,
-    updates: DbUserUpdate,
+    updates: DbUserUpdate
   ): Promise<DbUser> {
     const { data, error } = await supabase
       .from("users")

@@ -66,12 +66,12 @@ export class GlobalSettings {
     }
     if (data.annualVacationDays !== undefined) {
       this.annualVacationDays = this.validateAnnualVacationDays(
-        data.annualVacationDays,
+        data.annualVacationDays
       );
     }
     if (data.workTimeDefaults) {
       this.workTimeDefaults = this.validateWorkTimeDefaults(
-        data.workTimeDefaults,
+        data.workTimeDefaults
       );
     }
     if (data.vacationRules) {
@@ -79,7 +79,7 @@ export class GlobalSettings {
     }
     if (data.regionalSettings) {
       this.regionalSettings = this.validateRegionalSettings(
-        data.regionalSettings,
+        data.regionalSettings
       );
     }
     this.updatedAt = new Date().toISOString();
@@ -98,8 +98,8 @@ export class GlobalSettings {
   }
 
   private validateWorkTimeDefaults(
-    defaults: WorkTimeDefaults,
-  ): WorkTimeDefaults {
+    defaults: WorkTimeDefaults
+  ): WorkTimeDefaults | undefined {
     if (!defaults.overallStartTime && !defaults.overallEndTime) {
       return undefined;
     }
@@ -119,7 +119,7 @@ export class GlobalSettings {
   }
 
   private validateRegionalSettings(
-    settings: RegionalSettings,
+    settings: RegionalSettings
   ): RegionalSettings {
     return {
       defaultCantonId: settings.defaultCantonId,
@@ -150,8 +150,8 @@ export class GlobalSettings {
   getDefaultWorkHours(): number {
     if (!this.isWorkTimeConfigured()) return 8; // Padrão de 8 horas
 
-    const start = this.workTimeDefaults.overallStartTime.split(":").map(Number);
-    const end = this.workTimeDefaults.overallEndTime.split(":").map(Number);
+    const start = this.workTimeDefaults!.overallStartTime!.split(":").map(Number);
+    const end = this.workTimeDefaults!.overallEndTime!.split(":").map(Number);
 
     const startMinutes = start[0] * 60 + start[1];
     const endMinutes = end[0] * 60 + end[1];
