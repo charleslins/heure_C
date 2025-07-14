@@ -7,7 +7,7 @@ export const useAuth = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
-  const processAndSetUser = useCallback(async (sessionUser: unknown | null) => {
+  const processAndSetUser = useCallback(async (sessionUser: any | null) => {
     if (!sessionUser) {
       setCurrentUser(null);
       return;
@@ -26,7 +26,7 @@ export const useAuth = () => {
         console.warn(
           "Error fetching user profile:",
           profileError.message,
-          "- falling back to session metadata.",
+          "- falling back to session metadata."
         );
         const nameFromMeta =
           sessionUser.user_metadata?.name || sessionUser.email || "User";
@@ -82,7 +82,7 @@ export const useAuth = () => {
         if (initialSessionError) {
           console.error(
             "Error fetching initial session:",
-            initialSessionError.message,
+            initialSessionError.message
           );
         }
         await processAndSetUser(initialSession?.user || null);
@@ -114,7 +114,7 @@ export const useAuth = () => {
         ) {
           setIsLoadingAuth(false);
         }
-      },
+      }
     );
 
     return () => {
