@@ -13,6 +13,7 @@ import { VacationStatus } from "../types/types";
 import LanguageLandingPage from "./LanguageLandingPage";
 
 import { BarChart3, CalendarDays, Plane } from "lucide-react";
+import Button from "../components/common/Button";
 
 const statusColors: Record<string, string> = {
   workday: "bg-white text-indigo-700 border border-indigo-200",
@@ -716,12 +717,14 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
           <div className="flex items-center gap-2 mb-2 text-indigo-700 font-semibold text-lg">
             <Plane className="w-6 h-6" />
             <span>{t("vacationPage.myVacationsTitle")}</span>
-            <button
+            <Button
               onClick={handleSubmitForApproval}
-              className="ml-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors text-xs font-medium shadow"
+              variant="primary"
+              size="sm"
+              className="ml-auto"
             >
               {t("vacationPage.submitRequestButton")}
-            </button>
+            </Button>
           </div>
           <div className="flex flex-wrap gap-2">
             {currentMonthUserVacations.length > 0 ? (

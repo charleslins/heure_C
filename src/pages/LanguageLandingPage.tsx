@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import LoginPage from "./LoginPage";
+import Button from "../components/common/Button";
 import { supabase } from "@/utils/supabaseClient";
 
 // Ilustração hero como imagem PNG
@@ -83,18 +84,22 @@ const LanguageLandingPage: React.FC<LanguageLandingPageProps> = ({
           ))}
         </nav>
         <div className="flex items-center gap-4">
-          <button
-            className="ml-2 px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-bold shadow text-base"
+          <Button
+            variant="primary"
+            size="md"
             onClick={() => openLogin("user")}
+            className="font-bold shadow"
           >
             {t("landingPage.userLogin")}
-          </button>
-          <button
-            className="px-5 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-bold shadow text-base"
+          </Button>
+          <Button
+            variant="warning"
+            size="md"
             onClick={() => openLogin("admin")}
+            className="font-bold shadow"
           >
             {t("landingPage.adminLogin")}
-          </button>
+          </Button>
         </div>
       </header>
       {/* Hero Section */}
@@ -109,18 +114,22 @@ const LanguageLandingPage: React.FC<LanguageLandingPageProps> = ({
               {t("landingPage.heroSubtitle")}
             </p>
             <div className="flex gap-4 mt-2">
-              <button
-                className="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-lg font-bold shadow"
+              <Button
+                variant="warning"
+                size="lg"
                 onClick={() => openLogin("user")}
+                className="font-bold shadow"
               >
                 {t("landingPage.getStarted")}
-              </button>
-              <button
-                className="px-8 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-lg font-bold shadow"
+              </Button>
+              <Button
+                variant="primary"
+                size="lg"
                 onClick={() => openLogin("admin")}
+                className="font-bold shadow"
               >
                 {t("landingPage.adminArea")}
-              </button>
+              </Button>
             </div>
             <ul className="mt-4 space-y-2 text-slate-700 text-base md:text-lg">
               {beneficios.map((b, i) => (
@@ -139,8 +148,8 @@ const LanguageLandingPage: React.FC<LanguageLandingPageProps> = ({
       </main>
       {/* Modal de Login */}
       {showLogin && (
-        <div 
-          className="modal-overlay" 
+        <div
+          className="modal-overlay"
           onClick={(e) => {
             console.log("🎯 Modal overlay clicado");
             if (e.target === e.currentTarget) {

@@ -11,6 +11,7 @@ import {
   Printer,
 } from "lucide-react";
 import SectionCard from "../common/SectionCard";
+import Button from "../common/Button";
 
 const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
   currentMonthUserVacations,
@@ -39,24 +40,28 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
               v.status === VacationStatus.PENDING_APPROVAL ||
               v.status === VacationStatus.APPROVED,
           ) && (
-            <button
+            <Button
               onClick={onPrintRequest}
-              className="w-full sm:w-auto px-3 py-1.5 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300 transition-colors flex items-center justify-center space-x-2 text-xs font-medium"
+              variant="secondary"
+              size="sm"
+              className="w-full sm:w-auto"
             >
               <Printer className="w-4 h-4" />
               <span>{t("vacationPage.printRequestButton")}</span>
-            </button>
+            </Button>
           )}
           {currentMonthUserVacations.some(
             (v) => v.status === VacationStatus.SELECTED,
           ) && (
-            <button
+            <Button
               onClick={onSubmitForApproval}
-              className="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2 text-sm font-medium"
+              variant="primary"
+              size="md"
+              className="w-full sm:w-auto"
             >
               <Send className="w-5 h-5 transform -rotate-45" />
               <span>{t("vacationPage.submitRequestButton")}</span>
-            </button>
+            </Button>
           )}
         </div>
       }

@@ -27,6 +27,7 @@ import {
   Clock,
   Users,
 } from "lucide-react";
+import Button from "../components/common/Button";
 import {
   updateUserProfileRole,
   loadAllUsersFromSupabase,
@@ -153,7 +154,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
               "vacations",
               year,
               month,
-              [],
+              []
             );
           const userVacations = Array.isArray(userVacationsData)
             ? userVacationsData
@@ -177,8 +178,8 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       allPending.sort(
         (a, b) =>
           new Date(a.date + "T00:00:00").getTime() -
-          new Date(b.date + "T00:00:00").getTime(),
-      ),
+          new Date(b.date + "T00:00:00").getTime()
+      )
     );
   }, [localAllUsers, currentUser]);
 
@@ -197,7 +198,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       const currentYear = new Date().getFullYear();
       const summariesPromises = localAllUsers
         .filter(
-          (user) => !(user.id === currentUser.id && user.role === "admin"),
+          (user) => !(user.id === currentUser.id && user.role === "admin")
         )
         .map(async (user) => {
           const userVacDays: { date: string; status: VacationStatus }[] = [];
@@ -208,7 +209,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                 "vacations",
                 currentYear,
                 m,
-                [],
+                []
               );
             const monthVacations = Array.isArray(monthVacationsData)
               ? monthVacationsData
@@ -225,7 +226,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
           userVacDays.sort(
             (a, b) =>
               new Date(a.date + "T00:00:00").getTime() -
-              new Date(b.date + "T00:00:00").getTime(),
+              new Date(b.date + "T00:00:00").getTime()
           );
           return {
             userId: user.id,
@@ -250,7 +251,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
   const handleApprovalAction = async (
     request: PendingRequest,
-    newStatus: VacationStatus.APPROVED | VacationStatus.REJECTED,
+    newStatus: VacationStatus.APPROVED | VacationStatus.REJECTED
   ) => {
     try {
       const userVacationsData =
@@ -259,7 +260,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
           "vacations",
           request.year,
           request.month,
-          [],
+          []
         );
       const userVacations = Array.isArray(userVacationsData)
         ? userVacationsData
@@ -271,13 +272,13 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
               status: newStatus,
               adminComment: request.comment || undefined,
             }
-          : v,
+          : v
       );
       await updateSpecificUserVacations(
         request.userId,
         request.year,
         request.month,
-        updatedVacations,
+        updatedVacations
       );
       addNotification(
         t("adminDashboard.requestProcessedAlert", {
@@ -286,7 +287,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
           status: t(`vacationStatuses.${newStatus}`),
           commentText: request.comment || t("adminDashboard.noComment"),
         }),
-        "success",
+        "success"
       );
       fetchPendingRequests();
     } catch (error: unknown) {
@@ -298,7 +299,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
   const handleApproveAllForUser = async (userId: string, userName: string) => {
     const userPendingRequests = pendingRequests.filter(
-      (req) => req.userId === userId,
+      (req) => req.userId === userId
     );
     if (userPendingRequests.length === 0) return;
 
@@ -310,7 +311,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
             ...req,
             comment: req.comment || t("adminDashboard.batchApprovedComment"),
           },
-          VacationStatus.APPROVED,
+          VacationStatus.APPROVED
         );
       } catch (error) {
         allSucceeded = false;
@@ -323,7 +324,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
           count: userPendingRequests.length,
           userName: userName,
         }),
-        "success",
+        "success"
       );
     } else {
       addNotification(t("adminDashboard.batchApprovalError"), "warning");
@@ -333,20 +334,20 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   const handleCommentChange = (
     requestDate: string,
     userId: string,
-    comment: string,
+    comment: string
   ) => {
     setPendingRequests((prev) =>
       prev.map((req) =>
         req.date === requestDate && req.userId === userId
           ? { ...req, comment }
-          : req,
-      ),
+          : req
+      )
     );
   };
 
   const handleGlobalSettingChange = (
     field: keyof UserGlobalSettings | "overallStartTime" | "overallEndTime",
-    value: string,
+    value: string
   ) => {
     setEditableGlobalSettings((prev) => {
       const newSettings = { ...prev };
@@ -387,7 +388,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       addNotification(
         t("adminDashboard.globalSettingsSaveErrorAlert") +
           (result.message ? `: ${result.message}` : ""),
-        "error",
+        "error"
       );
     }
     setIsSavingGlobalSettings(false);
@@ -395,7 +396,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
   const handleRoleChange = async (
     targetUserId: string,
-    newRole: "user" | "admin",
+    newRole: "user" | "admin"
   ) => {
     const result = await updateUserProfileRole(targetUserId, newRole);
     if (result.success) {
@@ -406,30 +407,27 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
             targetUserId,
           role: t(`roles.${newRole}`),
         }),
-        "success",
+        "success"
       );
       fetchAllUsers();
     } else {
       addNotification(
         t("adminDashboard.userRoleUpdatedError") +
           (result.message ? `: ${result.message}` : ""),
-        "error",
+        "error"
       );
     }
   };
 
   const iconSharedClass = "w-5 h-5";
 
-  const pendingRequestsByUser = pendingRequests.reduce(
-    (acc, req) => {
-      if (!acc[req.userId]) {
-        acc[req.userId] = { userName: req.userName, requests: [] };
-      }
-      acc[req.userId].requests.push(req);
-      return acc;
-    },
-    {} as Record<string, { userName: string; requests: PendingRequest[] }>,
-  );
+  const pendingRequestsByUser = pendingRequests.reduce((acc, req) => {
+    if (!acc[req.userId]) {
+      acc[req.userId] = { userName: req.userName, requests: [] };
+    }
+    acc[req.userId].requests.push(req);
+    return acc;
+  }, {} as Record<string, { userName: string; requests: PendingRequest[] }>);
 
   return (
     <div className="space-y-8 print:space-y-4 pb-8">
@@ -502,12 +500,12 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                     onChange={(e) =>
                       handleGlobalSettingChange(
                         "annualVacationDays",
-                        e.target.value,
+                        e.target.value
                       )
                     }
                     className={lightInputClasses}
                     placeholder={t(
-                      "adminDashboard.annualVacationDaysPlaceholder",
+                      "adminDashboard.annualVacationDaysPlaceholder"
                     )}
                     min="0"
                     step="0.5"
@@ -562,10 +560,12 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
             </div>
           </div>
           <div className="mt-4 flex justify-end">
-            <button
+            <Button
               onClick={handleSaveGlobalSettings}
               disabled={isSavingGlobalSettings}
-              className="px-4 py-2 bg-green-500 text-white text-sm rounded-md hover:bg-green-600 transition-colors flex items-center space-x-2 print:hidden disabled:opacity-50"
+              variant="success"
+              size="md"
+              className="print:hidden"
             >
               <Save className="w-5 h-5" />
               <span>
@@ -573,7 +573,7 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                   ? t("adminDashboard.savingGlobalSettingsButton")
                   : t("adminDashboard.saveGlobalSettingsButton")}
               </span>
-            </button>
+            </Button>
           </div>
         </div>
       </SectionCard>
@@ -621,7 +621,11 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-700">
                         <span
-                          className={`px-2 py-0.5 text-xs font-semibold rounded-full ${user.role === "admin" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}
+                          className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
+                            user.role === "admin"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-green-100 text-green-700"
+                          }`}
                         >
                           {t(`roles.${user.role}`)}
                         </span>
@@ -632,13 +636,13 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                           onChange={(e) =>
                             handleRoleChange(
                               user.id,
-                              e.target.value as "user" | "admin",
+                              e.target.value as "user" | "admin"
                             )
                           }
                           className={`${lightSelectClasses} text-xs py-1 w-auto`}
                           aria-label={t(
                             "adminDashboard.changeRoleForUserAria",
-                            { name: user.name },
+                            { name: user.name }
                           )}
                         >
                           <option value="user">{t("roles.user")}</option>
@@ -724,7 +728,9 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                       return (
                         <span
                           key={vac.date}
-                          className={`px-2 py-0.5 text-xs font-medium rounded-full ${finalBg} ${finalText} border ${finalBorder || "border-transparent"}`}
+                          className={`px-2 py-0.5 text-xs font-medium rounded-full ${finalBg} ${finalText} border ${
+                            finalBorder || "border-transparent"
+                          }`}
                           title={t(`vacationStatuses.${vac.status}`)}
                         >
                           {dateObj.toLocaleDateString(i18n.language, {
