@@ -44,7 +44,7 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({
   const handleHourChange = (
     day: DayOfWeekName,
     period: "morning" | "afternoon",
-    value: string,
+    value: string
   ) => {
     const hours = parseFloat(value);
     if (!isNaN(hours) && hours >= 0 && hours <= 12) {
@@ -66,7 +66,7 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({
     }
   };
 
-  const inputClasses = `${textInputClasses({ size: "sm" })} w-12 h-10 text-center appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`;
+  const inputClasses = `${textInputClasses()} w-12 h-10 text-center appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`;
 
   return (
     <SectionCard
@@ -88,7 +88,7 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({
               <input
                 type="number"
                 aria-label={`${t(
-                  "dailyLog.morningHeader",
+                  "dailyLog.morningHeader"
                 )} ${getDayAbbreviation(day)}`}
                 min="0"
                 max="12"
@@ -102,7 +102,7 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({
               <input
                 type="number"
                 aria-label={`${t(
-                  "dailyLog.afternoonHeader",
+                  "dailyLog.afternoonHeader"
                 )} ${getDayAbbreviation(day)}`}
                 min="0"
                 max="12"

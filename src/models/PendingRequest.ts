@@ -7,7 +7,9 @@ export type DbPendingRequestInsert =
 export type DbPendingRequestUpdate =
   Database["public"]["Tables"]["pending_requests"]["Update"];
 
-export interface PendingRequestWithUser extends DbPendingRequest {
+export interface PendingRequestWithUser {
+  id: string;
+  user_id: string;
   user_name: string;
   request_type: "vacation" | "leave" | "other";
   start_date: string;
@@ -15,4 +17,6 @@ export interface PendingRequestWithUser extends DbPendingRequest {
   comment?: string;
   admin_comment?: string;
   status: "pending" | "approved" | "rejected";
+  created_at: string;
+  updated_at: string;
 }

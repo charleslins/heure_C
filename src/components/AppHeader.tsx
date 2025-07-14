@@ -10,7 +10,6 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  PencilSquare,
   Key,
   Cog,
   ChevronDown,
@@ -41,7 +40,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   // Ensure userColorIndex is always valid, even if user.id is very short or simple
   const userColorIndex = user.id
     ? Math.abs(
-        user.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0),
+        user.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0)
       ) % USER_COLORS.length
     : 0;
   const userColor = USER_COLORS[userColorIndex] || USER_COLORS[0];
@@ -66,7 +65,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     const newDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth() + increment,
-      1,
+      1
     );
     onDateChange(newDate);
   };
@@ -204,7 +203,9 @@ const AppHeader: React.FC<AppHeaderProps> = ({
                 )}
               </div>
               <ChevronDown
-                className={`ml-1 h-5 w-5 ${dropdownArrowColor} transition-transform duration-200 ${isProfileDropdownOpen ? "transform rotate-180" : ""}`}
+                className={`ml-1 h-5 w-5 ${dropdownArrowColor} transition-transform duration-200 ${
+                  isProfileDropdownOpen ? "transform rotate-180" : ""
+                }`}
                 aria-hidden="true"
               />
             </button>

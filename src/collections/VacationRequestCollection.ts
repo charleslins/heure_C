@@ -1,12 +1,11 @@
-import { supabase } from "../../utils/supabaseClient";
+import { supabase } from "../utils/supabaseClient";
 import { Database } from "../types/supabase";
 
 type DbVacationRequest =
   Database["public"]["Tables"]["vacation_requests"]["Row"];
 type DbVacationRequestInsert =
   Database["public"]["Tables"]["vacation_requests"]["Insert"];
-type DbVacationRequestUpdate =
-  Database["public"]["Tables"]["vacation_requests"]["Update"];
+
 
 export class VacationRequestCollection {
   private static TABLE_NAME = "vacation_requests";
@@ -25,14 +24,14 @@ export class VacationRequestCollection {
           date,
           comment,
           created_at
-        `,
+        `
         )
         .order("date")
         .returns<(DbVacationRequest & { profiles: { name: string } })[]>();
 
       if (error) throw error;
 
-      return (data || []).map((request) => ({
+      return (data || []).map((request: any) => ({
         ...request,
         userName: request.profiles.name,
       }));
@@ -60,7 +59,7 @@ export class VacationRequestCollection {
   }
 
   static async create(
-    request: DbVacationRequestInsert,
+    request: DbVacationRequestInsert
   ): Promise<DbVacationRequest> {
     try {
       const { data, error } = await supabase
@@ -81,7 +80,7 @@ export class VacationRequestCollection {
   static async updateStatus(
     id: string,
     status: "approved" | "rejected",
-    adminComment?: string,
+    adminComment?: string
   ): Promise<DbVacationRequest> {
     try {
       const { data, error } = await supabase

@@ -1,7 +1,5 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { BarChart3, Calendar } from "lucide-react";
-import SectionCard from "../common/SectionCard";
 
 const UserVacationSummaryTable: React.FC = () => {
   const { t } = useTranslation();

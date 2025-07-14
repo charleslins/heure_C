@@ -67,7 +67,7 @@ export class GlobalSettingsCollection {
   validateVacationRequest(
     startDate: Date,
     endDate: Date,
-    userId: string,
+    _userId: string
   ): {
     isValid: boolean;
     message?: string;
@@ -75,7 +75,7 @@ export class GlobalSettingsCollection {
     // Verificar aviso mínimo
     const today = new Date();
     const daysUntilStart = Math.floor(
-      (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+      (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
     );
     if (daysUntilStart < this.settings.vacationRules.minAdvanceNotice) {
       return {
@@ -87,7 +87,7 @@ export class GlobalSettingsCollection {
     // Verificar dias consecutivos
     const vacationDays =
       Math.floor(
-        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
       ) + 1;
     if (vacationDays > this.settings.vacationRules.maxConsecutiveDays) {
       return {
@@ -106,11 +106,11 @@ export class GlobalSettingsCollection {
 
     const today = new Date();
     const daysUntilStart = Math.floor(
-      (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+      (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
     );
     const vacationDays =
       Math.floor(
-        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
       ) + 1;
 
     return (
@@ -119,7 +119,7 @@ export class GlobalSettingsCollection {
     );
   }
 
-  getWorkHoursForDate(date: Date): number {
+  getWorkHoursForDate(_date: Date): number {
     // Implementar lógica específica por dia da semana se necessário
     return this.settings.getDefaultWorkHours();
   }

@@ -129,7 +129,7 @@ const DailyLogRow: React.FC<DailyLogRowProps> = ({
 
   const getSegmentClasses = (
     segmentData: TimeSegment,
-    contractHoursForSegment: number,
+    _contractHoursForSegment: number,
     isVisuallyFaded: boolean,
     isTimeCell: boolean = false,
   ) => {

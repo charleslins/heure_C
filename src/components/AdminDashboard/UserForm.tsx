@@ -3,7 +3,9 @@ import { useTranslation } from "react-i18next";
 import InputWithIcon from "../common/InputWithIcon";
 import Button from "../common/Button";
 import { User, Mail, Languages } from "lucide-react";
-import { DbProfileInsert } from "../../src/types/supabase";
+import { Database } from "../../types/supabase";
+
+type DbProfileInsert = Database["public"]["Tables"]["profiles"]["Insert"];
 
 interface UserFormProps {
   user?: DbProfileInsert;
@@ -44,10 +46,10 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
-    setFormData((prev) => ({
+    setFormData((prev: DbProfileInsert) => ({
       ...prev,
       [name]:
         type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
@@ -61,15 +63,19 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
       )}
 
       <InputWithIcon
+        id="name"
         icon={<User className="h-5 w-5" />}
         label={t("common.name")}
         name="name"
+        type="text"
         value={formData.name}
         onChange={handleChange}
         required
+        placeholder={t("common.name")}
       />
 
       <InputWithIcon
+        id="email"
         icon={<Mail className="h-5 w-5" />}
         label={t("common.email")}
         type="email"
@@ -77,7 +83,7 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
         value={formData.email}
         onChange={handleChange}
         required
-        disabled={!!user} // Email só pode ser definido na criação
+        placeholder={t("common.email")}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -102,30 +108,23 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
         </div>
 
         <InputWithIcon
+          id="language"
           icon={<Languages className="h-5 w-5" />}
           label={t("common.language")}
           name="language"
+          type="text"
           value={formData.language}
           onChange={handleChange}
           required
+          placeholder={t("common.language")}
         />
       </div>
 
       <div className="flex justify-end space-x-3">
-        <Button
-          type="button"
-          variant="outline"
-          size="md"
-          onClick={onCancel}
-        >
+        <Button type="button" variant="outline" size="md" onClick={onCancel}>
           {t("common.cancel")}
         </Button>
-        <Button
-          type="submit"
-          variant="primary"
-          size="md"
-          disabled={loading}
-        >
+        <Button type="submit" variant="primary" size="md" disabled={loading}>
           {loading ? t("common.saving") : t("common.save")}
         </Button>
       </div>

@@ -66,17 +66,17 @@ const AdminUserList: React.FC = () => {
   const handleFormSubmit = async (
     data:
       | Database["public"]["Tables"]["profiles"]["Insert"]
-      | Database["public"]["Tables"]["profiles"]["Update"],
+      | Database["public"]["Tables"]["profiles"]["Update"]
   ) => {
     try {
       if (selectedUser) {
         await updateUser(
           selectedUser.id,
-          data as Database["public"]["Tables"]["profiles"]["Update"],
+          data as Database["public"]["Tables"]["profiles"]["Update"]
         );
       } else {
         await createUser(
-          data as Database["public"]["Tables"]["profiles"]["Insert"],
+          data as Database["public"]["Tables"]["profiles"]["Insert"]
         );
       }
       setIsFormOpen(false);
@@ -129,7 +129,7 @@ const AdminUserList: React.FC = () => {
       title={t("adminDashboard.users.title")}
       titleIcon={User}
       titleIconProps={{ className: "w-6 h-6 text-indigo-600" }}
-      action={
+      headerActions={
         <button
           onClick={handleCreate}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
