@@ -5508,3 +5508,787 @@ O documento `ANALISE_DUPLICACAO_CODIGO.md` contém a análise completa com exemp
 
 ---
 
+_**User**_
+
+faça um commit com as mudanças da refatiração
+
+---
+
+_**Assistant**_
+
+Vou fazer um commit com as mudanças da refatoração. Primeiro, vou verificar o status atual do repositório e depois criar o commit.
+
+
+---
+
+```bash
+git status
+```
+
+```
+On branch main
+Your branch is ahead of 'origin/main' by 11 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    .cussorrules
+        modified:   .eslintrc.json
+        modified:   .specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md
+        modified:   ".specstory/history/2025-07-07_18-46Z-corrigir-sobreposi\303\247\303\243o-de-cards-na-p\
+303\241gina.md"
+        modified:   .specstory/history/2025-07-07_22-53Z-continue-the-discussion.md
+        modified:   ".specstory/history/2025-07-07_23-50Z-continuar-a-implementa\303\247\303\243o-do-m\303\2
+63dulo-user.md"
+        modified:   .specstory/history/2025-07-08_18-33Z-continue-the-correction-process.md
+        modified:   ".specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu\303\252s-antes-das-tradu\30
+3\247\303\265es.md"
+        modified:   ".specstory/history/2025-07-09_22-12Z-corre\303\247\303\265es-na-estrutura-do-projeto-su
+pabase.md"
+        modified:   ".specstory/history/2025-07-10_06-53Z-problemas-no-painel-de-vis\303\243o-geral.md"
+        modified:   .vscode/extensions.json
+        deleted:    AdminDashboardPage.tsx
+        deleted:    App.tsx
+        modified:   README.md
+        modified:   ROADMAP.md
+        deleted:    components/AccessDeniedMessage.tsx
+        deleted:    components/AdminDashboard/AdminUserList.tsx
+        deleted:    components/AdminDashboard/GlobalSettingsForm.tsx
+        deleted:    components/AdminDashboard/PendingRequestsList.tsx
+        deleted:    components/AdminDashboard/RegionSelector.tsx
+        deleted:    components/AdminDashboard/UserForm.tsx
+        deleted:    components/AdminDashboard/UserVacationSummaryTable.tsx
+        deleted:    components/AdminDashboardPage.tsx
+        deleted:    components/AdminOverviewDashboard.tsx
+        deleted:    components/AdminTabbedPage.tsx
+        deleted:    components/AppHeader.tsx
+        deleted:    components/CompactContractHoursInput.tsx
+        deleted:    components/ContractAndMonthlySummaryCard.tsx
+        deleted:    components/ContractHoursInput.tsx
+        deleted:    components/DailyLog.tsx
+        deleted:    components/DailyLogRow.tsx
+        deleted:    components/DashboardPage.tsx
+        deleted:    components/EmployeeManagementPage.tsx
+        deleted:    components/EmployeeRegistrationForm.tsx
+        deleted:    components/ErrorBoundary.tsx
+        deleted:    components/HolidayManagementPage.tsx
+        deleted:    components/LanguageLandingPage.tsx
+        deleted:    components/LoadingScreen.tsx
+        deleted:    components/LoginPage.tsx
+        deleted:    components/MainAppLayout.tsx
+        deleted:    components/ModernVacationCalendar.tsx
+        deleted:    components/MonthYearSelector.tsx
+        deleted:    components/NotificationDisplay.tsx
+        deleted:    components/SectionCard.tsx
+        deleted:    components/SummaryDisplay.tsx
+        deleted:    components/TauxDisplayCard.tsx
+        deleted:    components/TypeSelector.tsx
+        deleted:    components/UserProfilePage.tsx
+        deleted:    components/VacationConfigPage.tsx
+        deleted:    components/VacationPagePreview.tsx
+        deleted:    components/common/InputWithIcon.tsx
+        deleted:    components/common/SectionCard.tsx
+        deleted:    components/common/TimeInput.tsx
+        deleted:    components/vacation_config/CalendarGrid.tsx
+        deleted:    components/vacation_config/MonthlyVacationList.tsx
+        deleted:    components/vacation_config/VacationSummaryPanel.tsx
+        deleted:    constants.ts
+        deleted:    contexts/AuthContext.tsx
+        deleted:    contexts/CurrentUserDataContext.tsx
+        deleted:    contexts/GlobalDataContext.tsx
+        deleted:    contexts/NotificationContext.tsx
+        modified:   docs/DEVELOPMENT_CHECKLIST.md
+        modified:   docs/SUPABASE_MCP.md
+        deleted:    hooks/useAuth.ts
+        deleted:    hooks/useCurrentUserData.ts
+        deleted:    hooks/useGlobalData.ts
+        deleted:    hooks/useMonthNavigation.ts
+        deleted:    hooks/useVacationCalculations.ts
+        deleted:    i18n.ts
+        deleted:    i18nSimple.ts
+        modified:   index.html
+        deleted:    index.tsx
+        modified:   locales/pt/translation.json
+        modified:   metadata.json
+        modified:   package-lock.json
+        modified:   postcss.config.js
+        modified:   public/t.json
+        modified:   src/collections/DailyLogCollection.ts
+        modified:   src/collections/EmployeeCollection.ts
+        modified:   src/collections/GlobalSettingsCollection.ts
+        modified:   src/collections/HolidayCollection.ts
+        modified:   src/collections/PendingRequestCollection.ts
+        modified:   src/collections/RegionCollection.ts
+        modified:   src/collections/UserCollection.ts
+        modified:   src/collections/VacationCollection.ts
+        modified:   src/collections/VacationRequestCollection.ts
+        modified:   src/components/CompactContractHoursInput.tsx
+        modified:   src/components/DashboardPage.tsx
+        modified:   src/hooks/useDailyLogPresenter.ts
+        modified:   src/hooks/useEmployeePresenter.ts
+        modified:   src/hooks/useGlobalSettingsPresenter.ts
+        modified:   src/hooks/useHolidayPresenter.ts
+        modified:   src/hooks/usePendingRequestPresenter.ts
+        modified:   src/hooks/useRegionPresenter.ts
+        modified:   src/hooks/useUserPresenter.ts
+        modified:   src/hooks/useVacationPresenter.ts
+        modified:   src/hooks/useVacationRequestPresenter.ts
+        deleted:    src/index.css
+        modified:   src/models/DailyLog.ts
+        modified:   src/models/Employee.ts
+        modified:   src/models/GlobalSettings.ts
+        modified:   src/models/Holiday.ts
+        modified:   src/models/PendingRequest.ts
+        modified:   src/models/Region.ts
+        modified:   src/models/Vacation.ts
+        modified:   src/models/VacationRequest.ts
+        modified:   src/presenters/DailyLogPresenter.ts
+        modified:   src/presenters/EmployeePresenter.ts
+        modified:   src/presenters/GlobalSettingsPresenter.ts
+        modified:   src/presenters/HolidayPresenter.ts
+        modified:   src/presenters/PendingRequestPresenter.ts
+        modified:   src/presenters/RegionPresenter.ts
+        modified:   src/presenters/UserPresenter.ts
+        modified:   src/presenters/VacationPresenter.ts
+        modified:   src/presenters/VacationRequestPresenter.ts
+        modified:   src/services/userService.ts
+        modified:   src/supabase/client.ts
+        modified:   src/supabase/types.ts
+        modified:   src/utils/supabaseClient.ts
+        modified:   tailwind.config.js
+        modified:   tsconfig.json
+        modified:   tsconfig.node.json
+        deleted:    types.ts
+        deleted:    utils/employeeManagement.ts
+        deleted:    utils/localStorage.ts
+        deleted:    utils/printVacationRequest.ts
+        deleted:    utils/stringUtils.ts
+        deleted:    utils/supabaseClient.ts
+        deleted:    utils/supabaseCrud.ts
+        deleted:    utils/timeUtils.ts
+        modified:   vite.config.ts
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .cursorindexingignore
+        .specstory/.gitignore
+        .specstory/history/2025-07-10_20-19Z-o-que-devo-fazer.md
+        .specstory/history/2025-07-10_20-47Z-generate-a-name-for-the-chat.md
+        ".specstory/history/2025-07-10_20-58Z-resolva-os-t\303\255tulos.md"
+        .specstory/history/2025-07-11_21-15Z-execute-mcp-command.md
+        ".specstory/history/2025-07-12_08-02Z-erro-na-exibi\303\247\303\243o-das-horas-contratuais.md"
+        .specstory/history/2025-07-12_17-55Z-understanding-reference-error-in-react.md
+        .specstory/history/2025-07-14_11-04Z-unifying-multiple-files-into-a-single-text.md
+        ".specstory/history/2025-07-14_12-28Z-refatora\303\247\303\243o-do-projeto-conforme-estrutura.md"
+        ANALISE_DUPLICACAO_CODIGO.md
+        ANALISE_REGULAS_CURSOR.md
+        ESTRUTURA_REFATORADA.md
+        Estrutura de projeto.txt
+        REFATORACAO_RESUMO.md
+        estrutura_projeto.md
+        src/App.tsx
+        src/components/AccessDeniedMessage.tsx
+        src/components/AdminDashboard/
+        src/components/AdminDashboardPage.tsx
+        src/components/AdminOverviewDashboard.tsx
+        src/components/AdminTabbedPage.tsx
+        src/components/AppHeader.tsx
+        src/components/ContractAndMonthlySummaryCard.tsx
+        src/components/ContractHoursInput.tsx
+        src/components/DailyLog.tsx
+        src/components/DailyLogRow.tsx
+        src/components/EmployeeManagementPage.tsx
+        src/components/EmployeeRegistrationForm.tsx
+        src/components/ErrorBoundary.tsx
+        src/components/HolidayManagementPage.tsx
+        src/components/LanguageLandingPage.tsx
+        src/components/LoadingScreen.tsx
+        src/components/LoginPage.tsx
+        src/components/MainAppLayout.tsx
+        src/components/ModernVacationCalendar.tsx
+        src/components/MonthYearSelector.tsx
+        src/components/NotificationDisplay.tsx
+        src/components/SectionCard.tsx
+        src/components/SummaryDisplay.tsx
+        src/components/TauxDisplayCard.tsx
+        src/components/TypeSelector.tsx
+        src/components/UserProfilePage.tsx
+        src/components/VacationConfigPage.tsx
+        src/components/VacationPagePreview.tsx
+        src/components/common/
+        src/components/vacation_config/
+        src/contexts/
+        src/hooks/useAuth.ts
+        src/hooks/useCurrentUserData.ts
+        src/hooks/useGlobalData.ts
+        src/hooks/useMonthNavigation.ts
+        src/hooks/useVacationCalculations.ts
+        src/i18n.ts
+        src/index.tsx
+        src/pages/
+        src/styles/
+        src/types/index.ts
+        src/types/types.ts
+        src/utils/constants.ts
+        src/utils/employeeManagement.ts
+        src/utils/i18nSimple.ts
+        src/utils/localStorage.ts
+        src/utils/printVacationRequest.ts
+        src/utils/stringUtils.ts
+        src/utils/supabaseCrud.ts
+        src/utils/timeUtils.ts
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+```
+
+---
+
+Agora vou adicionar todos os arquivos modificados e novos ao staging area:
+
+
+---
+
+```bash
+git add .
+```
+
+---
+
+Agora vou verificar o status novamente para confirmar que tudo foi adicionado:
+
+
+---
+
+```bash
+git status
+```
+
+```
+On branch main
+Your branch is ahead of 'origin/main' by 11 commits.
+  (use "git push" to publish your local commits)
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   .cursorindexingignore
+        deleted:    .cussorrules
+        modified:   .eslintrc.json
+        new file:   .specstory/.gitignore
+        modified:   .specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md
+        modified:   ".specstory/history/2025-07-07_18-46Z-corrigir-sobreposi\303\247\303\243o-de-cards-na-p\
+303\241gina.md"
+        modified:   .specstory/history/2025-07-07_22-53Z-continue-the-discussion.md
+        modified:   ".specstory/history/2025-07-07_23-50Z-continuar-a-implementa\303\247\303\243o-do-m\303\2
+63dulo-user.md"
+        modified:   .specstory/history/2025-07-08_18-33Z-continue-the-correction-process.md
+        modified:   ".specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu\303\252s-antes-das-tradu\30
+3\247\303\265es.md"
+        modified:   ".specstory/history/2025-07-09_22-12Z-corre\303\247\303\265es-na-estrutura-do-projeto-su
+pabase.md"
+        modified:   ".specstory/history/2025-07-10_06-53Z-problemas-no-painel-de-vis\303\243o-geral.md"
+        new file:   .specstory/history/2025-07-10_20-19Z-o-que-devo-fazer.md
+        new file:   .specstory/history/2025-07-10_20-47Z-generate-a-name-for-the-chat.md
+        new file:   ".specstory/history/2025-07-10_20-58Z-resolva-os-t\303\255tulos.md"
+        new file:   .specstory/history/2025-07-11_21-15Z-execute-mcp-command.md
+        new file:   ".specstory/history/2025-07-12_08-02Z-erro-na-exibi\303\247\303\243o-das-horas-contratua
+is.md"
+        new file:   .specstory/history/2025-07-12_17-55Z-understanding-reference-error-in-react.md
+        new file:   .specstory/history/2025-07-14_11-04Z-unifying-multiple-files-into-a-single-text.md
+        new file:   ".specstory/history/2025-07-14_12-28Z-refatora\303\247\303\243o-do-projeto-conforme-estr
+utura.md"
+        modified:   .vscode/extensions.json
+        new file:   ANALISE_DUPLICACAO_CODIGO.md
+        new file:   ANALISE_REGULAS_CURSOR.md
+        deleted:    AdminDashboardPage.tsx
+        new file:   ESTRUTURA_REFATORADA.md
+        new file:   Estrutura de projeto.txt
+        modified:   README.md
+        new file:   REFATORACAO_RESUMO.md
+        modified:   ROADMAP.md
+        deleted:    components/AccessDeniedMessage.tsx
+        deleted:    components/AdminTabbedPage.tsx
+        deleted:    components/AppHeader.tsx
+        deleted:    components/CompactContractHoursInput.tsx
+        deleted:    components/ContractAndMonthlySummaryCard.tsx
+        deleted:    components/DailyLog.tsx
+        deleted:    components/DailyLogRow.tsx
+        deleted:    components/DashboardPage.tsx
+        deleted:    components/LoadingScreen.tsx
+        deleted:    components/NotificationDisplay.tsx
+        deleted:    components/SectionCard.tsx
+        deleted:    components/VacationConfigPage.tsx
+        deleted:    components/VacationPagePreview.tsx
+        deleted:    components/common/TimeInput.tsx
+        deleted:    components/vacation_config/CalendarGrid.tsx
+        deleted:    components/vacation_config/MonthlyVacationList.tsx
+        deleted:    components/vacation_config/VacationSummaryPanel.tsx
+        deleted:    constants.ts
+        deleted:    contexts/CurrentUserDataContext.tsx
+        deleted:    contexts/NotificationContext.tsx
+        modified:   docs/DEVELOPMENT_CHECKLIST.md
+        modified:   docs/SUPABASE_MCP.md
+        new file:   estrutura_projeto.md
+        deleted:    hooks/useCurrentUserData.ts
+        deleted:    hooks/useGlobalData.ts
+        deleted:    hooks/useVacationCalculations.ts
+        deleted:    i18n.ts
+        modified:   index.html
+        deleted:    index.tsx
+        modified:   locales/pt/translation.json
+        modified:   metadata.json
+        modified:   package-lock.json
+        modified:   postcss.config.js
+        modified:   public/t.json
+        renamed:    App.tsx -> src/App.tsx
+        modified:   src/collections/DailyLogCollection.ts
+        modified:   src/collections/EmployeeCollection.ts
+        modified:   src/collections/GlobalSettingsCollection.ts
+        modified:   src/collections/HolidayCollection.ts
+        modified:   src/collections/PendingRequestCollection.ts
+        modified:   src/collections/RegionCollection.ts
+        modified:   src/collections/UserCollection.ts
+        modified:   src/collections/VacationCollection.ts
+        modified:   src/collections/VacationRequestCollection.ts
+        new file:   src/components/AccessDeniedMessage.tsx
+        renamed:    components/AdminDashboard/AdminUserList.tsx -> src/components/AdminDashboard/AdminUserLi
+st.tsx
+        renamed:    components/AdminDashboard/GlobalSettingsForm.tsx -> src/components/AdminDashboard/Global
+SettingsForm.tsx
+        renamed:    components/AdminDashboard/PendingRequestsList.tsx -> src/components/AdminDashboard/Pendi
+ngRequestsList.tsx
+        renamed:    components/AdminDashboard/RegionSelector.tsx -> src/components/AdminDashboard/RegionSele
+ctor.tsx
+        renamed:    components/AdminDashboard/UserForm.tsx -> src/components/AdminDashboard/UserForm.tsx
+        renamed:    components/AdminDashboard/UserVacationSummaryTable.tsx -> src/components/AdminDashboard/
+UserVacationSummaryTable.tsx
+        renamed:    components/AdminDashboardPage.tsx -> src/components/AdminDashboardPage.tsx
+        renamed:    components/AdminOverviewDashboard.tsx -> src/components/AdminOverviewDashboard.tsx
+        new file:   src/components/AdminTabbedPage.tsx
+        new file:   src/components/AppHeader.tsx
+        modified:   src/components/CompactContractHoursInput.tsx
+        new file:   src/components/ContractAndMonthlySummaryCard.tsx
+        renamed:    components/ContractHoursInput.tsx -> src/components/ContractHoursInput.tsx
+        new file:   src/components/DailyLog.tsx
+        new file:   src/components/DailyLogRow.tsx
+        modified:   src/components/DashboardPage.tsx
+        renamed:    components/EmployeeManagementPage.tsx -> src/components/EmployeeManagementPage.tsx
+        renamed:    components/EmployeeRegistrationForm.tsx -> src/components/EmployeeRegistrationForm.tsx
+        renamed:    components/ErrorBoundary.tsx -> src/components/ErrorBoundary.tsx
+        renamed:    components/HolidayManagementPage.tsx -> src/components/HolidayManagementPage.tsx
+        renamed:    components/LanguageLandingPage.tsx -> src/components/LanguageLandingPage.tsx
+        new file:   src/components/LoadingScreen.tsx
+        renamed:    components/LoginPage.tsx -> src/components/LoginPage.tsx
+        renamed:    components/MainAppLayout.tsx -> src/components/MainAppLayout.tsx
+        renamed:    components/ModernVacationCalendar.tsx -> src/components/ModernVacationCalendar.tsx
+        renamed:    components/MonthYearSelector.tsx -> src/components/MonthYearSelector.tsx
+        new file:   src/components/NotificationDisplay.tsx
+        renamed:    components/SummaryDisplay.tsx -> src/components/SectionCard.tsx
+        renamed:    components/TauxDisplayCard.tsx -> src/components/SummaryDisplay.tsx
+        new file:   src/components/TauxDisplayCard.tsx
+        renamed:    components/TypeSelector.tsx -> src/components/TypeSelector.tsx
+        renamed:    components/UserProfilePage.tsx -> src/components/UserProfilePage.tsx
+        new file:   src/components/VacationConfigPage.tsx
+        new file:   src/components/VacationPagePreview.tsx
+        renamed:    components/common/InputWithIcon.tsx -> src/components/common/InputWithIcon.tsx
+        renamed:    components/common/SectionCard.tsx -> src/components/common/SectionCard.tsx
+        new file:   src/components/common/TimeInput.tsx
+        new file:   src/components/vacation_config/CalendarGrid.tsx
+        new file:   src/components/vacation_config/MonthlyVacationList.tsx
+        new file:   src/components/vacation_config/VacationSummaryPanel.tsx
+        renamed:    contexts/AuthContext.tsx -> src/contexts/AuthContext.tsx
+        new file:   src/contexts/CurrentUserDataContext.tsx
+        renamed:    contexts/GlobalDataContext.tsx -> src/contexts/GlobalDataContext.tsx
+        new file:   src/contexts/NotificationContext.tsx
+        renamed:    hooks/useAuth.ts -> src/hooks/useAuth.ts
+        new file:   src/hooks/useCurrentUserData.ts
+        modified:   src/hooks/useDailyLogPresenter.ts
+        modified:   src/hooks/useEmployeePresenter.ts
+        new file:   src/hooks/useGlobalData.ts
+        modified:   src/hooks/useGlobalSettingsPresenter.ts
+        modified:   src/hooks/useHolidayPresenter.ts
+        renamed:    hooks/useMonthNavigation.ts -> src/hooks/useMonthNavigation.ts
+        modified:   src/hooks/usePendingRequestPresenter.ts
+        modified:   src/hooks/useRegionPresenter.ts
+        modified:   src/hooks/useUserPresenter.ts
+        new file:   src/hooks/useVacationCalculations.ts
+        modified:   src/hooks/useVacationPresenter.ts
+        modified:   src/hooks/useVacationRequestPresenter.ts
+        new file:   src/i18n.ts
+        deleted:    src/index.css
+        new file:   src/index.tsx
+        modified:   src/models/DailyLog.ts
+        modified:   src/models/Employee.ts
+        modified:   src/models/GlobalSettings.ts
+        modified:   src/models/Holiday.ts
+        modified:   src/models/PendingRequest.ts
+        modified:   src/models/Region.ts
+        modified:   src/models/Vacation.ts
+        modified:   src/models/VacationRequest.ts
+        new file:   src/pages/AdminDashboardPage.tsx
+        modified:   src/presenters/DailyLogPresenter.ts
+        modified:   src/presenters/EmployeePresenter.ts
+        modified:   src/presenters/GlobalSettingsPresenter.ts
+        modified:   src/presenters/HolidayPresenter.ts
+        modified:   src/presenters/PendingRequestPresenter.ts
+        modified:   src/presenters/RegionPresenter.ts
+        modified:   src/presenters/UserPresenter.ts
+        modified:   src/presenters/VacationPresenter.ts
+        modified:   src/presenters/VacationRequestPresenter.ts
+        modified:   src/services/userService.ts
+        new file:   src/styles/index.css
+        modified:   src/supabase/client.ts
+        modified:   src/supabase/types.ts
+        new file:   src/types/index.ts
+        renamed:    types.ts -> src/types/types.ts
+        new file:   src/utils/constants.ts
+        renamed:    utils/employeeManagement.ts -> src/utils/employeeManagement.ts
+        renamed:    i18nSimple.ts -> src/utils/i18nSimple.ts
+        renamed:    utils/localStorage.ts -> src/utils/localStorage.ts
+        renamed:    utils/printVacationRequest.ts -> src/utils/printVacationRequest.ts
+        new file:   src/utils/stringUtils.ts
+        modified:   src/utils/supabaseClient.ts
+        new file:   src/utils/supabaseCrud.ts
+        renamed:    utils/timeUtils.ts -> src/utils/timeUtils.ts
+        modified:   tailwind.config.js
+        modified:   tsconfig.json
+        modified:   tsconfig.node.json
+        deleted:    utils/stringUtils.ts
+        deleted:    utils/supabaseClient.ts
+        deleted:    utils/supabaseCrud.ts
+        modified:   vite.config.ts
+
+
+```
+
+---
+
+
+
+
+---
+
+```bash
+git commit -m "Refatoração estrutural: reorganização de pastas, remoção de duplicação, padronização de estilos e sugestão de componentes reutilizáveis (ver ANALISE_DUPLICACAO_CODIGO.md)"
+```
+
+```
+[main 7d38e85] Refatoração estrutural: reorganização de pastas, remoção de duplicação, padronização de estil
+os e sugestão de componentes reutilizáveis (ver ANALISE_DUPLICACAO_CODIGO.md)
+ 175 files changed, 53679 insertions(+), 11297 deletions(-)
+ create mode 100644 .cursorindexingignore
+ delete mode 100644 .cussorrules
+ create mode 100644 .specstory/.gitignore
+ create mode 100644 .specstory/history/2025-07-10_20-19Z-o-que-devo-fazer.md
+ create mode 100644 .specstory/history/2025-07-10_20-47Z-generate-a-name-for-the-chat.md
+ create mode 100644 ".specstory/history/2025-07-10_20-58Z-resolva-os-t\303\255tulos.md"
+ create mode 100644 .specstory/history/2025-07-11_21-15Z-execute-mcp-command.md
+ create mode 100644 ".specstory/history/2025-07-12_08-02Z-erro-na-exibi\303\247\303\243o-das-horas-contratua
+is.md"
+ create mode 100644 .specstory/history/2025-07-12_17-55Z-understanding-reference-error-in-react.md
+ create mode 100644 .specstory/history/2025-07-14_11-04Z-unifying-multiple-files-into-a-single-text.md
+ create mode 100644 ".specstory/history/2025-07-14_12-28Z-refatora\303\247\303\243o-do-projeto-conforme-estr
+utura.md"
+ create mode 100644 ANALISE_DUPLICACAO_CODIGO.md
+ create mode 100644 ANALISE_REGULAS_CURSOR.md
+ delete mode 100644 AdminDashboardPage.tsx
+ create mode 100644 ESTRUTURA_REFATORADA.md
+ create mode 100644 Estrutura de projeto.txt
+ create mode 100644 REFATORACAO_RESUMO.md
+ delete mode 100644 components/AccessDeniedMessage.tsx
+ delete mode 100644 components/AdminTabbedPage.tsx
+ delete mode 100644 components/AppHeader.tsx
+ delete mode 100644 components/CompactContractHoursInput.tsx
+ delete mode 100644 components/ContractAndMonthlySummaryCard.tsx
+ delete mode 100644 components/DailyLog.tsx
+ delete mode 100644 components/DailyLogRow.tsx
+ delete mode 100644 components/DashboardPage.tsx
+ delete mode 100644 components/LoadingScreen.tsx
+ delete mode 100644 components/NotificationDisplay.tsx
+ delete mode 100644 components/SectionCard.tsx
+ delete mode 100644 components/VacationConfigPage.tsx
+ delete mode 100644 components/VacationPagePreview.tsx
+ delete mode 100644 components/common/TimeInput.tsx
+ delete mode 100644 components/vacation_config/CalendarGrid.tsx
+ delete mode 100644 components/vacation_config/MonthlyVacationList.tsx
+ delete mode 100644 components/vacation_config/VacationSummaryPanel.tsx
+ delete mode 100644 constants.ts
+ delete mode 100644 contexts/CurrentUserDataContext.tsx
+ delete mode 100644 contexts/NotificationContext.tsx
+ create mode 100644 estrutura_projeto.md
+ delete mode 100644 hooks/useCurrentUserData.ts
+ delete mode 100644 hooks/useGlobalData.ts
+ delete mode 100644 hooks/useVacationCalculations.ts
+ delete mode 100644 i18n.ts
+ delete mode 100644 index.tsx
+ rename App.tsx => src/App.tsx (54%)
+ create mode 100644 src/components/AccessDeniedMessage.tsx
+ rename {components => src/components}/AdminDashboard/AdminUserList.tsx (67%)
+ rename {components => src/components}/AdminDashboard/GlobalSettingsForm.tsx (94%)
+ rename {components => src/components}/AdminDashboard/PendingRequestsList.tsx (71%)
+ rename {components => src/components}/AdminDashboard/RegionSelector.tsx (78%)
+ rename {components => src/components}/AdminDashboard/UserForm.tsx (67%)
+ rename {components => src/components}/AdminDashboard/UserVacationSummaryTable.tsx (79%)
+ rename {components => src/components}/AdminDashboardPage.tsx (100%)
+ rename {components => src/components}/AdminOverviewDashboard.tsx (64%)
+ create mode 100644 src/components/AdminTabbedPage.tsx
+ create mode 100644 src/components/AppHeader.tsx
+ create mode 100644 src/components/ContractAndMonthlySummaryCard.tsx
+ rename {components => src/components}/ContractHoursInput.tsx (100%)
+ create mode 100644 src/components/DailyLog.tsx
+ create mode 100644 src/components/DailyLogRow.tsx
+ rename {components => src/components}/EmployeeManagementPage.tsx (60%)
+ rename {components => src/components}/EmployeeRegistrationForm.tsx (66%)
+ rename {components => src/components}/ErrorBoundary.tsx (86%)
+ rename {components => src/components}/HolidayManagementPage.tsx (53%)
+ rename {components => src/components}/LanguageLandingPage.tsx (57%)
+ create mode 100644 src/components/LoadingScreen.tsx
+ rename {components => src/components}/LoginPage.tsx (62%)
+ rename {components => src/components}/MainAppLayout.tsx (54%)
+ rename {components => src/components}/ModernVacationCalendar.tsx (61%)
+ rename {components => src/components}/MonthYearSelector.tsx (54%)
+ create mode 100644 src/components/NotificationDisplay.tsx
+ rename components/SummaryDisplay.tsx => src/components/SectionCard.tsx (100%)
+ rename components/TauxDisplayCard.tsx => src/components/SummaryDisplay.tsx (100%)
+ create mode 100644 src/components/TauxDisplayCard.tsx
+ rename {components => src/components}/TypeSelector.tsx (58%)
+ rename {components => src/components}/UserProfilePage.tsx (57%)
+ create mode 100644 src/components/VacationConfigPage.tsx
+ create mode 100644 src/components/VacationPagePreview.tsx
+ rename {components => src/components}/common/InputWithIcon.tsx (61%)
+ rename {components => src/components}/common/SectionCard.tsx (67%)
+ create mode 100644 src/components/common/TimeInput.tsx
+ create mode 100644 src/components/vacation_config/CalendarGrid.tsx
+ create mode 100644 src/components/vacation_config/MonthlyVacationList.tsx
+ create mode 100644 src/components/vacation_config/VacationSummaryPanel.tsx
+ rename {contexts => src/contexts}/AuthContext.tsx (70%)
+ create mode 100644 src/contexts/CurrentUserDataContext.tsx
+ rename {contexts => src/contexts}/GlobalDataContext.tsx (53%)
+ create mode 100644 src/contexts/NotificationContext.tsx
+ rename {hooks => src/hooks}/useAuth.ts (63%)
+ create mode 100644 src/hooks/useCurrentUserData.ts
+ create mode 100644 src/hooks/useGlobalData.ts
+ rename {hooks => src/hooks}/useMonthNavigation.ts (61%)
+ create mode 100644 src/hooks/useVacationCalculations.ts
+ create mode 100644 src/i18n.ts
+ delete mode 100644 src/index.css
+ create mode 100644 src/index.tsx
+ create mode 100644 src/pages/AdminDashboardPage.tsx
+ create mode 100644 src/styles/index.css
+ create mode 100644 src/types/index.ts
+ rename types.ts => src/types/types.ts (77%)
+ create mode 100644 src/utils/constants.ts
+ rename {utils => src/utils}/employeeManagement.ts (50%)
+ rename i18nSimple.ts => src/utils/i18nSimple.ts (65%)
+ rename {utils => src/utils}/localStorage.ts (85%)
+ rename {utils => src/utils}/printVacationRequest.ts (66%)
+ create mode 100644 src/utils/stringUtils.ts
+ create mode 100644 src/utils/supabaseCrud.ts
+ rename {utils => src/utils}/timeUtils.ts (50%)
+ delete mode 100644 utils/stringUtils.ts
+ delete mode 100644 utils/supabaseClient.ts
+ delete mode 100644 utils/supabaseCrud.ts
+
+```
+
+---
+
+O commit das mudanças da refatoração foi realizado com sucesso!  
+Mensagem do commit:
+```
+Refatoração estrutural: reorganização de pastas, remoção de duplicação, padronização de estilos e sugestão de componentes reutilizáveis (ver ANALISE_DUPLICACAO_CODIGO.md)
+```
+
+Se desejar, agora você pode fazer o push para o repositório remoto. Se precisar de mais alguma ação, é só pedir!
+
+---
+
+_**User**_
+
+a duplicação de código foi resolvida ou é preciso de alguma ação minha?
+
+---
+
+_**Assistant**_
+
+A duplicação de código **ainda não foi totalmente resolvida** — o commit realizado até agora documenta e sugere as refatorações necessárias, mas **não implementa de fato os novos componentes reutilizáveis, hooks ou utilitários** (como `Button`, `Alert`, `useStatusColors`, etc.).  
+O documento `ANALISE_DUPLICACAO_CODIGO.md` detalha todos os padrões duplicados encontrados e traz exemplos práticos de como criar esses componentes/utilitários.
+
+### O que já foi feito:
+- Identificação e mapeamento dos padrões duplicados.
+- Sugestão detalhada de refatoração e plano de implementação.
+- Commit com toda a documentação e estrutura reorganizada.
+
+---
+
+## O que falta para eliminar a duplicação de código?
+
+1. **Implementar os componentes sugeridos** (ex: `Button`, `Alert`, utilitários de classe, hooks de cor e formatação).
+2. **Substituir gradualmente** os trechos duplicados nos arquivos do projeto pelos novos componentes/hooks.
+3. **Testar** cada alteração para garantir que o comportamento visual e funcional permaneça correto.
+
+---
+
+### **Ação recomendada para você:**
+- **Escolha por onde começar** (ex: criar o componente `Button` em `src/components/common/Button.tsx`).
+- **Implemente os componentes/utilitários sugeridos** conforme o guia do `ANALISE_DUPLICACAO_CODIGO.md`.
+- **Refatore os arquivos que usam padrões duplicados** para utilizar os novos componentes.
+- **Faça commits incrementais** a cada etapa para facilitar o controle de mudanças.
+
+Se quiser, posso começar a implementar um dos componentes sugeridos para você!  
+Deseja que eu crie, por exemplo, o componente `Button` reutilizável?
+
+---
+
+_**User**_
+
+Se quiser, posso começar a implementar um dos componentes sugeridos para você!
+Deseja que eu crie, por exemplo, o componente Button reutilizável?
+
+---
+
+_**Assistant**_
+
+Ótimo! Vou criar o componente `Button` reutilizável conforme sugerido na análise, seguindo as melhores práticas do projeto (tipagem forte, uso de Tailwind, variantes com class-variance-authority e estrutura em `/src/components/common/`).
+
+Vou implementar o componente `Button` com suporte a variantes (`primary`, `secondary`, `success`, `danger`, `warning`, `outline`) e tamanhos (`sm`, `md`, `lg`), pronto para substituir os botões duplicados do projeto.
+
+Em seguida, também adicionarei um exemplo de uso e instruções para facilitar a migração dos botões existentes.
+
+Vou iniciar a implementação agora.
+
+---
+
+```diff
+- 
++ import React from 'react';
++ import { cva, type VariantProps } from 'class-variance-authority';
++ 
++ const buttonVariants = cva(
++   "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50",
++   {
++     variants: {
++       variant: {
++         primary: "bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500",
++         secondary: "bg-slate-200 text-slate-700 hover:bg-slate-300 focus:ring-slate-500",
++         success: "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500",
++         danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
++         warning: "bg-yellow-600 text-white hover:bg-yellow-700 focus:ring-yellow-500",
++         outline: "border border-slate-300 text-slate-700 hover:bg-slate-50 focus:ring-slate-500",
++       },
++       size: {
++         sm: "px-3 py-1.5 text-xs",
++         md: "px-4 py-2 text-sm",
++         lg: "px-6 py-3 text-base",
++       },
++     },
++     defaultVariants: {
++       variant: "primary",
++       size: "md",
++     },
++   }
++ );
++ 
++ export interface ButtonProps
++   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
++     VariantProps<typeof buttonVariants> {
++   children: React.ReactNode;
++ }
++ 
++ export const Button: React.FC<ButtonProps> = ({
++   className,
++   variant,
++   size,
++   children,
++   ...props
++ }) => {
++   return (
++     <button
++       className={buttonVariants({ variant, size, className })}
++       {...props}
++     >
++       {children}
++     </button>
++   );
++ };
++ 
++ export default Button; 
+```
+
+---
+
+O componente `Button` reutilizável foi criado em `src/components/common/Button.tsx` com suporte a variantes e tamanhos, pronto para substituir os botões duplicados do projeto.
+
+### Como usar o novo Button
+
+```tsx
+import { Button } from "@/components/common/Button";
+
+// Exemplo de uso:
+<Button variant="primary" size="md" onClick={...}>
+  Salvar
+</Button>
+
+<Button variant="secondary" size="sm">
+  Cancelar
+</Button>
+```
+
+Você pode agora substituir os botões duplicados pelo novo componente, passando as variantes conforme a necessidade.  
+Se quiser, posso ajudar a migrar os botões existentes ou criar outros componentes sugeridos!
+
+---
+
+_**User**_
+
+Se quiser, posso ajudar a migrar os botões existentes ou criar outros componentes sugeridos!
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+

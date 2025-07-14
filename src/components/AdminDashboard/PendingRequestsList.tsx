@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Clock } from "lucide-react";
 import SectionCard from "../common/SectionCard";
+import Button from "../common/Button";
 import { usePendingRequestPresenter } from "@hooks/usePendingRequestPresenter";
 
 const PendingRequestsList: React.FC = () => {
@@ -77,12 +78,13 @@ const PendingRequestsList: React.FC = () => {
               {userData.userName}
             </h4>
             {userData.requests.length > 0 && (
-              <button
+              <Button
                 onClick={() => approveAllForUser(userId)}
-                className="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
+                variant="primary"
+                size="md"
               >
                 {t("adminDashboard.approveAllFor")} {userData.userName}
-              </button>
+              </Button>
             )}
           </div>
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -129,18 +131,20 @@ const PendingRequestsList: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-sm space-x-2">
-                      <button
+                      <Button
                         onClick={() => approveRequest(req.id)}
-                        className="px-3 py-1.5 bg-green-100 text-green-700 text-xs rounded-lg hover:bg-green-200 transition-colors inline-flex items-center"
+                        variant="success"
+                        size="sm"
                       >
                         {t("adminDashboard.approve")}
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         onClick={() => rejectRequest(req.id)}
-                        className="px-3 py-1.5 bg-red-100 text-red-700 text-xs rounded-lg hover:bg-red-200 transition-colors inline-flex items-center"
+                        variant="danger"
+                        size="sm"
                       >
                         {t("adminDashboard.reject")}
-                      </button>
+                      </Button>
                     </td>
                   </tr>
                 ))}

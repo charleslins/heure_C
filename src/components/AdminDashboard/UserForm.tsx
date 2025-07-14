@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import InputWithIcon from "../common/InputWithIcon";
+import Button from "../common/Button";
 import { User, Mail, Languages } from "lucide-react";
 import { DbProfileInsert } from "../../src/types/supabase";
 
@@ -111,20 +112,22 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
       </div>
 
       <div className="flex justify-end space-x-3">
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="md"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           {t("common.cancel")}
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
+          variant="primary"
+          size="md"
           disabled={loading}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
         >
           {loading ? t("common.saving") : t("common.save")}
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Calendar, BarChart3 } from "lucide-react";
 import SectionCard from "./common/SectionCard";
+import Button from "./common/Button";
 import { useGlobalDataContext } from "../contexts/GlobalDataContext";
 import { useNotificationContext } from "../contexts/NotificationContext";
 
@@ -33,13 +34,13 @@ const HolidayManagementPage: React.FC = () => {
     if (holidayDate.getFullYear() !== selectedYear) {
       addNotification(
         t("holidayManagementPage.alertYearMismatch", { year: selectedYear }),
-        "error",
+        "error"
       );
       return;
     }
 
     const existingHoliday = globalHolidays.find(
-      (h) => h.date === formData.date,
+      (h) => h.date === formData.date
     );
     if (existingHoliday) {
       addNotification(t("holidayManagementPage.alertDateExists"), "error");
@@ -69,7 +70,7 @@ const HolidayManagementPage: React.FC = () => {
       console.error("Erro ao salvar feriado:", error);
       addNotification(
         error instanceof Error ? error.message : "Erro ao salvar feriado",
-        "error",
+        "error"
       );
     }
   };
@@ -80,10 +81,10 @@ const HolidayManagementPage: React.FC = () => {
   });
 
   const officialHolidays = holidaysForYear.filter(
-    (h) => h.type === "OFFICIAL",
+    (h) => h.type === "OFFICIAL"
   ).length;
   const customHolidays = holidaysForYear.filter(
-    (h) => h.type === "CUSTOM",
+    (h) => h.type === "CUSTOM"
   ).length;
 
   if (isLoadingGlobalData) {
@@ -125,7 +126,7 @@ const HolidayManagementPage: React.FC = () => {
                     <option key={year} value={year}>
                       {year}
                     </option>
-                  ),
+                  )
                 )}
               </select>
             </div>
@@ -143,7 +144,7 @@ const HolidayManagementPage: React.FC = () => {
                         </span>
                         <span className="ml-2 text-xs text-slate-500">
                           {new Date(
-                            holiday.date + "T00:00:00",
+                            holiday.date + "T00:00:00"
                           ).toLocaleDateString("pt-BR", {
                             day: "2-digit",
                             month: "short",
@@ -242,7 +243,7 @@ const HolidayManagementPage: React.FC = () => {
                   <textarea
                     name="description"
                     placeholder={t(
-                      "holidayManagementPage.descriptionPlaceholder",
+                      "holidayManagementPage.descriptionPlaceholder"
                     )}
                     value={formData.description}
                     onChange={(e) =>
@@ -276,12 +277,9 @@ const HolidayManagementPage: React.FC = () => {
 
                 {/* Botão de adicionar */}
                 <div className="flex justify-end pt-2">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm"
-                  >
+                  <Button type="submit" variant="primary" size="md">
                     {t("holidayManagementPage.addButton")}
-                  </button>
+                  </Button>
                 </div>
               </form>
             </SectionCard>
