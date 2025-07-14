@@ -46,8 +46,7 @@ export class VacationRequestCollection {
         .from(this.TABLE_NAME)
         .select("*")
         .eq("user_id", userId)
-        .order("date")
-        .returns<DbVacationRequest[]>();
+        .order("date");
 
       if (error) throw error;
       return data || [];
@@ -65,8 +64,7 @@ export class VacationRequestCollection {
         .from(this.TABLE_NAME)
         .insert(request)
         .select()
-        .single()
-        .returns<DbVacationRequest>();
+        .single();
 
       if (error) throw error;
       return data;

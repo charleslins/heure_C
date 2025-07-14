@@ -116,7 +116,7 @@ const AdminUserList: React.FC = () => {
         titleIconProps={{ className: "w-6 h-6 text-indigo-600" }}
       >
         <UserForm
-          user={selectedUser}
+          user={selectedUser || undefined}
           onSubmit={handleFormSubmit}
           onCancel={handleFormCancel}
         />
