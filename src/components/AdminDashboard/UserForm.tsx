@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import InputWithIcon from "../common/InputWithIcon";
 import Button from "../common/Button";
-import { User, Mail, Languages } from "lucide-react";
+import { User, Mail } from "lucide-react";
 import { Database } from "../../types/supabase";
 
 type DbProfileInsert = Database["public"]["Tables"]["profiles"]["Insert"];
@@ -19,7 +19,6 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
     name: user?.name || "",
     email: user?.email || "",
     role: user?.role || "user",
-    language: user?.language || "pt",
     active: user?.active ?? true,
   });
   const [loading, setLoading] = useState(false);
@@ -86,38 +85,24 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
         placeholder={t("common.email")}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            {t("common.role")}
-          </label>
-          <select
-            name="role"
-            value={formData.role || ""}
-            onChange={handleChange}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-            required
-          >
-            <option value="">{t("common.selectRole")}</option>
-            {roles.map((role) => (
-              <option key={role.id} value={role.id}>
-                {t(`roles.${role.name.toLowerCase()}`)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <InputWithIcon
-          id="language"
-          icon={<Languages className="h-5 w-5" />}
-          label={t("common.language")}
-          name="language"
-          type="text"
-          value={formData.language}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          {t("common.role")}
+        </label>
+        <select
+          name="role"
+          value={formData.role || ""}
           onChange={handleChange}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
           required
-          placeholder={t("common.language")}
-        />
+        >
+          <option value="">{t("common.selectRole")}</option>
+          {roles.map((role) => (
+            <option key={role.id} value={role.id}>
+              {t(`roles.${role.name.toLowerCase()}`)}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="flex justify-end space-x-3">
