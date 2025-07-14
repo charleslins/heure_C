@@ -6,7 +6,6 @@ import {
   VacationSelection,
   SummaryData,
   VacationDay,
-  Holiday,
 } from "@/types";
 import { useCurrentUserData } from "@/hooks/useCurrentUserData";
 import { useAuthContext } from "./AuthContext";
@@ -24,11 +23,11 @@ interface CurrentUserDataContextType {
     userId: string,
     year: number,
     month: number,
-    newVacations: VacationSelection,
+    newVacations: VacationSelection
   ) => Promise<void>;
   loadUserYearVacations: (
     userId: string,
-    year: number,
+    year: number
   ) => Promise<VacationDay[]>;
   isLoadingCurrentUserData: boolean;
   currentDate: Date; // This will be passed from App state
@@ -53,7 +52,7 @@ export const CurrentUserDataProvider: React.FC<
   const currentUserData = useCurrentUserData(
     currentUser,
     currentDate,
-    globalHolidays,
+    globalHolidays
   );
 
   return (
@@ -69,7 +68,7 @@ export function useCurrentUserDataContext() {
   const context = useContext(CurrentUserDataContext);
   if (context === undefined) {
     throw new Error(
-      "useCurrentUserDataContext must be used within a CurrentUserDataProvider",
+      "useCurrentUserDataContext must be used within a CurrentUserDataProvider"
     );
   }
   return context;

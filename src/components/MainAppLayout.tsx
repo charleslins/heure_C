@@ -4,7 +4,7 @@ import { User, Page } from "@/types";
 import AppHeader from "./AppHeader";
 import DashboardPage from "@/pages/DashboardPage";
 import VacationConfigPage from "@/pages/VacationConfigPage";
-import AdminDashboardPage from "@/pages/AdminDashboardPage";
+
 import UserProfilePage from "@/pages/UserProfilePage";
 import AdminTabbedPage from "@/pages/AdminTabbedPage";
 import AccessDeniedMessage from "./AccessDeniedMessage";

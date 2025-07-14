@@ -16,6 +16,7 @@ interface UserFormProps {
 const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onCancel }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = useState<DbProfileInsert>({
+    id: user?.id || "",
     name: user?.name || "",
     email: user?.email || "",
     role: user?.role || "user",

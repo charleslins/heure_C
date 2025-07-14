@@ -27,7 +27,7 @@ export class PendingRequestCollection {
           status,
           created_at,
           updated_at
-        `,
+        `
         )
         .eq("status", "pending")
         .order("start_date", { ascending: true })
@@ -59,15 +59,14 @@ export class PendingRequestCollection {
   }
 
   static async create(
-    request: DbPendingRequestInsert,
+    request: DbPendingRequestInsert
   ): Promise<DbPendingRequest> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
         .insert(request)
         .select()
-        .single()
-        .returns<DbPendingRequest>();
+        .single();
 
       if (error) throw error;
       return data;
@@ -79,7 +78,7 @@ export class PendingRequestCollection {
 
   static async update(
     id: string,
-    request: DbPendingRequestUpdate,
+    request: DbPendingRequestUpdate
   ): Promise<DbPendingRequest> {
     try {
       const { data, error } = await supabase
@@ -87,8 +86,7 @@ export class PendingRequestCollection {
         .update(request)
         .eq("id", id)
         .select()
-        .single()
-        .returns<DbPendingRequest>();
+        .single();
 
       if (error) throw error;
       return data;
@@ -101,7 +99,7 @@ export class PendingRequestCollection {
   static async updateStatus(
     id: string,
     status: "approved" | "rejected",
-    adminComment?: string,
+    adminComment?: string
   ): Promise<DbPendingRequest> {
     try {
       const { data, error } = await supabase
@@ -113,8 +111,7 @@ export class PendingRequestCollection {
         })
         .eq("id", id)
         .select()
-        .single()
-        .returns<DbPendingRequest>();
+        .single();
 
       if (error) throw error;
       return data;

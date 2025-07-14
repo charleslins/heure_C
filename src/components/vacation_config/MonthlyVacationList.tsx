@@ -28,10 +28,9 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
   onSubmitForApproval,
   onPrintRequest,
   displayDate,
-  user,
 }) => {
   const { t, i18n } = useTranslation();
-  const { formatDate, formatVacationStatus } = useFormatting();
+  const { formatDate } = useFormatting();
 
   const sortedVacations = [...currentMonthUserVacations].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
