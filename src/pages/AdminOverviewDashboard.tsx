@@ -7,7 +7,7 @@ import { Users, Bell, Calendar, Briefcase } from "lucide-react";
 import { User } from "@/types";
 
 // 3. Components
-
+import SectionCard from "../components/common/SectionCard";
 // 4. Services e Presenters
 import { supabase } from "@/utils/supabaseClient";
 
@@ -96,15 +96,13 @@ const AdminOverviewDashboard: React.FC<AdminOverviewDashboardProps> = ({
           .order("start_date");
 
         if (vacations) {
-          const formattedVacations = vacations.map((v) => ({
+          const formattedVacations = vacations.map((v: any) => ({
             userId: v.profiles?.id || "",
             userName: v.profiles?.full_name || "",
             startDate: v.start_date,
             endDate: v.end_date,
             status: v.status,
           }));
-
-          setVacationData(formattedVacations);
 
           // Processar dados de sobreposição
           const overlaps: VacationOverlapData[] = [];

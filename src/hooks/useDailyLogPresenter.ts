@@ -53,7 +53,7 @@ export function useDailyLogPresenter(year?: number, month?: number) {
     }
 
     loadData();
-  }, [presenter, user?.id, year, month, t, addNotification]);
+  }, [presenter, currentUser?.id, year, month, t, addNotification]);
 
   const handleCreateLog = async (date: string, type?: EntryType) => {
     const result = await presenter.createLog(date, type);

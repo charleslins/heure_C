@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Users, User, Calendar, Settings } from "lucide-react";
-import { useAuthContext } from "../contexts/AuthContext";
+
 import { VacationStatus } from "../types/types";
 import { PendingRequest } from "@/types";
 import { supabase } from "@/utils/supabaseClient";

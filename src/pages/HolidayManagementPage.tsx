@@ -8,7 +8,8 @@ import { useNotificationContext } from "../contexts/NotificationContext";
 
 const HolidayManagementPage: React.FC = () => {
   const { t } = useTranslation();
-  const { globalHolidays, isLoadingGlobalData } = useGlobalDataContext();
+  const { globalHolidays, isLoadingGlobalData, addHoliday } =
+    useGlobalDataContext();
   const { addNotification } = useNotificationContext();
   const [formData, setFormData] = useState({
     name: "",

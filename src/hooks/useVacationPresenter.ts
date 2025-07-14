@@ -31,7 +31,7 @@ export function useVacationPresenter(year?: number, month?: number) {
       try {
         setIsLoading(true);
         setError(null);
-        presenter.setUserId(currentUser.id);
+        presenter.setUserId(currentUser?.id || "");
         await presenter.initialize(
           year || new Date().getFullYear(),
           month || new Date().getMonth()

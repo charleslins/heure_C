@@ -89,7 +89,7 @@ export const loadGlobalHolidaysFromSupabase = async (
     date: dbHoliday.date,
     name: dbHoliday.name,
     type: "CUSTOM" as const,
-    isOfficial: dbHoliday.is_official,
+    isOfficial: dbHoliday.is_official || false,
   }));
 };
 
