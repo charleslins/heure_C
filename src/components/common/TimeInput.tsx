@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { selectClasses, labelClasses } from "../../utils/inputClasses";
 
 interface TimeInputProps {
   id?: string;
@@ -90,15 +91,14 @@ const TimeInput: React.FC<TimeInputProps> = ({
     }
   };
 
-  const baseSelectClasses =
-    "p-1.5 border border-slate-300 bg-slate-50 text-slate-700 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-xs sm:text-sm disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed";
+  const baseSelectClasses = selectClasses({ size: "sm" });
 
   return (
     <div className={className}>
       {label && (
         <label
           htmlFor={`${id}-hour`}
-          className="block text-sm font-medium text-slate-700 mb-1"
+          className={labelClasses()}
         >
           {label}
         </label>

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { WeeklyContractHours, DayOfWeekName } from "@/types";
 import { Clock } from "lucide-react";
 import SectionCard from "./common/SectionCard";
+import { textInputClasses } from "../utils/inputClasses";
 
 interface CompactContractHoursInputProps {
   contractHours: WeeklyContractHours;
@@ -65,8 +66,7 @@ const CompactContractHoursInput: React.FC<CompactContractHoursInputProps> = ({
     }
   };
 
-  const inputClasses =
-    "block w-12 h-10 p-1 border border-slate-300 bg-slate-50 text-slate-700 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm text-center appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none";
+  const inputClasses = `${textInputClasses({ size: "sm" })} w-12 h-10 text-center appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`;
 
   return (
     <SectionCard

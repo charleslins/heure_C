@@ -1,4 +1,5 @@
 import React from "react";
+import { textInputClasses, labelClasses } from "../../utils/inputClasses";
 
 interface InputWithIconProps {
   id: string;
@@ -25,9 +26,7 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
   icon,
   label,
 }) => {
-  const inputBaseClasses =
-    "block w-full px-3 py-3 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent sm:text-sm bg-white text-slate-800 placeholder-slate-400";
-  const inputWithIconClasses = `pl-10 ${inputBaseClasses}`;
+  const inputWithIconClasses = `pl-10 ${textInputClasses({ size: "lg" })}`;
   const iconBaseClasses =
     "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400";
 
@@ -35,7 +34,7 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
     <div>
       <label
         htmlFor={id}
-        className="block text-sm font-medium text-slate-700 sr-only"
+        className={`${labelClasses()} sr-only`}
       >
         {label}
       </label>
