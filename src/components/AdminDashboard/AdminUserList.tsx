@@ -53,7 +53,7 @@ const AdminUserList: React.FC = () => {
     }
   };
 
-  const handleEdit = (user: DbProfile) => {
+  const handleEdit = (user: DbProfile | null) => {
     setSelectedUser(user);
     setIsFormOpen(true);
   };

@@ -6,7 +6,6 @@ type DbVacationRequest =
 type DbVacationRequestInsert =
   Database["public"]["Tables"]["vacation_requests"]["Insert"];
 
-
 export class VacationRequestCollection {
   private static TABLE_NAME = "vacation_requests";
 
@@ -92,8 +91,7 @@ export class VacationRequestCollection {
         })
         .eq("id", id)
         .select()
-        .single()
-        .returns<DbVacationRequest>();
+        .single();
 
       if (error) throw error;
       return data;

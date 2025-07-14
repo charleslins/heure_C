@@ -51,7 +51,7 @@ const GlobalSettingsForm: React.FC = () => {
               onChange={handleChange}
               min="0"
               max="365"
-              className={textInputClasses()}
+              className={textInputClasses}
             />
             <p className={hintClasses()}>
               Número padrão de dias de férias por ano para novos funcionários
@@ -68,7 +68,7 @@ const GlobalSettingsForm: React.FC = () => {
               onChange={handleChange}
               min="0"
               max="365"
-              className={textInputClasses()}
+              className={textInputClasses}
             />
             <p className={hintClasses()}>
               Dias mínimos de antecedência para solicitar férias
@@ -85,7 +85,7 @@ const GlobalSettingsForm: React.FC = () => {
               onChange={handleChange}
               min="0"
               max="365"
-              className={textInputClasses()}
+              className={textInputClasses}
             />
             <p className={hintClasses()}>
               Número máximo de dias consecutivos de férias permitidos
@@ -100,7 +100,7 @@ const GlobalSettingsForm: React.FC = () => {
                 name="autoApprovalEnabled"
                 checked={settings.autoApprovalEnabled}
                 onChange={handleChange}
-                className={checkboxClasses()}
+                className={checkboxClasses}
               />
               <span>Aprovação Automática</span>
             </label>

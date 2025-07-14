@@ -30,8 +30,7 @@ export class UserCollection {
         .from(this.TABLE_NAME)
         .select("*")
         .eq("id", id)
-        .single()
-        .returns<DbProfile>();
+        .single();
 
       if (error) throw error;
       return data;
@@ -47,8 +46,7 @@ export class UserCollection {
         .from(this.TABLE_NAME)
         .select("*")
         .eq("email", email)
-        .single()
-        .returns<DbProfile>();
+        .single();
 
       if (error) throw error;
       return data;
@@ -67,8 +65,7 @@ export class UserCollection {
           active: true,
         })
         .select()
-        .single()
-        .returns<DbProfile>();
+        .single();
 
       if (error) throw error;
       return newUser;
@@ -85,8 +82,7 @@ export class UserCollection {
         .update(data)
         .eq("id", id)
         .select()
-        .single()
-        .returns<DbProfile>();
+        .single();
 
       if (error) throw error;
       return updatedUser;
