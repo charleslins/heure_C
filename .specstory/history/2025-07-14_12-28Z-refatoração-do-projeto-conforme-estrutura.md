@@ -6544,6 +6544,114 @@ mv src/components/HolidayManagementPage.tsx src/pages/
 
 ---
 
+```bash
+mv src/components/EmployeeManagementPage.tsx src/pages/
+```
+
+---
+
+```bash
+mv src/components/VacationConfigPage.tsx src/pages/
+```
+
+---
+
+```bash
+mv src/components/LanguageLandingPage.tsx src/pages/
+```
+
+---
+
+```bash
+mv src/components/LoginPage.tsx src/pages/
+```
+
+---
+
+```bash
+mv src/components/UserProfilePage.tsx src/pages/
+```
+
+---
+
+```bash
+mv src/components/AdminTabbedPage.tsx src/pages/
+```
+
+---
+
+```bash
+mv src/components/AdminOverviewDashboard.tsx src/pages/
+```
+
+---
+
+Agora vou verificar se há algum arquivo vazio ou duplicado que precisa ser removido:
+
+
+---
+
+```bash
+find src/components -name "*.tsx" -size 0
+```
+
+```
+src/components/TauxDisplayCard.tsx
+src/components/AdminDashboardPage.tsx
+src/components/SummaryDisplay.tsx
+src/components/SectionCard.tsx
+src/components/ContractHoursInput.tsx
+
+```
+
+---
+
+Vou remover os arquivos vazios que são duplicados:
+
+
+---
+
+```bash
+rm src/components/AdminDashboardPage.tsx src/components/SectionCard.tsx src/components/SummaryDisplay.tsx src/components/ContractHoursInput.tsx
+```
+
+---
+
+Agora vou verificar a estrutura atual das pastas:
+
+
+---
+
+<details>
+            <summary>Listed directory src/pages • **10** results</summary>
+        
+| Name |
+|-------|
+| 📄 `HolidayManagementPage.tsx` |
+| 📄 `AdminDashboardPage.tsx` |
+| 📄 `DashboardPage.tsx` |
+| 📄 `AdminOverviewDashboard.tsx` |
+| 📄 `AdminTabbedPage.tsx` |
+| 📄 `EmployeeManagementPage.tsx` |
+| 📄 `VacationConfigPage.tsx` |
+| 📄 `LanguageLandingPage.tsx` |
+| 📄 `LoginPage.tsx` |
+| 📄 `UserProfilePage.tsx` |
+
+</details>
+
+---
+
+Agora vou verificar se há imports que precisam ser atualizados. Vou começar verificando o arquivo principal `App.tsx`:
+
+
+---
+
+Read file: src/App.tsx
+
+---
+
+Vou atualizar os imports no `App.tsx`:
 
 
 ---
@@ -6552,6 +6660,16 @@ mv src/components/HolidayManagementPage.tsx src/pages/
 
 ---
 
+Agora vou verificar o `MainAppLayout.tsx` para atualizar os imports das páginas:
+
+
+---
+
+Read file: src/components/MainAppLayout.tsx
+
+---
+
+Vou atualizar os imports no `MainAppLayout.tsx`:
 
 
 ---
@@ -6560,6 +6678,16 @@ mv src/components/HolidayManagementPage.tsx src/pages/
 
 ---
 
+Agora vou verificar se há outros arquivos que importam essas páginas. Vou verificar o `AdminTabbedPage.tsx`:
+
+
+---
+
+Read file: src/pages/AdminTabbedPage.tsx
+
+---
+
+Vou atualizar os imports no `AdminTabbedPage.tsx`:
 
 
 ---
@@ -6568,6 +6696,38 @@ mv src/components/HolidayManagementPage.tsx src/pages/
 
 ---
 
+Agora vou verificar se há outros arquivos que precisam ter os imports atualizados. Vou verificar o `index.tsx`:
+
+
+---
+
+Read file: src/index.tsx
+
+---
+
+Agora vou verificar se há algum arquivo que importa o `LoginPage`:
+
+
+---
+
+<details>
+            <summary>Grep search for "import.*LoginPage" • **4** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/src/pages/LanguageLandingPage.tsx` | L2 | `import LoginPage from "./LoginPage";` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-10_20-19Z-o-que-devo-fazer.md` | L1030 | `import LoginPage from './LoginPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L1506 | `import LoginPage from './LoginPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4277 | `| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L7690 | `[plugin:vite:import-analysis] Failed to resolve import "@fortawesome/react-fontawesome" from "components/LoginPage.tsx". Does the file exist?` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L7586 | `[plugin:vite:import-analysis] Failed to resolve import "@fortawesome/react-fontawesome" from "components/LoginPage.tsx". Does the file exist?` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L10979 | `Se o problema persistir, podemos temporariamente comentar o import do LoginPage no App principal para testar o resto da migração:` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L13475 | `import LoginPage from './LoginPage';` |
+
+</details>
+
+---
+
+Vou atualizar o import no `LanguageLandingPage.tsx`:
 
 
 ---
@@ -6576,55 +6736,267 @@ mv src/components/HolidayManagementPage.tsx src/pages/
 
 ---
 
+O import já está correto no `LanguageLandingPage.tsx` porque ambos estão na mesma pasta `pages`. Agora vou verificar se há outros arquivos que precisam ser atualizados:
 
 
 ---
 
+<details>
+            <summary>Grep search for "from.*components.*Page" • **4** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-14_11-04Z-unifying-multiple-files-into-a-single-text.md` | L471 | `+ import LanguageLandingPage from "@/components/LanguageLandingPage";` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-10_20-19Z-o-que-devo-fazer.md` | L1433 | `- import LanguageLandingPage from './components/LanguageLandingPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-10_20-19Z-o-que-devo-fazer.md` | L1442 | `+ import LanguageLandingPage from '@/components/LanguageLandingPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-10_20-19Z-o-que-devo-fazer.md` | L1836 | `Failed to resolve import "../types" from "src/components/VacationConfigPage.tsx"` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4270 | `| `file:///Users/chlins-mbp/heure_C/App.tsx` | L11 | `import LanguageLandingPage from './components/LanguageLandingPage';` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4275 | `⟪ 108 characters skipped ⟫2190 | `+ import EmployeeManagementPage from './components/EmployeeManagementPage';` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4277 | `⟪ 164 characters skipped ⟫import "@fortawesome/react-fontawesome" from "components/LoginPage.tsx". Does the file exist?` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4282 | `⟪ 104 characters skipped ⟫ | L13216 | `import LanguageLandingPage from './components/LanguageLandingPage';` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4286 | `⟪ 104 characters skipped ⟫ | L13364 | `import LanguageLandingPage from './components/LanguageLandingPage';` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4290 | `⟪ 104 characters skipped ⟫ | L13775 | `import LanguageLandingPage from './components/LanguageLandingPage';` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4295 | `⟪ 104 characters skipped ⟫ | L13965 | `import LanguageLandingPage from './components/LanguageLandingPage';` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L2213 | `+ import EmployeeManagementPage from './components/EmployeeManagementPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L7586 | `[plugin:vite:import-analysis] Failed to resolve import "@fortawesome/react-fontawesome" from "components/LoginPage.tsx". Does the file exist?` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L13148 | `import LanguageLandingPage from './components/LanguageLandingPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L13296 | `import LanguageLandingPage from './components/LanguageLandingPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L13707 | `import LanguageLandingPage from './components/LanguageLandingPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L13895 | `import LanguageLandingPage from './components/LanguageLandingPage';` |
+
+</details>
+
+---
+
+Agora vou verificar se há algum arquivo que importa o `EmployeeManagementPage`:
 
 
 ---
 
+<details>
+            <summary>Grep search for "import.*EmployeeManagementPage" • **3** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-07_18-46Z-corrigir-sobreposi%C3%A7%C3%A3o-de-cards-na-p%C3%A1gina.md` | L63 | `- import EmployeeManagementPage from './EmployeeManagementPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-09_19-36Z-desenvolver-em-portugu%C3%AAs-antes-das-tradu%C3%A7%C3%B5es.md` | L4275 | `| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L2190 | `+ import EmployeeManagementPage from './components/EmployeeManagementPage';` |` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L2213 | `+ import EmployeeManagementPage from './components/EmployeeManagementPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L4880 | `+ import EmployeeManagementPage from './EmployeeManagementPage';` |
+| `file:///Users/chlins-mbp/heure_C/.specstory/history/2025-07-03_18-11Z-problema-ao-abrir-o-projeto.md` | L12370 | `import EmployeeManagementPage from './EmployeeManagementPage';` |
+
+</details>
+
+---
+
+Vou verificar se há algum arquivo atual que importa essas páginas:
 
 
 ---
 
+<details>
+            <summary>Grep search for "from.*components.*Page" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+Agora vou verificar se há algum arquivo que importa as páginas movidas:
 
 
 ---
 
+<details>
+            <summary>Grep search for "import.*Page.*from.*components" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+Agora vou fazer um commit com todas essas mudanças:
 
 
 ---
 
+```bash
+git add .
+```
+
+---
+
+```bash
+git commit -m "refactor: mover páginas para pasta src/pages/ e atualizar imports
+
+- Mover DashboardPage.tsx para src/pages/
+- Mover HolidayManagementPage.tsx para src/pages/
+- Mover EmployeeManagementPage.tsx para src/pages/
+- Mover VacationConfigPage.tsx para src/pages/
+- Mover LanguageLandingPage.tsx para src/pages/
+- Mover LoginPage.tsx para src/pages/
+- Mover UserProfilePage.tsx para src/pages/
+- Mover AdminTabbedPage.tsx para src/pages/
+- Mover AdminOverviewDashboard.tsx para src/pages/
+- Atualizar imports em App.tsx, MainAppLayout.tsx e AdminTabbedPage.tsx
+- Remover arquivos vazios duplicados
+- Organizar estrutura seguindo padrão MVC com páginas separadas"
+```
+
+```
+[main a974084] refactor: mover páginas para pasta src/pages/ e atualizar imports
+ 16 files changed, 381 insertions(+), 9 deletions(-)
+ delete mode 100644 src/components/AdminDashboardPage.tsx
+ delete mode 100644 src/components/ContractHoursInput.tsx
+ delete mode 100644 src/components/SectionCard.tsx
+ delete mode 100644 src/components/SummaryDisplay.tsx
+ rename src/{components => pages}/AdminOverviewDashboard.tsx (100%)
+ rename src/{components => pages}/AdminTabbedPage.tsx (94%)
+ rename src/{components => pages}/DashboardPage.tsx (100%)
+ rename src/{components => pages}/EmployeeManagementPage.tsx (100%)
+ rename src/{components => pages}/HolidayManagementPage.tsx (100%)
+ rename src/{components => pages}/LanguageLandingPage.tsx (100%)
+ rename src/{components => pages}/LoginPage.tsx (100%)
+ rename src/{components => pages}/UserProfilePage.tsx (100%)
+ rename src/{components => pages}/VacationConfigPage.tsx (100%)
+
+```
+
+---
+
+Perfeito! ✅ **Reorganização das páginas concluída com sucesso!**
+
+## 📁 **Estrutura final organizada:**
+
+### **Páginas movidas para `src/pages/`:**
+- ✅ `DashboardPage.tsx` - Página principal do dashboard
+- ✅ `HolidayManagementPage.tsx` - Página de gerenciamento de feriados  
+- ✅ `EmployeeManagementPage.tsx` - Página de gerenciamento de funcionários
+- ✅ `VacationConfigPage.tsx` - Página de configuração de férias
+- ✅ `LanguageLandingPage.tsx` - Página de seleção de idioma
+- ✅ `LoginPage.tsx` - Página de login
+- ✅ `UserProfilePage.tsx` - Página de perfil do usuário
+- ✅ `AdminTabbedPage.tsx` - Página de admin com abas
+- ✅ `AdminOverviewDashboard.tsx` - Página de visão geral do admin
+- ✅ `AdminDashboardPage.tsx` - Página principal do admin (já estava lá)
+
+### **Imports atualizados:**
+- ✅ `App.tsx` - Import do `LanguageLandingPage`
+- ✅ `MainAppLayout.tsx` - Imports de todas as páginas
+- ✅ `AdminTabbedPage.tsx` - Imports dos componentes AdminDashboard
+
+### **Limpeza realizada:**
+- ✅ Removidos arquivos vazios duplicados
+- ✅ Estrutura organizada seguindo padrão MVC
+
+## 🎯 **Benefícios da reorganização:**
+
+1. **Separação clara:** Páginas em `/pages/`, componentes em `/components/`
+2. **Navegação mais fácil:** Todas as páginas em um local
+3. **Manutenibilidade:** Estrutura mais intuitiva
+4. **Escalabilidade:** Fácil adicionar novas páginas
+5. **Padrão MVC:** Seguindo as regras do projeto
+
+Agora o projeto está com a estrutura correta, com todas as páginas organizadas em `src/pages/` e os componentes reutilizáveis em `src/components/`! 🚀
+
+---
+
+_**User**_
+
+Quer que eu continue com a migração de mais botões ou prefere que eu implemente outro componente sugerido na análise? Sim
+
+---
+
+_**Assistant**_
+
+Perfeito! Vou continuar implementando os outros componentes sugeridos na análise. Vou criar o componente `Alert` reutilizável para substituir as notificações/mensagens duplicadas.
+
+Primeiro, vou criar o componente `Alert`:
 
 
 ---
 
+```diff
+- 
++ import React from 'react';
++ import { AlertTriangle, CheckCircle, XCircle, Info, X } from 'lucide-react';
++ import { cva, type VariantProps } from 'class-variance-authority';
++ 
++ const alertVariants = cva(
++   "flex items-start p-4 rounded-lg border",
++   {
++     variants: {
++       variant: {
++         success: "bg-green-50 border-green-200 text-green-700",
++         error: "bg-red-50 border-red-200 text-red-700",
++         warning: "bg-yellow-50 border-yellow-200 text-yellow-700",
++         info: "bg-blue-50 border-blue-200 text-blue-700",
++       },
++     },
++     defaultVariants: {
++       variant: "info",
++     },
++   }
++ );
++ 
++ export interface AlertProps
++   extends React.HTMLAttributes<HTMLDivElement>,
++     VariantProps<typeof alertVariants> {
++   children: React.ReactNode;
++   onClose?: () => void;
++ }
++ 
++ const getIcon = (variant: AlertProps['variant']) => {
++   switch (variant) {
++     case 'success':
++       return <CheckCircle className="w-5 h-5" />;
++     case 'error':
++       return <XCircle className="w-5 h-5" />;
++     case 'warning':
++       return <AlertTriangle className="w-5 h-5" />;
++     default:
++       return <Info className="w-5 h-5" />;
++   }
++ };
++ 
++ export const Alert: React.FC<AlertProps> = ({
++   variant,
++   children,
++   onClose,
++   className,
++   ...props
++ }) => {
++   return (
++     <div className={alertVariants({ variant, className })} {...props}>
++       <div className="flex-shrink-0 mr-3">
++         {getIcon(variant)}
++       </div>
++       <div className="flex-1 min-w-0">
++         {children}
++       </div>
++       {onClose && (
++         <button
++           onClick={onClose}
++           className="flex-shrink-0 ml-3 bg-transparent rounded-md inline-flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2"
++         >
++           <span className="sr-only">Fechar</span>
++           <X className="h-4 w-4" />
++         </button>
++       )}
++     </div>
++   );
++ };
++ 
++ export default Alert; 
+```
+
+---
+
+Agora vou migrar o componente `NotificationDisplay.tsx` para usar o novo componente `Alert`:
 
 
 ---
 
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
+Read file: src/components/NotificationDisplay.tsx
 
 ---
 

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { Mail, Lock, User, AlertTriangle } from "lucide-react";
-import InputWithIcon from "./common/InputWithIcon";
+import { Mail, Lock, User } from "lucide-react";
+import InputWithIcon from "../components/common/InputWithIcon";
+import Alert from "../components/common/Alert";
 import { Clock } from "lucide-react";
 
 interface LoginPageProps {
@@ -103,15 +104,14 @@ const LoginPage: React.FC<LoginPageProps> = ({
         </div>
         <div className="bg-white shadow-xl rounded-xl p-6 md:p-8">
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-300 text-red-700 rounded-md text-sm flex items-center">
-              <AlertTriangle className="h-5 w-5 text-red-500" />
-              <span>{error}</span>
-            </div>
+            <Alert variant="error" className="mb-4">
+              {error}
+            </Alert>
           )}
           {successMessage && (
-            <div className="mb-4 p-3 bg-green-50 border border-green-300 text-green-700 rounded-md text-sm">
+            <Alert variant="success" className="mb-4">
               {successMessage}
-            </div>
+            </Alert>
           )}
           <form onSubmit={handleAuthAction} className="space-y-6">
             {isRegisterMode && (
@@ -177,10 +177,10 @@ const LoginPage: React.FC<LoginPageProps> = ({
                 {isLoading
                   ? t("loginPage.loading")
                   : isRegisterMode
-                    ? t("loginPage.registerButton")
-                    : isAdmin
-                      ? t("loginPage.adminLoginButton")
-                      : t("loginPage.loginButton")}
+                  ? t("loginPage.registerButton")
+                  : isAdmin
+                  ? t("loginPage.adminLoginButton")
+                  : t("loginPage.loginButton")}
               </button>
             </div>
           </form>
@@ -220,7 +220,7 @@ const LoginPage: React.FC<LoginPageProps> = ({
         <p className="text-lg text-indigo-100 text-center max-w-sm">
           {t(
             "loginPage.welcomeSubtitle",
-            "Manage your work hours efficiently and stay organized.",
+            "Manage your work hours efficiently and stay organized."
           )}
         </p>
       </div>
@@ -248,15 +248,14 @@ const LoginPage: React.FC<LoginPageProps> = ({
 
           <div className="bg-white shadow-xl rounded-xl p-8 md:p-10">
             {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-300 text-red-700 rounded-md text-sm flex items-center">
-                <AlertTriangle className="h-5 w-5 text-red-500" />
-                <span>{error}</span>
-              </div>
+              <Alert variant="error" className="mb-4">
+                {error}
+              </Alert>
             )}
             {successMessage && (
-              <div className="mb-4 p-3 bg-green-50 border border-green-300 text-green-700 rounded-md text-sm">
+              <Alert variant="success" className="mb-4">
                 {successMessage}
-              </div>
+              </Alert>
             )}
 
             <form onSubmit={handleAuthAction} className="space-y-6">
@@ -324,8 +323,8 @@ const LoginPage: React.FC<LoginPageProps> = ({
                   {isLoading
                     ? t("loginPage.loading")
                     : isRegisterMode
-                      ? t("loginPage.registerButton")
-                      : t("loginPage.loginButton")}
+                    ? t("loginPage.registerButton")
+                    : t("loginPage.loginButton")}
                 </button>
               </div>
             </form>
