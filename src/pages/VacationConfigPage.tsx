@@ -14,6 +14,7 @@ import LanguageLandingPage from "./LanguageLandingPage";
 
 import { BarChart3, CalendarDays, Plane } from "lucide-react";
 import Button from "../components/common/Button";
+import { useFormatting } from "../hooks/useFormatting";
 
 const statusColors: Record<string, string> = {
   workday: "bg-white text-indigo-700 border border-indigo-200",
@@ -34,6 +35,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const { addNotification } = useNotificationContext();
+  const { formatDate, formatVacationStatus } = useFormatting();
   const { currentUser } = useAuthContext();
   const { globalUserSettings, globalHolidays, isLoadingGlobalData } =
     useGlobalDataContext();
@@ -741,13 +743,10 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
                       : "bg-slate-100 text-slate-500"
                   }`}
                 >
-                  {new Date(opt.date + "T00:00:00").toLocaleDateString(
-                    i18n.language,
-                    { day: "2-digit", month: "short" }
-                  )}
+                  {formatDate(opt.date, { day: "2-digit", month: "short" })}
                   {opt.status && (
                     <span className="ml-2">
-                      {t(`vacationStatuses.${opt.status}`)}
+                      {formatVacationStatus(opt.status)}
                     </span>
                   )}
                 </span>

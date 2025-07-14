@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { VacationStatus } from "@/types";
-import { formatDateRange } from "../../utils/timeUtils";
+import { useFormatting } from "../../hooks/useFormatting";
 import {
   Send,
   Trash2,
@@ -22,9 +22,10 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
   user,
 }) => {
   const { t, i18n } = useTranslation();
+  const { formatDate, formatVacationStatus } = useFormatting();
 
   const sortedVacations = [...currentMonthUserVacations].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   );
 
   return (
@@ -38,7 +39,7 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
           {currentMonthUserVacations.some(
             (v) =>
               v.status === VacationStatus.PENDING_APPROVAL ||
-              v.status === VacationStatus.APPROVED,
+              v.status === VacationStatus.APPROVED
           ) && (
             <Button
               onClick={onPrintRequest}
@@ -51,7 +52,7 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
             </Button>
           )}
           {currentMonthUserVacations.some(
-            (v) => v.status === VacationStatus.SELECTED,
+            (v) => v.status === VacationStatus.SELECTED
           ) && (
             <Button
               onClick={onSubmitForApproval}
@@ -73,10 +74,27 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
               <li
                 key={vacation.date}
                 className={`inline-flex items-center px-3 py-1 rounded-full shadow-sm font-semibold text-xs mr-2
-                                ${vacation.status === VacationStatus.APPROVED ? "bg-green-100 text-green-700 border border-green-200" : ""}
-                                ${vacation.status === VacationStatus.PENDING_APPROVAL ? "bg-yellow-100 text-yellow-700 border border-yellow-200" : ""}
-                                ${vacation.status === VacationStatus.REJECTED ? "bg-red-100 text-red-700 border border-red-200" : ""}
-                                ${vacation.status === VacationStatus.SELECTED ? "bg-indigo-100 text-indigo-700 border border-indigo-200" : ""}
+                                ${
+                                  vacation.status === VacationStatus.APPROVED
+                                    ? "bg-green-100 text-green-700 border border-green-200"
+                                    : ""
+                                }
+                                ${
+                                  vacation.status ===
+                                  VacationStatus.PENDING_APPROVAL
+                                    ? "bg-yellow-100 text-yellow-700 border border-yellow-200"
+                                    : ""
+                                }
+                                ${
+                                  vacation.status === VacationStatus.REJECTED
+                                    ? "bg-red-100 text-red-700 border border-red-200"
+                                    : ""
+                                }
+                                ${
+                                  vacation.status === VacationStatus.SELECTED
+                                    ? "bg-indigo-100 text-indigo-700 border border-indigo-200"
+                                    : ""
+                                }
                             `}
                 title={t(`vacationStatuses.${vacation.status}`)}
               >
@@ -93,10 +111,7 @@ const MonthlyVacationList: React.FC<MonthlyVacationListProps> = ({
                   <XCircle className="w-4 h-4 mr-1" />
                 )}
                 <span className="block truncate">
-                  {new Date(vacation.date + "T00:00:00").toLocaleDateString(
-                    i18n.language,
-                    { weekday: "short", day: "numeric", month: "short" },
-                  )}
+                  {formatDate(vacation.date, { weekday: "short", day: "numeric", month: "short" })}
                 </span>
                 {(vacation.status === VacationStatus.SELECTED ||
                   vacation.status === VacationStatus.REJECTED ||
