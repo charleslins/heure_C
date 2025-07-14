@@ -5,11 +5,11 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { VacationStatus } from "../types/types";
 import { PendingRequest } from "@/types";
 import { supabase } from "@/utils/supabaseClient";
-import PendingRequestsList from "./AdminDashboard/PendingRequestsList";
-import GlobalSettingsForm from "./AdminDashboard/GlobalSettingsForm";
-import UserVacationSummaryTable from "./AdminDashboard/UserVacationSummaryTable";
+import PendingRequestsList from "../components/AdminDashboard/PendingRequestsList";
+import GlobalSettingsForm from "../components/AdminDashboard/GlobalSettingsForm";
+import UserVacationSummaryTable from "../components/AdminDashboard/UserVacationSummaryTable";
 import HolidayManagementPage from "./HolidayManagementPage";
-import AdminUserList from "./AdminDashboard/AdminUserList";
+import AdminUserList from "../components/AdminDashboard/AdminUserList";
 
 const AdminTabbedPage: React.FC = () => {
   const { t } = useTranslation();

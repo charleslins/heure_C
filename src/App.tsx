@@ -15,7 +15,7 @@ import { NotificationProvider } from "@/contexts/NotificationContext";
 import NotificationDisplay from "@/components/NotificationDisplay";
 import MainAppLayout from "@/components/MainAppLayout";
 import LoadingScreen from "@/components/LoadingScreen";
-import LanguageLandingPage from "@/components/LanguageLandingPage";
+import LanguageLandingPage from "@/pages/LanguageLandingPage";
 
 const AppContent: React.FC = () => {
   const { t, i18n } = useTranslation();
