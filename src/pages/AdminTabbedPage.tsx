@@ -13,7 +13,7 @@ import AdminUserList from "../components/AdminDashboard/AdminUserList";
 
 const AdminTabbedPage: React.FC = () => {
   const { t } = useTranslation();
-  const { currentUser } = useAuthContext();
+
   const [activeTab, setActiveTab] = useState("users");
   const [isLoadingPendingRequests, setIsLoadingPendingRequests] =
     useState(false);
@@ -35,7 +35,7 @@ const AdminTabbedPage: React.FC = () => {
             first_name,
             last_name
           )
-        `,
+        `
         )
         .eq("status", "Pendente");
 
@@ -43,7 +43,9 @@ const AdminTabbedPage: React.FC = () => {
 
       const formattedRequests = data.map((req) => ({
         userId: req.user_id,
-        userName: `${req.users.first_name} ${req.users.last_name || ""}`.trim(),
+        userName: `${req.users?.first_name || ""} ${
+          req.users?.last_name || ""
+        }`.trim(),
         date: req.vacation_date,
         comment: req.comment,
       }));
@@ -78,37 +80,34 @@ const AdminTabbedPage: React.FC = () => {
 
         setPendingRequests((prev) =>
           prev.filter(
-            (r) => !(r.userId === request.userId && r.date === request.date),
-          ),
+            (r) => !(r.userId === request.userId && r.date === request.date)
+          )
         );
       } catch (error) {
         console.error("Error updating vacation request:", error);
       }
     },
-    [],
+    []
   );
 
-  const handleApproveAll = useCallback(
-    async (userId: string, userName: string) => {
-      try {
-        const { error } = await supabase
-          .from("user_vacations")
-          .update({
-            status: "Aprovado",
-            admin_comment: "Aprovado em lote",
-          })
-          .eq("user_id", userId)
-          .eq("status", "Pendente");
+  const handleApproveAll = useCallback(async (userId: string) => {
+    try {
+      const { error } = await supabase
+        .from("user_vacations")
+        .update({
+          status: "Aprovado",
+          admin_comment: "Aprovado em lote",
+        })
+        .eq("user_id", userId)
+        .eq("status", "Pendente");
 
-        if (error) throw error;
+      if (error) throw error;
 
-        setPendingRequests((prev) => prev.filter((r) => r.userId !== userId));
-      } catch (error) {
-        console.error("Error approving all requests:", error);
-      }
-    },
-    [],
-  );
+      setPendingRequests((prev) => prev.filter((r) => r.userId !== userId));
+    } catch (error) {
+      console.error("Error approving all requests:", error);
+    }
+  }, []);
 
   const tabs = [
     {
@@ -189,7 +188,11 @@ const AdminTabbedPage: React.FC = () => {
                   <tab.icon
                     className={`
                       -ml-0.5 mr-2 h-5 w-5
-                      ${isActive ? "text-indigo-500" : "text-slate-400 group-hover:text-indigo-500"}
+                      ${
+                        isActive
+                          ? "text-indigo-500"
+                          : "text-slate-400 group-hover:text-indigo-500"
+                      }
                     `}
                     aria-hidden="true"
                   />

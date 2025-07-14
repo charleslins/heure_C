@@ -109,7 +109,6 @@ export const useAuth = () => {
           event === "INITIAL_SESSION" ||
           event === "SIGNED_IN" ||
           event === "SIGNED_OUT" ||
-          event === "USER_DELETED" ||
           event === "PASSWORD_RECOVERY"
         ) {
           setIsLoadingAuth(false);

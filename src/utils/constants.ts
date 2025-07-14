@@ -133,18 +133,21 @@ export const MOCK_GLOBAL_HOLIDAYS: Holiday[] = [
     id: "gh-1",
     date: `${new Date().getFullYear()}-01-01`,
     name: "Ano Novo",
+    type: "NATIONAL",
     isOfficial: true,
   },
   {
     id: "gh-2",
     date: `${new Date().getFullYear()}-05-01`,
     name: "Dia do Trabalhador",
+    type: "NATIONAL",
     isOfficial: true,
   },
   {
     id: "gh-3",
     date: `${new Date().getFullYear()}-12-25`,
     name: "Natal",
+    type: "NATIONAL",
     isOfficial: true,
   },
 ];

@@ -60,6 +60,7 @@ export class VacationPresenter {
 
   private getStatusClass(status: VacationStatus): string {
     const classes: Record<VacationStatus, string> = {
+      [VacationStatus.SELECTED]: "bg-indigo-100 text-indigo-800",
       [VacationStatus.PENDING_APPROVAL]: "bg-yellow-100 text-yellow-800",
       [VacationStatus.APPROVED]: "bg-green-100 text-green-800",
       [VacationStatus.REJECTED]: "bg-red-100 text-red-800",

@@ -6,8 +6,8 @@ import { createClient } from "@supabase/supabase-js";
 // 3. Copie a "Project URL" e cole no lugar de 'COLOQUE_A_SUA_URL_DO_SUPABASE_AQUI' abaixo.
 // 4. Copie a chave "anon" "public" (em Project API Keys) e cole no lugar de 'COLOQUE_A_SUA_CHAVE_ANON_PUBLICA_AQUI' abaixo.
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL;
+const supabaseAnonKey = (import.meta as any).env.VITE_SUPABASE_ANON_KEY;
 
 // Debug detalhado
 console.log("=== DIAGNÓSTICO SUPABASE ===");
@@ -23,7 +23,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.error("VITE_SUPABASE_URL=sua_url_aqui");
   console.error("VITE_SUPABASE_ANON_KEY=sua_chave_aqui");
   throw new Error(
-    "Missing Supabase environment variables. Please check your .env file.",
+    "Missing Supabase environment variables. Please check your .env file."
   );
 }
 
@@ -34,7 +34,7 @@ if (
 ) {
   console.error("❌ URL do Supabase inválida:", supabaseUrl);
   throw new Error(
-    "Invalid Supabase URL format. Should be: https://[project-id].supabase.co",
+    "Invalid Supabase URL format. Should be: https://[project-id].supabase.co"
   );
 }
 
@@ -95,7 +95,7 @@ fetch(`${supabaseUrl}/rest/v1/`, {
     }
     return response.text();
   })
-  .then((data) => {
+  .then(() => {
     console.log("✅ API REST acessível");
   })
   .catch((error) => {

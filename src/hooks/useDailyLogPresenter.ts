@@ -9,7 +9,7 @@ import { EntryType, TimeSegment } from "../models/DailyLog";
 export function useDailyLogPresenter(year?: number, month?: number) {
   const { t } = useTranslation();
   const { addNotification } = useNotificationContext();
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +17,7 @@ export function useDailyLogPresenter(year?: number, month?: number) {
   const collection = useMemo(() => new DailyLogCollection(), []);
   const presenter = useMemo(
     () => new DailyLogPresenter(collection),
-    [collection],
+    [collection]
   );
 
   // Estado para armazenar os dados processados
@@ -26,17 +26,17 @@ export function useDailyLogPresenter(year?: number, month?: number) {
 
   // Configurar usuário e data
   useEffect(() => {
-    if (user?.id) {
-      presenter.setUserId(user.id);
+    if (currentUser?.id) {
+      presenter.setUserId(currentUser.id);
     }
     if (year !== undefined && month !== undefined) {
       presenter.setDate(year, month);
     }
-  }, [presenter, user?.id, year, month]);
+  }, [presenter, currentUser?.id, year, month]);
 
   // Carregar dados iniciais
   useEffect(() => {
-    if (!user?.id || year === undefined || month === undefined) return;
+    if (!currentUser?.id || year === undefined || month === undefined) return;
 
     async function loadData() {
       try {
@@ -73,7 +73,7 @@ export function useDailyLogPresenter(year?: number, month?: number) {
       morning?: TimeSegment;
       afternoon?: TimeSegment;
       comment?: string;
-    },
+    }
   ) => {
     const result = await presenter.updateLog(logId, data);
     if (result.success) {
@@ -103,7 +103,7 @@ export function useDailyLogPresenter(year?: number, month?: number) {
       morning?: TimeSegment;
       afternoon?: TimeSegment;
       comment?: string;
-    }>,
+    }>
   ) => {
     const result = await presenter.bulkUpdateLogs(updates);
     if (result.success) {

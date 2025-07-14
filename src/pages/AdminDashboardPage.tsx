@@ -5,22 +5,15 @@ import {
   VacationSelection,
   VacationStatus,
   UserGlobalSettings,
-  Holiday,
   VacationDay,
 } from "@/types";
-import {
-  INITIAL_USER_GLOBAL_SETTINGS,
-  VACATION_STATUS_STYLES,
-} from "@/utils/constants";
+import { INITIAL_USER_GLOBAL_SETTINGS } from "@/utils/constants";
 import { formatDateToYYYYMMDD } from "@/utils/timeUtils";
 import TimeInput from "@/components/common/TimeInput";
 import SectionCard from "@/components/common/SectionCard";
 import {
   Settings2,
   CalendarDays,
-  Trash2,
-  CheckCircle,
-  XCircle,
   Save,
   ClipboardList,
   Settings,
@@ -30,10 +23,9 @@ import {
 import Button from "../components/common/Button";
 import {
   updateUserProfileRole,
-  loadAllUsersFromSupabase,
   loadTypedUserMonthDataFromSupabase,
 } from "@/utils/supabaseCrud"; // Assuming loadAllUsers is here
-import { useAuthContext } from "@/contexts/AuthContext";
+
 import { useGlobalDataContext } from "@/contexts/GlobalDataContext";
 import { useCurrentUserDataContext } from "@/contexts/CurrentUserDataContext";
 import { useNotificationContext } from "@/contexts/NotificationContext";
@@ -61,8 +53,6 @@ const lightInputBaseClasses =
   "w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
 const lightInputClasses = `${lightInputBaseClasses} bg-white text-slate-700 placeholder-slate-400`;
 const lightSelectClasses = `${lightInputBaseClasses} bg-white text-slate-700 appearance-none`;
-const lightTextareaClasses =
-  "w-full p-1.5 border border-slate-300 rounded-md shadow-sm sm:text-sm text-xs bg-white text-slate-700 placeholder-slate-400";
 
 const MONTH_CHIP_COLORS = [
   { bg: "bg-red-100", text: "text-red-700", border: "border-red-300" }, // Jan
@@ -329,20 +319,6 @@ const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     } else {
       addNotification(t("adminDashboard.batchApprovalError"), "warning");
     }
-  };
-
-  const handleCommentChange = (
-    requestDate: string,
-    userId: string,
-    comment: string
-  ) => {
-    setPendingRequests((prev) =>
-      prev.map((req) =>
-        req.date === requestDate && req.userId === userId
-          ? { ...req, comment }
-          : req
-      )
-    );
   };
 
   const handleGlobalSettingChange = (

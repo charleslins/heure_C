@@ -1,4 +1,4 @@
-import { Database } from "./schema";
+import { Database } from "../types/supabase";
 
 // Tipos do MCP
 export type McpDatabase = Database;

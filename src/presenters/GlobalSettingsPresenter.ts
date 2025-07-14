@@ -1,5 +1,4 @@
 import {
-  GlobalSettings,
   WorkTimeDefaults,
   VacationRules,
   RegionalSettings,
@@ -67,7 +66,7 @@ export class GlobalSettingsPresenter {
               value: settings.vacationRules.maxConcurrentUsers,
               label: this.t("globalSettings.maxConcurrentUsersLabel"),
               description: this.t(
-                "globalSettings.maxConcurrentUsersDescription",
+                "globalSettings.maxConcurrentUsersDescription"
               ),
             }
           : undefined,
@@ -83,7 +82,7 @@ export class GlobalSettingsPresenter {
           enabled: settings.isMunicipalityHolidaysEnabled(),
           label: this.t("globalSettings.allowMunicipalityHolidaysLabel"),
           description: this.t(
-            "globalSettings.allowMunicipalityHolidaysDescription",
+            "globalSettings.allowMunicipalityHolidaysDescription"
           ),
         },
       },
@@ -91,7 +90,7 @@ export class GlobalSettingsPresenter {
   }
 
   async updateWorkTime(
-    data: WorkTimeDefaults,
+    data: WorkTimeDefaults
   ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.update({ workTimeDefaults: data });
@@ -106,7 +105,7 @@ export class GlobalSettingsPresenter {
   }
 
   async updateVacationRules(
-    data: VacationRules,
+    data: VacationRules
   ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.update({ vacationRules: data });
@@ -121,7 +120,7 @@ export class GlobalSettingsPresenter {
   }
 
   async updateRegionalSettings(
-    data: RegionalSettings,
+    data: RegionalSettings
   ): Promise<{ success: boolean; message?: string }> {
     try {
       await this.collection.update({ regionalSettings: data });
@@ -167,7 +166,7 @@ export class GlobalSettingsPresenter {
   validateVacationRequest(
     startDate: Date,
     endDate: Date,
-    userId: string,
+    userId: string
   ): {
     isValid: boolean;
     message?: string;
@@ -176,7 +175,7 @@ export class GlobalSettingsPresenter {
     const validation = this.collection.validateVacationRequest(
       startDate,
       endDate,
-      userId,
+      userId
     );
     if (!validation.isValid) {
       return validation;

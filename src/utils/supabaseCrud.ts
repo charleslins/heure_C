@@ -9,23 +9,15 @@ import {
   VacationStatus,
   VacationDay,
 } from "@/types";
-import {
-  INITIAL_WEEKLY_CONTRACT,
-  INITIAL_USER_GLOBAL_SETTINGS,
-  MOCK_GLOBAL_HOLIDAYS,
-} from "@/utils/constants";
-import {
-  formatDateToYYYYMMDD,
-  getDaysInMonth,
-  getDayOfWeekName,
-} from "./timeUtils";
+
+import { formatDateToYYYYMMDD } from "./timeUtils";
 import { getUserInitials } from "./stringUtils";
 
 // --- Global Settings ---
 const GLOBAL_SETTINGS_ID = 1; // Assuming a single row for global settings
 
 export const loadGlobalUserSettingsFromSupabase = async (
-  defaultValue: UserGlobalSettings,
+  defaultValue: UserGlobalSettings
 ): Promise<UserGlobalSettings> => {
   const { data, error } = await supabase
     .from("global_settings")
@@ -37,7 +29,7 @@ export const loadGlobalUserSettingsFromSupabase = async (
     // PGRST116: 'JSON object requested, multiple (or no) rows returned' (no rows)
     console.error(
       "Error loading global user settings:",
-      error.message || error,
+      error.message || error
     );
     return defaultValue;
   }
@@ -50,13 +42,13 @@ export const loadGlobalUserSettingsFromSupabase = async (
 };
 
 export const saveGlobalUserSettingsToSupabase = async (
-  settings: UserGlobalSettings,
+  settings: UserGlobalSettings
 ): Promise<{ success: boolean; error?: any; message?: string }> => {
   const { error } = await supabase
     .from("global_settings")
     .upsert(
       { id: GLOBAL_SETTINGS_ID, settings_data: settings },
-      { onConflict: "id" },
+      { onConflict: "id" }
     );
 
   if (error) {
@@ -76,7 +68,7 @@ interface DbHolidaySchema {
 }
 
 export const loadGlobalHolidaysFromSupabase = async (
-  defaultValue: Holiday[],
+  defaultValue: Holiday[]
 ): Promise<Holiday[]> => {
   const { data, error } = await supabase
     .from("global_holidays")
@@ -96,12 +88,13 @@ export const loadGlobalHolidaysFromSupabase = async (
     id: dbHoliday.id,
     date: dbHoliday.date,
     name: dbHoliday.name,
+    type: "CUSTOM" as const,
     isOfficial: dbHoliday.is_official,
   }));
 };
 
 export const saveGlobalHolidaysToSupabase = async (
-  holidays: Holiday[],
+  holidays: Holiday[]
 ): Promise<{ success: boolean; error?: any; message?: string }> => {
   const { data: existingHolidaysData, error: fetchError } = await supabase
     .from("global_holidays")
@@ -110,7 +103,7 @@ export const saveGlobalHolidaysToSupabase = async (
   if (fetchError) {
     console.error(
       "Error fetching existing holiday IDs for deletion:",
-      fetchError.message || fetchError,
+      fetchError.message || fetchError
     );
     return {
       success: false,
@@ -130,7 +123,7 @@ export const saveGlobalHolidaysToSupabase = async (
     });
 
     const idsToDelete = existingDbIds.filter(
-      (dbId) => !clientKeptOrUpdatedUUIDs.has(dbId),
+      (dbId) => !clientKeptOrUpdatedUUIDs.has(dbId)
     );
 
     if (idsToDelete.length > 0) {
@@ -141,7 +134,7 @@ export const saveGlobalHolidaysToSupabase = async (
       if (deleteError) {
         console.error(
           "Error deleting old holidays:",
-          deleteError.message || deleteError,
+          deleteError.message || deleteError
         );
         // Potentially return partial success or specific error here
       }
@@ -180,7 +173,7 @@ export const saveGlobalHolidaysToSupabase = async (
     if (upsertError) {
       console.error(
         "Error saving global holidays (upsert):",
-        upsertError.message || upsertError,
+        upsertError.message || upsertError
       );
       return {
         success: false,
@@ -197,7 +190,7 @@ export const loadUserWeeklyContractFromSupabase = async (
   userId: string,
   year: number,
   month: number,
-  defaultValue: WeeklyContractHours,
+  defaultValue: WeeklyContractHours
 ): Promise<WeeklyContractHours> => {
   const { data, error } = await supabase
     .from("user_weekly_contracts")
@@ -210,7 +203,7 @@ export const loadUserWeeklyContractFromSupabase = async (
   if (error && error.code !== "PGRST116") {
     console.error(
       `Error loading contract for user ${userId}, ${year}-${month}:`,
-      error.message || error,
+      error.message || error
     );
     return defaultValue;
   }
@@ -221,19 +214,19 @@ export const saveUserWeeklyContractToSupabase = async (
   userId: string,
   year: number,
   month: number,
-  contract: WeeklyContractHours,
+  contract: WeeklyContractHours
 ): Promise<void> => {
   const { error } = await supabase
     .from("user_weekly_contracts")
     .upsert(
       { user_id: userId, year, month, contract_data: contract },
-      { onConflict: "user_id,year,month" },
+      { onConflict: "user_id,year,month" }
     );
 
   if (error) {
     console.error(
       `Error saving contract for user ${userId}, ${year}-${month}:`,
-      error.message || error,
+      error.message || error
     );
   }
 };
@@ -242,7 +235,7 @@ export const saveUserWeeklyContractToSupabase = async (
 export const loadUserDailyLogsForMonthFromSupabase = async (
   userId: string,
   year: number,
-  month: number,
+  month: number
 ): Promise<Partial<DailyLogEntry>[]> => {
   const startDate = formatDateToYYYYMMDD(new Date(year, month, 1));
   const endDate = formatDateToYYYYMMDD(new Date(year, month + 1, 0));
@@ -257,7 +250,7 @@ export const loadUserDailyLogsForMonthFromSupabase = async (
   if (error) {
     console.error(
       `Error loading daily logs for user ${userId}, ${year}-${month}:`,
-      error.message || error,
+      error.message || error
     );
     return [];
   }
@@ -273,7 +266,7 @@ export const loadUserDailyLogsForMonthFromSupabase = async (
 
 export const saveUserDailyLogToSupabase = async (
   userId: string,
-  logEntry: DailyLogEntry,
+  logEntry: DailyLogEntry
 ): Promise<void> => {
   const logDateStr = formatDateToYYYYMMDD(logEntry.date);
   const { error } = await supabase.from("user_daily_logs").upsert(
@@ -285,13 +278,13 @@ export const saveUserDailyLogToSupabase = async (
       is_working_day: logEntry.isWorkingDay,
       has_inputs: logEntry.hasInputs,
     },
-    { onConflict: "user_id,log_date" },
+    { onConflict: "user_id,log_date" }
   );
 
   if (error) {
     console.error(
       `Error saving daily log for user ${userId}, date ${logDateStr}:`,
-      error.message || error,
+      error.message || error
     );
   }
 };
@@ -301,7 +294,7 @@ export const loadUserVacationsForMonthFromSupabase = async (
   userId: string,
   year: number,
   month: number,
-  defaultValue: VacationSelection,
+  defaultValue: VacationSelection
 ): Promise<VacationSelection> => {
   const startDate = formatDateToYYYYMMDD(new Date(year, month, 1));
   const endDate = formatDateToYYYYMMDD(new Date(year, month + 1, 0));
@@ -316,7 +309,7 @@ export const loadUserVacationsForMonthFromSupabase = async (
   if (error) {
     console.error(
       `Error loading vacations for user ${userId}, ${year}-${month}:`,
-      error.message || error,
+      error.message || error
     );
     return defaultValue;
   }
@@ -333,7 +326,7 @@ export const saveUserVacationsForMonthToSupabase = async (
   userId: string,
   year: number,
   month: number,
-  allUserVacations: VacationSelection,
+  allUserVacations: VacationSelection
 ): Promise<void> => {
   const startDate = formatDateToYYYYMMDD(new Date(year, month, 1));
   const endDate = formatDateToYYYYMMDD(new Date(year, month + 1, 0));
@@ -349,7 +342,7 @@ export const saveUserVacationsForMonthToSupabase = async (
   if (fetchError) {
     console.error(
       `Erro ao buscar férias existentes para usuário ${userId}, ${year}-${month}:`,
-      fetchError.message || fetchError,
+      fetchError.message || fetchError
     );
     throw fetchError;
   }
@@ -376,7 +369,7 @@ export const saveUserVacationsForMonthToSupabase = async (
     uniqueVacationsForThisMonthMap.set(v.date, v);
   });
   const uniqueVacationsToInsert = Array.from(
-    uniqueVacationsForThisMonthMap.values(),
+    uniqueVacationsForThisMonthMap.values()
   );
 
   // Preparamos os registros para upsert (ao invés de delete + insert)
@@ -398,7 +391,7 @@ export const saveUserVacationsForMonthToSupabase = async (
     if (upsertError) {
       console.error(
         `Error upserting vacations for user ${userId}, ${year}-${month}:`,
-        upsertError.message || upsertError,
+        upsertError.message || upsertError
       );
       throw upsertError;
     }
@@ -407,7 +400,7 @@ export const saveUserVacationsForMonthToSupabase = async (
 
 export const loadUserYearVacationsFromSupabase = async (
   userId: string,
-  year: number,
+  year: number
 ): Promise<VacationDay[]> => {
   const startDate = `${year}-01-01`;
   const endDate = `${year}-12-31`;
@@ -422,7 +415,7 @@ export const loadUserYearVacationsFromSupabase = async (
   if (error) {
     console.error(
       `Error loading year vacations for user ${userId}, year ${year}:`,
-      error.message || error,
+      error.message || error
     );
     return [];
   }
@@ -440,7 +433,7 @@ export const loadTypedUserMonthDataFromSupabase = async <T>(
   dataType: "vacations" | "contractHours" | "dailyLogs",
   year: number,
   month: number,
-  defaultValue: T,
+  defaultValue: T
 ): Promise<T> => {
   switch (dataType) {
     case "vacations":
@@ -448,18 +441,18 @@ export const loadTypedUserMonthDataFromSupabase = async <T>(
         userId,
         year,
         month,
-        defaultValue as VacationSelection,
+        defaultValue as VacationSelection
       )) as T;
     case "contractHours":
       return (await loadUserWeeklyContractFromSupabase(
         userId,
         year,
         month,
-        defaultValue as WeeklyContractHours,
+        defaultValue as WeeklyContractHours
       )) as T;
     default:
       console.warn(
-        `loadTypedUserMonthDataFromSupabase: dataType ${dataType} not handled.`,
+        `loadTypedUserMonthDataFromSupabase: dataType ${dataType} not handled.`
       );
       return defaultValue;
   }
@@ -474,7 +467,7 @@ export const loadAllUsersFromSupabase = async (): Promise<User[]> => {
   if (error) {
     console.error(
       "Error loading all users from profiles:",
-      error.message || error,
+      error.message || error
     );
     return [];
   }
@@ -517,7 +510,7 @@ export const getMockUsers = (): User[] => {
 // --- Update User Profile Role ---
 export const updateUserProfileRole = async (
   userId: string,
-  newRole: "user" | "admin",
+  newRole: "user" | "admin"
 ): Promise<{ success: boolean; error?: any; message?: string }> => {
   const { error } = await supabase
     .from("profiles")
@@ -527,7 +520,7 @@ export const updateUserProfileRole = async (
   if (error) {
     console.error(
       `Error updating role for user ${userId}:`,
-      error.message || error,
+      error.message || error
     );
     return { success: false, error, message: error.message };
   }

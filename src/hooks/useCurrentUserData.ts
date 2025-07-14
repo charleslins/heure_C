@@ -18,7 +18,7 @@ import {
   saveUserVacationsForMonthToSupabase,
   loadUserYearVacationsFromSupabase,
   saveUserWeeklyContractToSupabase,
-  loadUserVacationsForMonthFromSupabase,
+
   loadUserDailyLogsForMonthFromSupabase,
 } from "@/utils/supabaseCrud";
 import {

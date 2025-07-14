@@ -4,7 +4,7 @@ export const printVacationRequest = (
   user: User,
   vacationsToPrint: VacationDay[],
   monthYearDisplay: string,
-  i18n: I18nInstanceType,
+  i18n: I18nInstanceType
 ) => {
   if (vacationsToPrint.length === 0) {
     alert(i18n.t("vacationPage.alertNoPrintableVacations"));
@@ -13,7 +13,7 @@ export const printVacationRequest = (
 
   const printTitle = i18n.t("vacationPage.printForm.title");
   const companyLogoPlaceholder = i18n.t(
-    "vacationPage.printForm.companyLogoPlaceholder",
+    "vacationPage.printForm.companyLogoPlaceholder"
   );
   const companyName = i18n.t("vacationPage.printForm.companyName");
   const companyAddress = i18n.t("vacationPage.printForm.companyAddress");
@@ -22,10 +22,11 @@ export const printVacationRequest = (
   const requestedDaysLabel = i18n.t("vacationPage.printForm.requestedDays");
   const adminSignatureLabel = i18n.t("vacationPage.printForm.adminSignature");
   const employeeSignatureLabel = i18n.t(
-    "vacationPage.printForm.employeeSignature",
+    "vacationPage.printForm.employeeSignature"
   );
   const dateTableHeader = i18n.t("dailyLog.dateHeader");
-  const statusTableHeader = i18n.t("adminDashboardPage.statusColumn", "Status");
+  const statusTableHeader =
+    i18n.t("adminDashboardPage.statusColumn") || "Status";
 
   const printWindow = window.open("", "_blank", "height=600,width=800");
   if (printWindow) {
@@ -58,7 +59,9 @@ export const printVacationRequest = (
           <h1>${printTitle}</h1>
           <div class="details-section">
             <p><strong>${employeeNameLabel}</strong> ${user.name}</p>
-            <p><strong>${requestDateLabel}</strong> ${new Date().toLocaleDateString(i18n.language)}</p>
+            <p><strong>${requestDateLabel}</strong> ${new Date().toLocaleDateString(
+      i18n.language
+    )}</p>
           </div>
           <h3>${requestedDaysLabel} (${monthYearDisplay})</h3>
           <table>
@@ -73,10 +76,18 @@ export const printVacationRequest = (
                 .map(
                   (v) => `
                 <tr>
-                  <td>${new Date(v.date + "T00:00:00").toLocaleDateString(i18n.language, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</td>
+                  <td>${new Date(v.date + "T00:00:00").toLocaleDateString(
+                    i18n.language,
+                    {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    }
+                  )}</td>
                   <td>${i18n.t(`vacationStatuses.${v.status}`)}</td>
                 </tr>
-              `,
+              `
                 )
                 .join("")}
             </tbody>

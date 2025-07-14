@@ -1,46 +1,18 @@
 // 1. React e bibliotecas externas
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  BarChart3,
-  Users,
-  Bell,
-  Calendar,
-  Briefcase,
-  XCircle,
-} from "lucide-react";
+import { Users, Bell, Calendar, Briefcase } from "lucide-react";
 
 // 2. Tipos e interfaces
-import {
-  User,
-  VacationSelection,
-  VacationStatus,
-  UserGlobalSettings,
-  Holiday,
-  VacationDay,
-} from "@/types";
+import { User } from "@/types";
 
 // 3. Components
-import SectionCard from "./common/SectionCard";
 
 // 4. Services e Presenters
 import { supabase } from "@/utils/supabaseClient";
-import {
-  updateUserProfileRole,
-  loadAllUsersFromSupabase,
-  loadTypedUserMonthDataFromSupabase,
-} from "@/utils/supabaseCrud";
-import { useAuthContext } from "../contexts/AuthContext";
-import { useGlobalDataContext } from "../contexts/GlobalDataContext";
-import { useCurrentUserDataContext } from "../contexts/CurrentUserDataContext";
-import { useNotificationContext } from "../contexts/NotificationContext";
-import PendingRequestsList from "./AdminDashboard/PendingRequestsList";
 
 // 5. Utils e constantes
-import {
-  INITIAL_USER_GLOBAL_SETTINGS,
-  VACATION_STATUS_STYLES,
-} from "@/utils/constants";
+
 import { formatDateToYYYYMMDD } from "@/utils/timeUtils";
 import { getUserInitials, getUserColor } from "@/utils/stringUtils";
 
@@ -77,7 +49,7 @@ const AdminOverviewDashboard: React.FC<AdminOverviewDashboardProps> = ({
   const { t } = useTranslation();
   const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
-  const [vacationData, setVacationData] = useState<UserVacationData[]>([]);
+
   const [overlapData, setOverlapData] = useState<VacationOverlapData[]>([]);
   const [departmentStats, setDepartmentStats] = useState<DepartmentStats[]>([]);
   const [upcomingVacations, setUpcomingVacations] = useState<
@@ -118,15 +90,15 @@ const AdminOverviewDashboard: React.FC<AdminOverviewDashboardProps> = ({
               id,
               full_name
             )
-          `,
+          `
           )
           .gte("start_date", new Date().toISOString().split("T")[0])
           .order("start_date");
 
         if (vacations) {
           const formattedVacations = vacations.map((v) => ({
-            userId: v.profiles.id,
-            userName: v.profiles.full_name,
+            userId: v.profiles?.id || "",
+            userName: v.profiles?.full_name || "",
             startDate: v.start_date,
             endDate: v.end_date,
             status: v.status,
@@ -143,7 +115,7 @@ const AdminOverviewDashboard: React.FC<AdminOverviewDashboardProps> = ({
           for (let d = today; d <= endDate; d.setDate(d.getDate() + 1)) {
             const currentDate = formatDateToYYYYMMDD(d);
             const usersOnVacation = formattedVacations.filter(
-              (v) => v.startDate <= currentDate && v.endDate >= currentDate,
+              (v) => v.startDate <= currentDate && v.endDate >= currentDate
             );
 
             if (usersOnVacation.length > 0) {
@@ -164,7 +136,7 @@ const AdminOverviewDashboard: React.FC<AdminOverviewDashboardProps> = ({
           setUpcomingVacations(
             formattedVacations
               .filter((v) => v.status === "approved")
-              .slice(0, 5),
+              .slice(0, 5)
           );
         }
 

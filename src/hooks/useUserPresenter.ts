@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import { UserPresenter } from "../presenters/UserPresenter";
-import { UserModel, CreateUserDTO, UpdateUserDTO } from "../models/User";
+import { User } from "@/types";
 
 export function useUserPresenter() {
-  const [users, setUsers] = useState<UserModel[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,7 +15,7 @@ export function useUserPresenter() {
       setUsers(loadedUsers);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Erro ao carregar usuários",
+        err instanceof Error ? err.message : "Erro ao carregar usuários"
       );
     } finally {
       setLoading(false);
@@ -32,7 +32,7 @@ export function useUserPresenter() {
     }
   }, []);
 
-  const createUser = useCallback(async (dto: CreateUserDTO) => {
+  const createUser = useCallback(async (dto: Partial<User>) => {
     try {
       setError(null);
       const newUser = await UserPresenter.createUser(dto);
@@ -44,17 +44,17 @@ export function useUserPresenter() {
     }
   }, []);
 
-  const updateUser = useCallback(async (id: string, dto: UpdateUserDTO) => {
+  const updateUser = useCallback(async (id: string, dto: Partial<User>) => {
     try {
       setError(null);
       const updatedUser = await UserPresenter.updateUser(id, dto);
       setUsers((prev) =>
-        prev.map((user) => (user.id === id ? updatedUser : user)),
+        prev.map((user) => (user.id === id ? updatedUser : user))
       );
       return updatedUser;
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Erro ao atualizar usuário",
+        err instanceof Error ? err.message : "Erro ao atualizar usuário"
       );
       return null;
     }
@@ -72,36 +72,6 @@ export function useUserPresenter() {
     }
   }, []);
 
-  const activateUser = useCallback(async (id: string) => {
-    try {
-      setError(null);
-      const updatedUser = await UserPresenter.activateUser(id);
-      setUsers((prev) =>
-        prev.map((user) => (user.id === id ? updatedUser : user)),
-      );
-      return updatedUser;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao ativar usuário");
-      return null;
-    }
-  }, []);
-
-  const deactivateUser = useCallback(async (id: string) => {
-    try {
-      setError(null);
-      const updatedUser = await UserPresenter.deactivateUser(id);
-      setUsers((prev) =>
-        prev.map((user) => (user.id === id ? updatedUser : user)),
-      );
-      return updatedUser;
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Erro ao desativar usuário",
-      );
-      return null;
-    }
-  }, []);
-
   return {
     users,
     loading,
@@ -111,7 +81,5 @@ export function useUserPresenter() {
     createUser,
     updateUser,
     deleteUser,
-    activateUser,
-    deactivateUser,
   };
 }

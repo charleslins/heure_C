@@ -8,7 +8,7 @@ import { useAuth } from "./useAuth";
 export function useVacationPresenter(year?: number, month?: number) {
   const { t } = useTranslation();
   const { addNotification } = useNotificationContext();
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,7 +16,7 @@ export function useVacationPresenter(year?: number, month?: number) {
   const collection = useMemo(() => new VacationCollection(), []);
   const presenter = useMemo(
     () => new VacationPresenter(collection),
-    [collection],
+    [collection]
   );
 
   // Estado para armazenar os dados processados
@@ -25,14 +25,17 @@ export function useVacationPresenter(year?: number, month?: number) {
 
   // Carregar dados iniciais
   useEffect(() => {
-    if (!user?.id || year === undefined || month === undefined) return;
+    if (!currentUser?.id || year === undefined || month === undefined) return;
 
     async function loadData() {
       try {
         setIsLoading(true);
         setError(null);
-        presenter.setUserId(user.id);
-        await presenter.initialize(year, month);
+        presenter.setUserId(currentUser.id);
+        await presenter.initialize(
+          year || new Date().getFullYear(),
+          month || new Date().getMonth()
+        );
         setViewModel(presenter.getVacationListViewModel());
       } catch (err) {
         setError(t("vacationPage.loadingError"));
@@ -43,7 +46,7 @@ export function useVacationPresenter(year?: number, month?: number) {
     }
 
     loadData();
-  }, [presenter, user?.id, year, month, t, addNotification]);
+  }, [presenter, currentUser?.id, year, month, t, addNotification]);
 
   const handleRequestVacation = async (date: string) => {
     const result = await presenter.requestVacation(date);
@@ -53,7 +56,7 @@ export function useVacationPresenter(year?: number, month?: number) {
     } else {
       addNotification(
         result.message || t("vacationPage.requestError"),
-        "error",
+        "error"
       );
     }
     return result;
@@ -61,7 +64,7 @@ export function useVacationPresenter(year?: number, month?: number) {
 
   const handleApproveVacation = async (
     vacationId: string,
-    comment?: string,
+    comment?: string
   ) => {
     const result = await presenter.approveVacation(vacationId, comment);
     if (result.success) {
@@ -70,7 +73,7 @@ export function useVacationPresenter(year?: number, month?: number) {
     } else {
       addNotification(
         result.message || t("vacationPage.approvalError"),
-        "error",
+        "error"
       );
     }
     return result;
@@ -84,7 +87,7 @@ export function useVacationPresenter(year?: number, month?: number) {
     } else {
       addNotification(
         result.message || t("vacationPage.rejectionError"),
-        "error",
+        "error"
       );
     }
     return result;
@@ -98,7 +101,7 @@ export function useVacationPresenter(year?: number, month?: number) {
     } else {
       addNotification(
         result.message || t("vacationPage.cancellationError"),
-        "error",
+        "error"
       );
     }
     return result;

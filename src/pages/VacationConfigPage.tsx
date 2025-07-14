@@ -6,7 +6,7 @@ import { useCurrentUserDataContext } from "@/contexts/CurrentUserDataContext";
 import { useNotificationContext } from "@/contexts/NotificationContext";
 import { useVacationCalculations } from "@/hooks/useVacationCalculations";
 import { formatDateToYYYYMMDD } from "@/utils/timeUtils";
-import { printVacationRequest } from "@/utils/printVacationRequest";
+
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import LoadingScreen from "../components/LoadingScreen";
 import { VacationStatus } from "../types/types";
@@ -327,7 +327,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
     const dayName = dateObj
       .toLocaleDateString("en-US", { weekday: "long" })
       .toLowerCase();
-    const contractForDay = weeklyContract[dayName];
+    const contractForDay = (weeklyContract as any)[dayName];
     const totalHours = (
       (contractForDay?.morning || 0) + (contractForDay?.afternoon || 0)
     ).toFixed(2);
@@ -461,7 +461,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
               </div>
               {/* Dias do mês */}
               <div className="grid grid-cols-7 gap-2">
-                {calendarDays.map((day, i) => {
+                {calendarDays.map((day: any, i) => {
                   if (!day.date) {
                     return <div key={i} className="h-16 w-18" />;
                   }
@@ -639,7 +639,7 @@ const VacationConfigPage: React.FC<VacationConfigPageProps> = ({
           </div>
           <div className="flex flex-wrap gap-2">
             {currentMonthUserVacations.length > 0 ? (
-              currentMonthUserVacations.map((opt: any, idx: number) => (
+              currentMonthUserVacations.map((opt: any) => (
                 <span
                   key={opt.date}
                   className={`px-4 py-1 rounded-full text-xs font-semibold shadow-sm border border-indigo-200 ${

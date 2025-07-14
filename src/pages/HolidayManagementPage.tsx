@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Calendar, BarChart3 } from "lucide-react";
 import SectionCard from "../components/common/SectionCard";
@@ -8,8 +8,7 @@ import { useNotificationContext } from "../contexts/NotificationContext";
 
 const HolidayManagementPage: React.FC = () => {
   const { t } = useTranslation();
-  const { globalHolidays, isLoadingGlobalData, addHoliday } =
-    useGlobalDataContext();
+  const { globalHolidays, isLoadingGlobalData } = useGlobalDataContext();
   const { addNotification } = useNotificationContext();
   const [formData, setFormData] = useState({
     name: "",
@@ -81,7 +80,7 @@ const HolidayManagementPage: React.FC = () => {
   });
 
   const officialHolidays = holidaysForYear.filter(
-    (h) => h.type === "OFFICIAL"
+    (h) => h.type === "NATIONAL"
   ).length;
   const customHolidays = holidaysForYear.filter(
     (h) => h.type === "CUSTOM"
@@ -153,12 +152,12 @@ const HolidayManagementPage: React.FC = () => {
                       </div>
                       <span
                         className={`px-2 py-0.5 text-xs rounded-full ${
-                          holiday.type === "OFFICIAL"
+                          holiday.type === "NATIONAL"
                             ? "bg-blue-100 text-blue-700"
                             : "bg-green-100 text-green-700"
                         }`}
                       >
-                        {holiday.type === "OFFICIAL"
+                        {holiday.type === "NATIONAL"
                           ? t("holidayManagementPage.officialLabel")
                           : t("holidayManagementPage.customLabel")}
                       </span>
