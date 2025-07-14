@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Settings, Save } from "lucide-react";
 import Button from "../common/Button";
+import {
+  textInputClasses,
+  checkboxClasses,
+  labelClasses,
+  hintClasses,
+} from "../../utils/inputClasses";
 
 const GlobalSettingsForm: React.FC = () => {
   const [settings, setSettings] = useState({
@@ -35,7 +41,7 @@ const GlobalSettingsForm: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Dias de férias anuais padrão */}
           <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className={labelClasses()}>
               Dias de Férias Anuais Padrão
             </label>
             <input
@@ -45,18 +51,16 @@ const GlobalSettingsForm: React.FC = () => {
               onChange={handleChange}
               min="0"
               max="365"
-              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"
+              className={textInputClasses()}
             />
-            <p className="mt-1 text-sm text-slate-500">
+            <p className={hintClasses}>
               Número padrão de dias de férias por ano para novos funcionários
             </p>
           </div>
 
           {/* Aviso mínimo */}
           <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Aviso Mínimo
-            </label>
+            <label className={labelClasses()}>Aviso Mínimo</label>
             <input
               type="number"
               name="minAdvanceNotice"
@@ -64,18 +68,16 @@ const GlobalSettingsForm: React.FC = () => {
               onChange={handleChange}
               min="0"
               max="365"
-              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"
+              className={textInputClasses()}
             />
-            <p className="mt-1 text-sm text-slate-500">
+            <p className={hintClasses}>
               Dias mínimos de antecedência para solicitar férias
             </p>
           </div>
 
           {/* Dias consecutivos máximos */}
           <div className="bg-slate-50 rounded-xl p-4 shadow-sm">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Dias Consecutivos Máximos
-            </label>
+            <label className={labelClasses()}>Dias Consecutivos Máximos</label>
             <input
               type="number"
               name="maxConsecutiveDays"
@@ -83,9 +85,9 @@ const GlobalSettingsForm: React.FC = () => {
               onChange={handleChange}
               min="0"
               max="365"
-              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"
+              className={textInputClasses()}
             />
-            <p className="mt-1 text-sm text-slate-500">
+            <p className={hintClasses}>
               Número máximo de dias consecutivos de férias permitidos
             </p>
           </div>
@@ -98,11 +100,11 @@ const GlobalSettingsForm: React.FC = () => {
                 name="autoApprovalEnabled"
                 checked={settings.autoApprovalEnabled}
                 onChange={handleChange}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                className={checkboxClasses()}
               />
               <span>Aprovação Automática</span>
             </label>
-            <p className="mt-2 text-sm text-slate-500">
+            <p className={hintClasses}>
               Aprovar automaticamente solicitações que atendam aos critérios
             </p>
           </div>
@@ -110,11 +112,7 @@ const GlobalSettingsForm: React.FC = () => {
 
         {/* Botão de salvar */}
         <div className="flex justify-end">
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-          >
+          <Button type="submit" variant="primary" size="md">
             <Save className="w-4 h-4 mr-2" />
             Salvar
           </Button>
