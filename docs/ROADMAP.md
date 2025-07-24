@@ -1,5 +1,10 @@
 # Roadmap do Projeto
 
+**Data de Criação:** 23 de Julho de 2024  
+**Última Atualização:** 24 de Janeiro de 2025  
+**Versão:** 1.2  
+**Status:** Documento Vivo - Atualizado Regularmente
+
 ## ✅ Já Implementado
 
 ### Fundação do Projeto
