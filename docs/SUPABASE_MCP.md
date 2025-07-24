@@ -1,5 +1,10 @@
 # Supabase MCP (Model Control Protocol)
 
+**Data de Criação:** 23 de Julho de 2024  
+**Última Atualização:** 24 de Janeiro de 2025  
+**Versão:** 1.0  
+**Status:** Documentação Técnica
+
 ## Configuração
 
 O projeto utiliza o MCP do Supabase para garantir tipagem forte e validação em tempo real das queries. A configuração está no arquivo `.mcp.json` na raiz do projeto.
