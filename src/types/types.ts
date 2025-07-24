@@ -116,7 +116,8 @@ export type Page =
   | "vacations"
   | "admin_dashboard"
   | "user_profile"
-  | "admin_tabbed";
+  | "admin_tabbed"
+  | "reports";
 
 // AppDataContextValue replaces the old AppData, providing more granular access via contexts
 export interface AuthContextType {

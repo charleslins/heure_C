@@ -17,6 +17,7 @@ export const AdminTabbedPageLazy = lazy(() => import('@/pages/AdminTabbedPage'))
 export const UserProfilePageLazy = lazy(() => import('@/pages/UserProfilePage'));
 export const LanguageLandingPageLazy = lazy(() => import('@/pages/LanguageLandingPage'));
 export const AdminOverviewDashboardLazy = lazy(() => import('@/pages/AdminOverviewDashboard'));
+export const ReportsPageLazy = lazy(() => import('@/components/Reports/ReportsPage'));
 
 // Lazy loading de componentes pesados
 export const AdminUserListLazy = lazy(() => import('@/components/AdminDashboard/AdminUserList'));
@@ -44,6 +45,7 @@ export const AdminTabbedPage = withSuspense(AdminTabbedPageLazy);
 export const UserProfilePage = withSuspense(UserProfilePageLazy);
 export const LanguageLandingPage = withSuspense(LanguageLandingPageLazy);
 export const AdminOverviewDashboard = withSuspense(AdminOverviewDashboardLazy);
+export const ReportsPage = withSuspense(ReportsPageLazy);
 export const AdminUserList = withSuspense(AdminUserListLazy);
 export const PendingRequestsList = withSuspense(PendingRequestsListLazy);
 export const UserVacationSummaryTable = withSuspense(UserVacationSummaryTableLazy);

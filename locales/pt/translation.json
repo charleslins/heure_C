@@ -5,6 +5,7 @@
   "nav": {
     "dashboard": "Painel",
     "vacations": "Férias",
+    "reports": "Relatórios",
     "adminPanel": "Painel Admin",
     "manageHolidays": "Gerir Feriados",
     "manageEmployees": "Gestão de Funcionários",
@@ -486,6 +487,97 @@
       "yAxisLabel": "Máx. de usuários de férias em um único dia",
       "dataUnavailable": "Dados de concorrência atualmente indisponíveis",
       "featureNote": "A funcionalidade completa do gráfico requer listagem de usuários"
+    }
+  },
+  "reports": {
+    "title": "Relatórios",
+    "subtitle": "Análise detalhada de horas, férias e produtividade",
+    "periodSelector": {
+      "label": "Período de Análise",
+      "lastWeek": "Última Semana",
+      "lastMonth": "Último Mês",
+      "lastQuarter": "Último Trimestre",
+      "lastYear": "Último Ano",
+      "custom": "Personalizado"
+    },
+    "timeRange": {
+      "title": "Relatório de Tempo",
+      "description": "Análise detalhada das horas trabalhadas",
+      "totalHours": "Total de Horas",
+      "plannedHours": "Horas Planejadas",
+      "overtimeHours": "Horas Extras",
+      "efficiency": "Eficiência",
+      "generalSummary": "Resumo Geral",
+      "detailedBreakdown": "Detalhamento por Período",
+      "period": "Período",
+      "worked": "Trabalhadas",
+      "planned": "Planejadas",
+      "overtime": "Extras",
+      "noData": "Nenhum dado disponível para o período selecionado"
+    },
+    "vacation": {
+      "title": "Análise de Férias",
+      "description": "Estatísticas e tendências de férias",
+      "totalDays": "Total de Dias",
+      "usedDays": "Dias Utilizados",
+      "pendingDays": "Dias Pendentes",
+      "remainingDays": "Dias Restantes",
+      "utilizationRate": "Taxa de Utilização",
+      "approvalRate": "Taxa de Aprovação",
+      "averageDuration": "Duração Média",
+      "monthlyRequests": "Solicitações Mensais",
+      "peakMonths": "Meses de Pico",
+      "insights": "Insights",
+      "highDemandPeriod": "Período de alta demanda",
+      "lowDemandPeriod": "Período de baixa demanda",
+      "noVacationData": "Nenhum dado de férias disponível"
+    },
+    "productivity": {
+      "title": "Métricas de Produtividade",
+      "description": "Análise de performance e eficiência",
+      "efficiency": "Eficiência",
+      "consistency": "Consistência",
+      "goalAchievement": "Alcance de Metas",
+      "workQuality": "Qualidade do Trabalho",
+      "trends": "Tendências",
+      "weeklyProductivity": "Produtividade Semanal",
+      "insights": "Insights",
+      "excellentPerformance": "Performance excelente",
+      "consistentWork": "Trabalho consistente",
+      "goalsExceeded": "Metas superadas",
+      "highQuality": "Alta qualidade",
+      "improvingTrend": "Tendência de melhoria",
+      "week": "Semana",
+      "productivity": "Produtividade",
+      "noProductivityData": "Nenhum dado de produtividade disponível"
+    },
+    "export": {
+      "title": "Exportar Relatórios",
+      "description": "Baixe ou envie relatórios por email",
+      "reportType": "Tipo de Relatório",
+      "timesheet": "Folha de Ponto",
+      "vacation": "Férias",
+      "productivity": "Produtividade",
+      "format": "Formato",
+      "pdf": "PDF",
+      "excel": "Excel",
+      "csv": "CSV",
+      "detail": "Nível de Detalhe",
+      "summary": "Resumo",
+      "detailed": "Detalhado",
+      "downloadButton": "Baixar Relatório",
+      "emailButton": "Enviar por Email",
+      "downloading": "Baixando...",
+      "sending": "Enviando...",
+      "downloadSuccess": "Relatório baixado com sucesso!",
+      "emailSuccess": "Relatório enviado por email com sucesso!",
+      "downloadError": "Erro ao baixar o relatório",
+      "emailError": "Erro ao enviar o relatório por email"
+    },
+    "analysis": {
+      "title": "Análise Detalhada",
+      "description": "Insights avançados e recomendações baseadas nos dados coletados",
+      "comingSoon": "Em breve: Análises avançadas com IA, comparações históricas e recomendações personalizadas."
     }
   }
 }

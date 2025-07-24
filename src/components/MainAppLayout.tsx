@@ -7,6 +7,7 @@ import {
   VacationConfigPage,
   UserProfilePage,
   AdminTabbedPage,
+  ReportsPage,
 } from "@/utils/performanceOptimizations";
 import AccessDeniedMessage from "./AccessDeniedMessage";
 import { useGlobalDataContext } from "@/contexts/GlobalDataContext";
@@ -59,6 +60,8 @@ const MainAppLayout: React.FC<MainAppLayoutProps> = ({
         return <AccessDeniedMessage />;
       case "user_profile":
         return <UserProfilePage />;
+      case "reports":
+        return <ReportsPage />;
       default:
         return <p>{t("common.pageNotFound")}</p>;
     }

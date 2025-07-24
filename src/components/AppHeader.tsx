@@ -13,6 +13,7 @@ import {
   Key,
   Cog,
   ChevronDown,
+  BarChart3,
 } from "lucide-react";
 
 interface AppHeaderProps {
@@ -139,6 +140,13 @@ const AppHeader: React.FC<AppHeaderProps> = ({
                   <span>{t("nav.vacations")}</span>
                 </button>
               )}
+              <button
+                onClick={() => onNavigate("reports")}
+                className={navLinkClasses("reports")}
+              >
+                <BarChart3 className={iconSize} />
+                <span>{t("nav.reports")}</span>
+              </button>
               {user.role === "admin" && (
                 <button
                   onClick={() => onNavigate("admin_tabbed")}
@@ -275,6 +283,12 @@ const AppHeader: React.FC<AppHeaderProps> = ({
                 <Calendar className={iconSize} /> {t("nav.vacations")}
               </button>
             )}
+            <button
+              onClick={() => onNavigate("reports")}
+              className={navLinkClasses("reports")}
+            >
+              <BarChart3 className={iconSize} /> {t("nav.reports")}
+            </button>
             {user.role === "admin" && (
               <button
                 onClick={() => onNavigate("admin_tabbed")}
