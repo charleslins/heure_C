@@ -1,5 +1,10 @@
 # Análise de Padrões de Código Duplicados
 
+**Data da Análise:** 23 de Julho de 2024  
+**Última Atualização:** 24 de Janeiro de 2025  
+**Versão:** 1.1  
+**Autor:** Análise Automatizada + Revisão Manual
+
 ## 📋 Resumo Executivo
 
 Esta análise identifica padrões de código duplicados no projeto e sugere refatorações para criar componentes reutilizáveis, hooks personalizados e funções utilitárias que eliminem a duplicação, seguindo o princípio DRY (Don't Repeat Yourself).
