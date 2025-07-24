@@ -11,7 +11,11 @@ export const getUserInitials = (fullName: string): string => {
   if (!fullName || typeof fullName !== "string") {
     return "?";
   }
-  const names = fullName.trim().split(/\s+/);
+  const trimmed = fullName.trim();
+  if (trimmed.length === 0) {
+    return "?";
+  }
+  const names = trimmed.split(/\s+/);
   if (names.length === 1 && names[0].length > 0) {
     return names[0][0].toUpperCase();
   }
@@ -20,7 +24,7 @@ export const getUserInitials = (fullName: string): string => {
     const lastInitial = names[names.length - 1][0];
     return `${firstInitial}${lastInitial}`.toUpperCase();
   }
-  return fullName.length > 0 ? fullName[0].toUpperCase() : "?";
+  return "?";
 };
 
 /**

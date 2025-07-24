@@ -9,7 +9,11 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "generate-types": "npx supabase gen types typescript --project-id rhwetitiavofdxpmjaex --schema public > src/types/supabase.ts",
-    "predev": "npm run generate-types"
+    "predev": "npm run generate-types",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --watchAll=false"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
@@ -29,6 +33,10 @@
   },
   "devDependencies": {
     "@supabase/mcp-server-supabase": "^0.4.5",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
@@ -41,10 +49,14 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "figma-developer-mcp": "^0.4.3",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
     "mcp-command-proxy": "^1.0.2",
     "postcss": "^8.5.6",
     "supabase": "^2.30.4",
     "tailwindcss": "^3.4.17",
+    "ts-jest": "^29.4.0",
     "typescript": "^5.3.3",
     "vite": "^7.0.0"
   }
