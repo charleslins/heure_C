@@ -2,11 +2,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { User, Page } from "@/types";
 import AppHeader from "./AppHeader";
-import DashboardPage from "@/pages/DashboardPage";
-import VacationConfigPage from "@/pages/VacationConfigPage";
-
-import UserProfilePage from "@/pages/UserProfilePage";
-import AdminTabbedPage from "@/pages/AdminTabbedPage";
+import {
+  DashboardPage,
+  VacationConfigPage,
+  UserProfilePage,
+  AdminTabbedPage,
+} from "@/utils/performanceOptimizations";
 import AccessDeniedMessage from "./AccessDeniedMessage";
 import { useGlobalDataContext } from "@/contexts/GlobalDataContext";
 import { useCurrentUserDataContext } from "@/contexts/CurrentUserDataContext";
@@ -82,4 +83,15 @@ const MainAppLayout: React.FC<MainAppLayoutProps> = ({
   );
 };
 
-export default MainAppLayout;
+// Aplicar React.memo com comparação otimizada
+const MemoizedMainAppLayout = React.memo(MainAppLayout, (prevProps: MainAppLayoutProps, nextProps: MainAppLayoutProps) => {
+  // Comparação otimizada para evitar re-renders desnecessários
+  return (
+    prevProps.user.id === nextProps.user.id &&
+    prevProps.user.role === nextProps.user.role &&
+    prevProps.currentPage === nextProps.currentPage &&
+    prevProps.currentDate.getTime() === nextProps.currentDate.getTime()
+  );
+});
+
+export default MemoizedMainAppLayout;

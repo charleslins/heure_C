@@ -300,4 +300,43 @@ const DailyLogRow: React.FC<DailyLogRowProps> = ({
   );
 };
 
-export default DailyLogRow;
+// Otimização com React.memo para evitar re-renders desnecessários
+export default React.memo(DailyLogRow, (prevProps, nextProps) => {
+  // Comparar logEntry por propriedades específicas
+  const prevEntry = prevProps.logEntry;
+  const nextEntry = nextProps.logEntry;
+  
+  if (prevEntry.id !== nextEntry.id) return false;
+  if (prevEntry.date.getTime() !== nextEntry.date.getTime()) return false;
+  
+  // Comparar morning segment
+  if (prevEntry.morning.start !== nextEntry.morning.start) return false;
+  if (prevEntry.morning.end !== nextEntry.morning.end) return false;
+  if (prevEntry.morning.type !== nextEntry.morning.type) return false;
+  
+  // Comparar afternoon segment
+  if (prevEntry.afternoon.start !== nextEntry.afternoon.start) return false;
+  if (prevEntry.afternoon.end !== nextEntry.afternoon.end) return false;
+  if (prevEntry.afternoon.type !== nextEntry.afternoon.type) return false;
+  
+  // Comparar outras propriedades relevantes
+  if (prevEntry.isWorkingDay !== nextEntry.isWorkingDay) return false;
+  if (prevEntry.hasInputs !== nextEntry.hasInputs) return false;
+  
+  // Comparar userGlobalSettings (apenas propriedades relevantes)
+  const prevSettings = prevProps.userGlobalSettings;
+  const nextSettings = nextProps.userGlobalSettings;
+  if (prevSettings?.workTimeDefaults?.overallStartTime !== nextSettings?.workTimeDefaults?.overallStartTime) return false;
+  if (prevSettings?.workTimeDefaults?.overallEndTime !== nextSettings?.workTimeDefaults?.overallEndTime) return false;
+  
+  // Comparar weeklyContract (shallow comparison)
+  const prevContract = prevProps.weeklyContract;
+  const nextContract = nextProps.weeklyContract;
+  const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+  for (const day of days) {
+    if (prevContract[day]?.morning !== nextContract[day]?.morning) return false;
+    if (prevContract[day]?.afternoon !== nextContract[day]?.afternoon) return false;
+  }
+  
+  return true;
+});

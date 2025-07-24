@@ -15,7 +15,7 @@ import { NotificationProvider } from "@/contexts/NotificationContext";
 import NotificationDisplay from "@/components/NotificationDisplay";
 import MainAppLayout from "@/components/MainAppLayout";
 import LoadingScreen from "@/components/LoadingScreen";
-import LanguageLandingPage from "@/pages/LanguageLandingPage";
+import { LanguageLandingPage } from "@/utils/performanceOptimizations";
 
 const AppContent: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -95,7 +95,7 @@ const MainAppLayoutWrapper: React.FC<{
   onLogout: () => Promise<void>;
   onNavigate: (page: Page) => void;
   onDateChange: (newDate: Date) => void;
-}> = (props) => {
+}> = React.memo((props) => {
   const { currentUser } = useAuthContext();
   const { isLoadingCurrentUserData } = useCurrentUserDataContext();
   const { t } = useTranslation();
@@ -111,7 +111,12 @@ const MainAppLayoutWrapper: React.FC<{
   }
 
   return <MainAppLayout user={currentUser!} {...props} />;
-};
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.currentPage === nextProps.currentPage &&
+    prevProps.currentDate.getTime() === nextProps.currentDate.getTime()
+  );
+});
 
 const App: React.FC = () => (
   <AuthProvider>

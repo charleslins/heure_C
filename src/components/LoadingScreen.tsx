@@ -46,4 +46,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ message }) => {
   );
 };
 
-export default LoadingScreen;
+// Otimização com React.memo - LoadingScreen raramente precisa re-renderizar
+export default React.memo(LoadingScreen, (prevProps, nextProps) => {
+  return prevProps.message === nextProps.message;
+});
