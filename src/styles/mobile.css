@@ -1,0 +1,246 @@
+/* Mobile Touch Optimizations */
+
+/* Aumenta área de toque para elementos interativos */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Melhora feedback visual para toque */
+.touch-feedback {
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.touch-feedback:active {
+  transform: scale(0.98);
+  opacity: 0.8;
+}
+
+/* Remove highlight padrão do webkit */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Melhora scrolling em dispositivos móveis */
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Otimizações para inputs em mobile */
+.mobile-input {
+  font-size: 16px; /* Previne zoom no iOS */
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+/* Espaçamento adequado para mobile */
+.mobile-spacing {
+  padding: 16px;
+}
+
+.mobile-spacing-sm {
+  padding: 8px;
+}
+
+.mobile-spacing-lg {
+  padding: 24px;
+}
+
+/* Cards responsivos */
+.mobile-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+/* Navegação mobile */
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-item:active {
+  transform: scale(0.95);
+}
+
+/* Tabelas responsivas */
+.mobile-table {
+  display: block;
+  width: 100%;
+}
+
+.mobile-table-row {
+  display: block;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 16px;
+  background: white;
+}
+
+.mobile-table-cell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.mobile-table-cell:last-child {
+  border-bottom: none;
+}
+
+.mobile-table-label {
+  font-weight: 500;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.mobile-table-value {
+  font-weight: 600;
+  color: #1e293b;
+  text-align: right;
+}
+
+/* Botões mobile */
+.mobile-button {
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+.mobile-button:active {
+  transform: scale(0.98);
+}
+
+.mobile-button-sm {
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.mobile-button-lg {
+  min-height: 56px;
+  padding: 16px 32px;
+  font-size: 18px;
+}
+
+/* Modais mobile */
+.mobile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.mobile-modal-content {
+  background: white;
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* Animações suaves */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Otimizações para telas pequenas */
+@media (max-width: 640px) {
+  .mobile-container {
+    padding: 16px;
+  }
+  
+  .mobile-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .mobile-text-sm {
+    font-size: 14px;
+  }
+  
+  .mobile-text-base {
+    font-size: 16px;
+  }
+  
+  .mobile-text-lg {
+    font-size: 18px;
+  }
+}
+
+/* Melhorias para acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  .touch-feedback,
+  .mobile-nav-item,
+  .mobile-button {
+    transition: none;
+  }
+  
+  .fade-in,
+  .slide-up {
+    animation: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .mobile-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  
+  .mobile-table-row {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  
+  .mobile-table-label {
+    color: #94a3b8;
+  }
+  
+  .mobile-table-value {
+    color: #f1f5f9;
+  }
+}

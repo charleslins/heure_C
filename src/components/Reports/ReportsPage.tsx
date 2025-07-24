@@ -6,6 +6,13 @@ import TimeRangeReportCard from "./TimeRangeReportCard";
 import VacationAnalyticsCard from "./VacationAnalyticsCard";
 import ProductivityMetricsCard from "./ProductivityMetricsCard";
 import ExportReportsCard from "./ExportReportsCard";
+import { 
+  MobileReportsGrid,
+  MobileTimeRangeCard,
+  MobileVacationAnalyticsCard,
+  MobileProductivityMetricsCard,
+  MobileExportReportsCard
+} from "../mobile/MobileReportsGrid";
 
 interface ReportsPageProps {
   currentUser: any;
@@ -51,7 +58,18 @@ const ReportsPage: React.FC<ReportsPageProps> = ({ currentUser }) => {
       </div>
 
       {/* Grid de relatórios */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Versão mobile */}
+        <div className="md:hidden">
+           <MobileReportsGrid>
+             <MobileTimeRangeCard />
+             <MobileVacationAnalyticsCard />
+             <MobileProductivityMetricsCard />
+             <MobileExportReportsCard />
+           </MobileReportsGrid>
+         </div>
+      
+      {/* Versão desktop */}
+      <div className="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Relatório de Horas por Período */}
         <TimeRangeReportCard 
           timeRange={selectedTimeRange}

@@ -14,6 +14,7 @@ import {
   Cog,
   ChevronDown,
   BarChart3,
+  Home,
 } from "lucide-react";
 
 interface AppHeaderProps {
@@ -266,54 +267,63 @@ const AppHeader: React.FC<AppHeaderProps> = ({
 
         {/* Mobile Nav & Controls */}
         <div
-          className={`md:hidden py-3 border-t border-orange-400/50 space-y-3`}
+          className={`md:hidden py-4 border-t border-orange-400/50 space-y-4`}
         >
-          <nav className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+          {/* Navigation Tabs - Melhor para toque */}
+          <nav className="grid grid-cols-2 gap-2 px-4">
             <button
               onClick={() => onNavigate("dashboard")}
-              className={navLinkClasses("dashboard")}
+              className={`${navLinkClasses("dashboard")} min-h-[48px] flex items-center justify-center rounded-lg font-medium transition-all duration-200 active:scale-95`}
             >
+              <Home className="w-5 h-5 mr-2" />
               {t("nav.dashboard")}
             </button>
             {user.role !== "admin" && (
               <button
                 onClick={() => onNavigate("vacations")}
-                className={navLinkClasses("vacations")}
+                className={`${navLinkClasses("vacations")} min-h-[48px] flex items-center justify-center rounded-lg font-medium transition-all duration-200 active:scale-95`}
               >
-                <Calendar className={iconSize} /> {t("nav.vacations")}
+                <Calendar className="w-5 h-5 mr-2" />
+                {t("nav.vacations")}
               </button>
             )}
             <button
               onClick={() => onNavigate("reports")}
-              className={navLinkClasses("reports")}
+              className={`${navLinkClasses("reports")} min-h-[48px] flex items-center justify-center rounded-lg font-medium transition-all duration-200 active:scale-95`}
             >
-              <BarChart3 className={iconSize} /> {t("nav.reports")}
+              <BarChart3 className="w-5 h-5 mr-2" />
+              {t("nav.reports")}
             </button>
             {user.role === "admin" && (
               <button
                 onClick={() => onNavigate("admin_tabbed")}
-                className={navLinkClasses("admin_tabbed")}
+                className={`${navLinkClasses("admin_tabbed")} min-h-[48px] flex items-center justify-center rounded-lg font-medium transition-all duration-200 active:scale-95`}
               >
-                <Shield className={iconSize} /> {t("nav.adminPanel")}
+                <Shield className="w-5 h-5 mr-2" />
+                {t("nav.adminPanel")}
               </button>
             )}
           </nav>
-          <div className="flex justify-center items-center space-x-2 pt-2">
+          
+          {/* Date Navigation - Área de toque maior */}
+          <div className="flex justify-center items-center space-x-4 px-4">
             <button
               onClick={() => changeMonth(-1)}
-              className={`p-2 ${headerTextColor} ${hoverBgColor} rounded-md transition-colors`}
+              className={`min-h-[48px] min-w-[48px] flex items-center justify-center ${headerTextColor} ${hoverBgColor} rounded-lg transition-all duration-200 active:scale-95`}
               aria-label={t("monthYearSelector.selectMonth")}
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
-            <MonthYearSelector
-              currentDate={currentDate}
-              onDateChange={onDateChange}
-              labelColorClass={headerTextColor}
-            />
+            <div className="flex-1 max-w-[200px]">
+              <MonthYearSelector
+                currentDate={currentDate}
+                onDateChange={onDateChange}
+                labelColorClass={headerTextColor}
+              />
+            </div>
             <button
               onClick={() => changeMonth(1)}
-              className={`p-2 ${headerTextColor} ${hoverBgColor} rounded-md transition-colors`}
+              className={`min-h-[48px] min-w-[48px] flex items-center justify-center ${headerTextColor} ${hoverBgColor} rounded-lg transition-all duration-200 active:scale-95`}
               aria-label={t("monthYearSelector.selectMonth")}
             >
               <ChevronRight className="w-6 h-6" />
