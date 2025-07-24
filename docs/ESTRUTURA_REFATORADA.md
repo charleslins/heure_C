@@ -1,5 +1,10 @@
 # Estrutura do Projeto Refatorada
 
+**Data da Refatoração:** 23 de Julho de 2024  
+**Última Atualização:** 24 de Janeiro de 2025  
+**Versão:** 1.1  
+**Status:** Implementado e Testado
+
 ## 📁 Estrutura Atual
 
 ```
