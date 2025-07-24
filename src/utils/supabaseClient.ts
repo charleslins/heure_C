@@ -22,9 +22,15 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.error("Verifique se o arquivo .env existe e contém:");
   console.error("VITE_SUPABASE_URL=sua_url_aqui");
   console.error("VITE_SUPABASE_ANON_KEY=sua_chave_aqui");
-  throw new Error(
-    "Missing Supabase environment variables. Please check your .env file."
-  );
+  console.warn("⚠️ Executando em modo de desenvolvimento sem Supabase");
+   // Em desenvolvimento, não trava a aplicação
+   if ((import.meta as any).env.DEV) {
+     console.warn("Continuando em modo de desenvolvimento...");
+   } else {
+     throw new Error(
+       "Missing Supabase environment variables. Please check your .env file."
+     );
+   }
 }
 
 // Validar formato da URL
